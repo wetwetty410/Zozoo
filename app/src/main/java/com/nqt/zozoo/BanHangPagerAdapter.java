@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
  */
 
 public class BanHangPagerAdapter extends FragmentPagerAdapter {
+    public static final int BAN_HANG_NUM_FRAGMENT = 4;
 
     public BanHangPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -21,6 +22,6 @@ public class BanHangPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 0;
+        return BAN_HANG_NUM_FRAGMENT;
     }
 }
