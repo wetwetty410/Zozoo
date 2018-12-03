@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BanHangActivity"></activity>
+        <activity android:name=".banhang.BanHangActivity"></activity>
     </application>
 
 </manifest>
