@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nqt.zozoo.R;
-import com.nqt.zozoo.dummy.DummyContent;
-import com.nqt.zozoo.dummy.DummyContent.DummyItem;
+import com.nqt.zozoo.dummy.BanHangContent;
+import com.nqt.zozoo.dummy.BanHangContent.DummyItem;
 
 /**
  * A fragment representing a list of Items.
@@ -78,7 +78,7 @@ public class BanHangSoBanFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(BanHangContent.ITEMS, mListener));
         }
         return view;
     }

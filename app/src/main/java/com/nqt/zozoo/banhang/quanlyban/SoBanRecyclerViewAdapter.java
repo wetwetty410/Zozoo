@@ -34,9 +34,17 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.soBan = soBans.get(position);
-        holder.txtThuTuBan.setText(soBans.get(position).soBan);
+        holder.txtThuTuBan.setText(position);
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener != null) {
+                    mListener.onListFragmentInteractionListener(holder.soBan);
+                }
+            }
+        });
     }
 
     @Override
