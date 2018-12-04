@@ -11,8 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nqt.zozoo.R;
+import com.nqt.zozoo.banhang.quanlyban.SoBanContent;
 import com.nqt.zozoo.dummy.BanHangContent;
-import com.nqt.zozoo.dummy.BanHangContent.DummyItem;
+import com.nqt.zozoo.dummy.BanHangContent.BanHangItem;
 
 /**
  * A fragment representing a list of Items.
@@ -46,7 +47,7 @@ public class BanHangSoBanFragment extends Fragment {
         BanHangSoBanFragment fragment = new BanHangSoBanFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
-        args.putInt(PAGE, columnCount);
+        args.putInt(PAGE, page);
         args.putString(TITLE, title);
         fragment.setArguments(args);
         return fragment;
@@ -78,7 +79,7 @@ public class BanHangSoBanFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(BanHangContent.ITEMS, mListener));
+            recyclerView.setAdapter(new BanHangSoBanRecyclerViewAdapter(SoBanContent.soBans, mListener,context));
         }
         return view;
     }
@@ -113,6 +114,6 @@ public class BanHangSoBanFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(BanHangItem item);
     }
 }

@@ -1,8 +1,11 @@
 package com.nqt.zozoo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,8 +17,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
+import com.nqt.zozoo.banhang.BanHangActivity;
+import com.nqt.zozoo.banhang.quanlyban.SoBanFragment;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+    private static final String TAG = "MainActivity";
     private Button btnBanHang, btnNhaBep, btnDatHangNhanh, btnNhaKho, btnBaoCao, btnCaiDat, btnTroGiup, btnHuongDan;
     private Toolbar toolbar;
 
@@ -44,9 +51,19 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        btnBanHang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: btn ban hang");
+                Intent intent = new Intent(getApplicationContext(), BanHangActivity.class);
+                startActivity(intent);
+            }
+        });
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -67,7 +84,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main2, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -90,20 +107,26 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        switch (item.getItemId()) {
 
-        if (id == R.id.nav_camera) {
+            case R.id.nav_camera:
+                Intent intent = new Intent(this, BanHangActivity.class);
+                startActivity(intent);
+                break;
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+            case R.id.nav_gallery:
+                SoBanFragment fragment = new SoBanFragment();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().add(R.id.drawer_layout, fragment).commit();
+                break;
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            case R.id.nav_slideshow:
+                break;
+            case R.id.nav_manage:
+                break;
+            case R.id.nav_share:
+                break;
+            case R.id.nav_send:
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -111,11 +134,17 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_ban_hang:
 
+                break;
+
+            default:
+                break;
         }
     }
+
 }

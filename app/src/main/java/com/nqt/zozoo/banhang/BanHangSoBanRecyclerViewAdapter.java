@@ -1,5 +1,6 @@
 package com.nqt.zozoo.banhang;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,21 +9,26 @@ import android.widget.TextView;
 
 import com.nqt.zozoo.R;
 import com.nqt.zozoo.banhang.BanHangSoBanFragment.OnListFragmentInteractionListener;
-import com.nqt.zozoo.dummy.BanHangContent.DummyItem;
+import com.nqt.zozoo.banhang.quanlyban.SoBanContent;
+import com.nqt.zozoo.banhang.quanlyban.SoBanContent.SoBan;
+import com.nqt.zozoo.banhang.quanlyban.SoBanFragment;
+import com.nqt.zozoo.database.MyDatabase;
+import com.nqt.zozoo.dummy.BanHangContent.BanHangItem;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link BanHangItem} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
+public class BanHangSoBanRecyclerViewAdapter extends RecyclerView.Adapter<BanHangSoBanRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private Context context;
+    private List<SoBan> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyItemRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public BanHangSoBanRecyclerViewAdapter(List<SoBan> items, OnListFragmentInteractionListener listener, Context context) {
         mValues = items;
         mListener = listener;
     }
@@ -36,18 +42,10 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
-            }
-        });
+        //  holder.mItem = mValues.get(position);
+        mValues = new MyDatabase(context).getAllDanhSachBan();
+        holder.txtTiteSoBan.setText(mValues.get(position).getTenBan());
+        holder.mView = SoBanFragment.newInstance(Integer.parseInt(mValues.get(position).getSoBan()));
     }
 
     @Override
@@ -56,15 +54,13 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-
-        public DummyItem mItem;
+        public SoBanFragment mView;
+        public TextView txtTiteSoBan;
+        public SoBanFragment soBanFragment;
 
         public ViewHolder(View view) {
             super(view);
-            mView = view;
-//            mIdView = (TextView) view.findViewById(R.id.id);
-//            mContentView = (TextView) view.findViewById(R.id.content);
+            txtTiteSoBan = view.findViewById(R.id.txt_title_so_ban);
         }
 
         @Override

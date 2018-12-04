@@ -1,5 +1,10 @@
 package com.nqt.zozoo.dummy;
 
+import android.app.Fragment;
+import android.view.View;
+
+import com.nqt.zozoo.banhang.quanlyban.SoBanFragment;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,12 +21,12 @@ public class BanHangContent {
     /**
      * An array of sample (dummy) items.
      */
-    public static final List<DummyItem> ITEMS = new ArrayList<DummyItem>();
+    public static final List<BanHangItem> ITEMS = new ArrayList<BanHangItem>();
 
     /**
      * A map of sample (dummy) items, by ID.
      */
-    public static final Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
+    public static final Map<String, BanHangItem> ITEM_MAP = new HashMap<String, BanHangItem>();
 
     private static final int COUNT = 25;
 
@@ -32,13 +37,13 @@ public class BanHangContent {
         }
     }
 
-    private static void addItem(DummyItem item) {
+    private static void addItem(BanHangItem item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.id, item);
     }
 
-    private static DummyItem createDummyItem(int position) {
-        return new DummyItem(String.valueOf(position), "Item " + position, makeDetails(position));
+    private static BanHangItem createDummyItem(int position) {
+        return new BanHangItem(String.valueOf(position));
     }
 
     private static String makeDetails(int position) {
@@ -53,20 +58,13 @@ public class BanHangContent {
     /**
      * A dummy item representing a piece of content.
      */
-    public static class DummyItem {
-        public final String id;
-        public final String content;
-        public final String details;
+    public static class BanHangItem {
+        public String id;
+        public Fragment fragment;
 
-        public DummyItem(String id, String content, String details) {
+        public BanHangItem(String id) {
             this.id = id;
-            this.content = content;
-            this.details = details;
         }
 
-        @Override
-        public String toString() {
-            return content;
-        }
     }
 }

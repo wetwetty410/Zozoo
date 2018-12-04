@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.nqt.zozoo.R;
-import com.nqt.zozoo.banhang.MyItemRecyclerViewAdapter;
 import com.nqt.zozoo.banhang.quanlyban.SoBanContent.SoBan;
 
 import java.util.List;

@@ -13,6 +13,7 @@
         android:text="ddd" />
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/danh_sach_ban_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
