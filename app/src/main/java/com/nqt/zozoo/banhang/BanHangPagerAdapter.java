@@ -23,17 +23,19 @@ public class BanHangPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        Fragment fragment = BanHangSoBanFragment.newInstance(10, 0, "SO_BAN");
         switch (position) {
             case 0:
 //                MyDatabase myDatabase = new MyDatabase(context);
 //                int num = myDatabase.getAllDanhSachBan().size();
-                return BanHangSoBanFragment.newInstance(10, 0, "SO_BAN");
+                fragment = BanHangSoBanFragment.newInstance(10, 0, "SO_BAN");
+                return fragment;
             case 1:
                 break;
             default:
-                break;
+                fragment = BanHangSoBanFragment.newInstance(10, 0, "SO_BAN");
         }
-        return null;
+        return fragment;
     }
 
     @Override

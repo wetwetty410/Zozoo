@@ -45,7 +45,7 @@ public class SoBanFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.so_ban_item, container, false);
+        View view = inflater.inflate(R.layout.fragment_ban_hang_so_ban_item, container, false);
 
         if (view instanceof RecyclerView) {
             Context context = view.getContext();

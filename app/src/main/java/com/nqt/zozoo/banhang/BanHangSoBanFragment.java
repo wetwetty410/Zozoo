@@ -68,7 +68,7 @@ public class BanHangSoBanFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_so_ban_item_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_ban_hang_so_ban, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -79,7 +79,7 @@ public class BanHangSoBanFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new BanHangSoBanRecyclerViewAdapter(SoBanContent.soBans, mListener,context));
+            recyclerView.setAdapter(new BanHangSoBanRecyclerViewAdapter(BanHangContent.ITEMS, mListener,context));
         }
         return view;
     }

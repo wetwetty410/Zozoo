@@ -12,13 +12,10 @@
         android:layout_height="wrap_content"
         android:text="ddd" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/danh_sach_ban_list"
+    <android.support.v4.app.FragmentTabHost
+        android:id="@+id/danh_sach_ban_item_list"
+        layout="@layout/danh_sach_ban"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager">
-
-    </android.support.v7.widget.RecyclerView>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

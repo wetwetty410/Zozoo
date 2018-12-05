@@ -3,7 +3,12 @@ package com.nqt.zozoo.dummy;
 import android.app.Fragment;
 import android.view.View;
 
+import com.nqt.zozoo.banhang.BanHangActivity;
+import com.nqt.zozoo.banhang.BanHangPagerAdapter;
+import com.nqt.zozoo.banhang.quanlyban.SoBanContent;
+import com.nqt.zozoo.banhang.quanlyban.SoBanContent.SoBan;
 import com.nqt.zozoo.banhang.quanlyban.SoBanFragment;
+import com.nqt.zozoo.database.MyDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,12 +33,12 @@ public class BanHangContent {
      */
     public static final Map<String, BanHangItem> ITEM_MAP = new HashMap<String, BanHangItem>();
 
-    private static final int COUNT = 25;
-
     static {
         // Add some sample items.
-        for (int i = 1; i <= COUNT; i++) {
-            addItem(createDummyItem(i));
+        MyDatabase myDatabase = new MyDatabase(new BanHangActivity().getApplicationContext());
+        List<SoBan> soBans = myDatabase.getAllDanhSachBan();
+        for (int i = 1; i <= soBans.size(); i++) {
+            addItem(createBanHangItem(i, soBans.get(i).getTenBan(), Integer.parseInt(soBans.get(i).getSoBan())));
         }
     }
 
@@ -42,8 +47,8 @@ public class BanHangContent {
         ITEM_MAP.put(item.id, item);
     }
 
-    private static BanHangItem createDummyItem(int position) {
-        return new BanHangItem(String.valueOf(position));
+    private static BanHangItem createBanHangItem(int position, String tenBan, int soBan) {
+        return new BanHangItem(String.valueOf(position), tenBan, SoBanFragment.newInstance(soBan));
     }
 
     private static String makeDetails(int position) {
@@ -60,10 +65,13 @@ public class BanHangContent {
      */
     public static class BanHangItem {
         public String id;
-        public Fragment fragment;
+        public String tenBan;
+        public SoBanFragment fragment;
 
-        public BanHangItem(String id) {
+        public BanHangItem(String id, String tenBan, SoBanFragment fragment) {
             this.id = id;
+            this.tenBan = tenBan;
+            this.fragment = fragment;
         }
 
     }
