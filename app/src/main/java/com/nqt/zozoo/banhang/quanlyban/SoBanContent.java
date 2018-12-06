@@ -26,7 +26,7 @@ public class SoBanContent {
     }
 
     private static SoBan creatSoBan(int position) {
-        return new SoBan(String.valueOf(position), "z", "z");
+        return new SoBan(String.valueOf(position), "z" + position, "10");
     }
 
     public static class SoBan {

@@ -9,11 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.nqt.zozoo.R;
 import com.nqt.zozoo.banhang.quanlyban.SoBanContent;
-import com.nqt.zozoo.dummy.BanHangContent;
-import com.nqt.zozoo.dummy.BanHangContent.BanHangItem;
 
 /**
  * A fragment representing a list of Items.
@@ -61,7 +60,6 @@ public class BanHangSoBanFragment extends Fragment {
             mPage = getArguments().getInt(PAGE, 0);
             mTitle = getArguments().getString(TITLE);
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-
         }
     }
 
@@ -75,11 +73,11 @@ public class BanHangSoBanFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayout.HORIZONTAL, true));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new BanHangSoBanRecyclerViewAdapter(BanHangContent.ITEMS, mListener,context));
+            recyclerView.setAdapter(new BanHangSoBanRecyclerViewAdapter(SoBanContent.soBans, mListener, context));
         }
         return view;
     }
@@ -114,6 +112,6 @@ public class BanHangSoBanFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(BanHangItem item);
+        void onListFragmentInteraction(SoBanContent.SoBan item);
     }
 }

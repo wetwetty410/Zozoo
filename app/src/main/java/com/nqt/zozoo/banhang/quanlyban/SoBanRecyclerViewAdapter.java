@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.nqt.zozoo.R;
+import com.nqt.zozoo.banhang.BanHangSoBanFragment;
 import com.nqt.zozoo.banhang.quanlyban.SoBanContent.SoBan;
 
 import java.util.List;
@@ -18,9 +19,9 @@ import java.util.List;
 public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecyclerViewAdapter.ViewHolder> {
 
     private List<SoBan> soBans;
-    private SoBanFragment.OnListFragmentInteractionListener mListener;
+    private BanHangSoBanFragment.OnListFragmentInteractionListener mListener;
 
-    public SoBanRecyclerViewAdapter(List<SoBan> items, SoBanFragment.OnListFragmentInteractionListener listener) {
+    public SoBanRecyclerViewAdapter(List<SoBan> items, BanHangSoBanFragment.OnListFragmentInteractionListener listener) {
         soBans = items;
         mListener = listener;
     }
@@ -35,12 +36,12 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.soBan = soBans.get(position);
-        holder.txtThuTuBan.setText(position);
+        holder.txtThuTuBan.setText(String.valueOf(position));
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mListener != null) {
-                    mListener.onListFragmentInteractionListener(holder.soBan);
+                    mListener.onListFragmentInteraction(holder.soBan);
                 }
             }
         });

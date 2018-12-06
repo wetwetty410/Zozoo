@@ -6,8 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.nqt.zozoo.R;
+import com.nqt.zozoo.banhang.quanlyban.SoBanContent;
 
-public class BanHangActivity extends AppCompatActivity {
+public class BanHangActivity extends AppCompatActivity implements BanHangSoBanFragment.OnListFragmentInteractionListener {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
@@ -44,5 +45,15 @@ public class BanHangActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onListFragmentInteraction(SoBanContent.SoBan item) {
+
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
     }
 }
