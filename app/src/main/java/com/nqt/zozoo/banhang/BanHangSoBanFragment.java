@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import com.nqt.zozoo.R;
 import com.nqt.zozoo.banhang.quanlyban.SoBanContent;
@@ -32,6 +33,8 @@ public class BanHangSoBanFragment extends Fragment {
     private String mTitle;
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private ScrollView scrBanHangSoBan;
+    private RecyclerView rcvBanHangSoBan;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -42,6 +45,7 @@ public class BanHangSoBanFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
+    // Khởi tạo fragment
     public static BanHangSoBanFragment newInstance(int columnCount, int page, String title) {
         BanHangSoBanFragment fragment = new BanHangSoBanFragment();
         Bundle args = new Bundle();
@@ -55,7 +59,7 @@ public class BanHangSoBanFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        // Nhận dữ liệu từ ViewPager chính
         if (getArguments() != null) {
             mPage = getArguments().getInt(PAGE, 0);
             mTitle = getArguments().getString(TITLE);
@@ -67,18 +71,16 @@ public class BanHangSoBanFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ban_hang_so_ban, container, false);
+        rcvBanHangSoBan = view.findViewById(R.id.so_ban_list);
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayout.HORIZONTAL, true));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new BanHangSoBanRecyclerViewAdapter(SoBanContent.soBans, mListener, context));
+        // Tạo adapter cho recyclerView
+        Context context = view.getContext();
+        if (mColumnCount <= 1) {
+            rcvBanHangSoBan.setLayoutManager(new LinearLayoutManager(context));
+        } else {
+            rcvBanHangSoBan.setLayoutManager(new GridLayoutManager(context, mColumnCount, GridLayoutManager.HORIZONTAL, false));
         }
+        rcvBanHangSoBan.setAdapter(new BanHangSoBanRecyclerViewAdapter(new SoBanContent(getContext()).soBans, mListener, context));
         return view;
     }
 

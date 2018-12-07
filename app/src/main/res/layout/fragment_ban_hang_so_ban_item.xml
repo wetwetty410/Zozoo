@@ -5,18 +5,21 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_weight="1"
+    android:gravity="center"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/txt_title_so_ban"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ddd" />
+        android:text="ddd"
+        android:theme="@style/TextTitle" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/danh_sach_ban_item_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:orientation="horizontal"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         tools:listitem="@layout/so_ban_item" />

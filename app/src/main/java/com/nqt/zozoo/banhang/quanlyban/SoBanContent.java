@@ -1,5 +1,12 @@
 package com.nqt.zozoo.banhang.quanlyban;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
+
+import com.nqt.zozoo.banhang.BanHangActivity;
+import com.nqt.zozoo.banhang.BanHangSoBanFragment;
+import com.nqt.zozoo.database.MyDatabase;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,24 +17,20 @@ import java.util.Map;
  */
 
 public class SoBanContent {
-    public static List<SoBan> soBans = new ArrayList<>();
-    public static Map<String, SoBan> soBanMap = new HashMap<>();
-    public static int numItem = 10;
+    public List<SoBan> soBans;
+    public Map<String, SoBan> soBanMap;
+    public int numItem;
+    public MyDatabase myDatabase;
 
-    static {
-        for (int i = 1; i <= numItem; i++) {
-            addItem(creatSoBan(i));
-        }
+    public SoBanContent() {
     }
 
-    private static void addItem(SoBan soBan) {
-        soBans.add(soBan);
-        soBanMap.put(soBan.id, soBan);
+    public SoBanContent(Context context) {
+        myDatabase = new MyDatabase(context);
+        soBans = myDatabase.getAllDanhSachBan();
+        numItem = soBans.size();
     }
 
-    private static SoBan creatSoBan(int position) {
-        return new SoBan(String.valueOf(position), "z" + position, "10");
-    }
 
     public static class SoBan {
         public String id;

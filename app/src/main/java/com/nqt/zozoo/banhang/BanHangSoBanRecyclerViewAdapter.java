@@ -1,11 +1,13 @@
 package com.nqt.zozoo.banhang;
 
 import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nqt.zozoo.R;
@@ -43,10 +45,16 @@ public class BanHangSoBanRecyclerViewAdapter extends RecyclerView.Adapter<BanHan
     public void onBindViewHolder(final ViewHolder holder, int position) {
         //holder.itemView;
         holder.txtTiteSoBan.setText(mValues.get(position).tenBan);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
+        int numColumn = Integer.parseInt(mValues.get(position).soBan);
+        if (numColumn <= 1) {
+            holder.recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        } else {
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 5);
+            gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
+            holder.recyclerView.setLayoutManager(gridLayoutManager);
+        }
 
         soBanRecyclerViewAdapter = new SoBanRecyclerViewAdapter(mValues, mListener);
-        holder.recyclerView.setLayoutManager(layoutManager);
         holder.recyclerView.setAdapter(soBanRecyclerViewAdapter);
     }
 

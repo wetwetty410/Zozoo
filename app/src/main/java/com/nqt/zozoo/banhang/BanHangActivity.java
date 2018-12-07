@@ -1,5 +1,7 @@
 package com.nqt.zozoo.banhang;
 
+import android.app.ActivityManager;
+import android.os.Build;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +25,7 @@ public class BanHangActivity extends AppCompatActivity implements BanHangSoBanFr
         setupViewPager();
         tabLayout.setupWithViewPager(viewPager);
     }
+
 
     private void setupViewPager() {
         BanHangPagerAdapter adapter = new BanHangPagerAdapter(getSupportFragmentManager(), this);

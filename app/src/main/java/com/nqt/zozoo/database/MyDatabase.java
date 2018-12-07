@@ -5,11 +5,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import com.nqt.zozoo.banhang.quanlyban.SoBanContent;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -18,14 +15,14 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.nqt.zozoo.banhang.quanlyban.SoBanContent.*;
+import static com.nqt.zozoo.banhang.quanlyban.SoBanContent.SoBan;
 
 /**
  * Created by USER on 12/3/2018.
  */
 
 public class MyDatabase extends SQLiteOpenHelper {
-    public static final String DATABASE_NAME = "khachsan";
+    public static final String DATABASE_NAME = "nhahang";
     public static final int DATABASE_VERSION = 1;
     public static final String TABLE_SO_BAN = "danh_sach_ban";
     public static final String CL_ID = "id";
@@ -37,13 +34,12 @@ public class MyDatabase extends SQLiteOpenHelper {
     public MyDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         databasePath = context.getFilesDir().getPath() + File.separator + DATABASE_NAME;
-        //copyDatabaseFromAssets(context);
-        addDanhSachBan(new SoBan("1", "tang 1", "10"));
+        copyDatabaseFromAssets(context);
     }
 
-    private void openDatabase(){
-        if (sqLiteDatabase==null||!sqLiteDatabase.isOpen()){
-          //  sqLiteDatabase=SQLiteDatabase.openDatabase(databasePath)
+    private void openDatabase() {
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            //  sqLiteDatabase=SQLiteDatabase.openDatabase(databasePath)
         }
     }
 
@@ -127,7 +123,8 @@ public class MyDatabase extends SQLiteOpenHelper {
             soBans.add(soBan);
             cursor.moveToNext();
         }
-        cursor.close();
+       cursor.close();
         return soBans;
     }
+
 }
