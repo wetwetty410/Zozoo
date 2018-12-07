@@ -6,8 +6,8 @@
     <TextView
         android:background="@drawable/table_style_green_24dp"
         android:id="@+id/txt_thu_tu_ban"
-        android:layout_width="55dp"
-        android:layout_height="50dp"
+        android:layout_width="85dp"
+        android:layout_height="80dp"
         android:layout_margin="5dp"
         android:gravity="center" />
 

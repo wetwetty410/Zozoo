@@ -18,10 +18,10 @@ import java.util.List;
 
 public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecyclerViewAdapter.ViewHolder> {
 
-    private List<SoBan> soBans;
+    private List<String> soBans;
     private BanHangSoBanFragment.OnListFragmentInteractionListener mListener;
 
-    public SoBanRecyclerViewAdapter(List<SoBan> items, BanHangSoBanFragment.OnListFragmentInteractionListener listener) {
+    public SoBanRecyclerViewAdapter(List<String> items, BanHangSoBanFragment.OnListFragmentInteractionListener listener) {
         soBans = items;
         mListener = listener;
     }
@@ -35,7 +35,6 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.soBan = soBans.get(position);
         holder.txtThuTuBan.setText(String.valueOf(position));
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,7 +48,7 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
 
     @Override
     public int getItemCount() {
-        return soBans.size();
+        return Integer.parseInt(soBans.get(0));
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

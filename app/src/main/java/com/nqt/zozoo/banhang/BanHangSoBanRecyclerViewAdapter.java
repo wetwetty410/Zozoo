@@ -14,6 +14,7 @@ import com.nqt.zozoo.R;
 import com.nqt.zozoo.banhang.BanHangSoBanFragment.OnListFragmentInteractionListener;
 import com.nqt.zozoo.banhang.quanlyban.SoBanRecyclerViewAdapter;
 
+import java.util.Collections;
 import java.util.List;
 
 import static com.nqt.zozoo.banhang.quanlyban.SoBanContent.SoBan;
@@ -53,8 +54,7 @@ public class BanHangSoBanRecyclerViewAdapter extends RecyclerView.Adapter<BanHan
             gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
             holder.recyclerView.setLayoutManager(gridLayoutManager);
         }
-
-        soBanRecyclerViewAdapter = new SoBanRecyclerViewAdapter(mValues, mListener);
+        soBanRecyclerViewAdapter = new SoBanRecyclerViewAdapter(Collections.singletonList(mValues.get(position).soBan), mListener);
         holder.recyclerView.setAdapter(soBanRecyclerViewAdapter);
     }
 

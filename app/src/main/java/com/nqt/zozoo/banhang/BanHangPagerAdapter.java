@@ -15,24 +15,27 @@ import com.nqt.zozoo.database.MyDatabase;
 public class BanHangPagerAdapter extends FragmentPagerAdapter {
     public static final int BAN_HANG_NUM_FRAGMENT = 3;
     private Context context;
+    private int numItemSoBan;
+    ;
 
     public BanHangPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
+        numItemSoBan = new SoBanContent(context).soBans.size();
         this.context = context;
     }
 
 
     @Override
     public Fragment getItem(int position) {
-        Fragment fragment = BanHangSoBanFragment.newInstance(new SoBanContent(context).soBans.size(), 0, "SO_BAN");
+        Fragment fragment = BanHangSoBanFragment.newInstance(numItemSoBan, 0, "SO_BAN");
         switch (position) {
             case 0:
-                fragment = BanHangSoBanFragment.newInstance(new SoBanContent(context).soBans.size(), 0, "SO_BAN");
+                fragment = BanHangSoBanFragment.newInstance(numItemSoBan, 0, "SO_BAN");
                 return fragment;
             case 1:
                 break;
             default:
-                fragment = BanHangSoBanFragment.newInstance(new SoBanContent(context).soBans.size(), 0, "SO_BAN");
+                fragment = BanHangSoBanFragment.newInstance(numItemSoBan, 0, "SO_BAN");
         }
         return fragment;
     }

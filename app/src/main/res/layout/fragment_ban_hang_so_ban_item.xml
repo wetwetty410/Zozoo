@@ -12,7 +12,6 @@
         android:id="@+id/txt_title_so_ban"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ddd"
         android:theme="@style/TextTitle" />
 
     <android.support.v7.widget.RecyclerView

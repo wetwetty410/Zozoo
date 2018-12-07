@@ -15,6 +15,8 @@ import android.widget.ScrollView;
 import com.nqt.zozoo.R;
 import com.nqt.zozoo.banhang.quanlyban.SoBanContent;
 
+import java.util.List;
+
 /**
  * A fragment representing a list of Items.
  * <p/>
@@ -31,6 +33,7 @@ public class BanHangSoBanFragment extends Fragment {
 
     private int mPage;
     private String mTitle;
+    private List<SoBanContent.SoBan> soBans;
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private ScrollView scrBanHangSoBan;
@@ -59,6 +62,7 @@ public class BanHangSoBanFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        soBans = new SoBanContent(getContext()).soBans;
         // Nhận dữ liệu từ ViewPager chính
         if (getArguments() != null) {
             mPage = getArguments().getInt(PAGE, 0);
@@ -80,7 +84,7 @@ public class BanHangSoBanFragment extends Fragment {
         } else {
             rcvBanHangSoBan.setLayoutManager(new GridLayoutManager(context, mColumnCount, GridLayoutManager.HORIZONTAL, false));
         }
-        rcvBanHangSoBan.setAdapter(new BanHangSoBanRecyclerViewAdapter(new SoBanContent(getContext()).soBans, mListener, context));
+        rcvBanHangSoBan.setAdapter(new BanHangSoBanRecyclerViewAdapter(soBans, mListener, context));
         return view;
     }
 

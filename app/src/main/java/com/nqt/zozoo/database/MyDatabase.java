@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,43 +20,35 @@ import static com.nqt.zozoo.banhang.quanlyban.SoBanContent.SoBan;
  * Created by USER on 12/3/2018.
  */
 
-public class MyDatabase extends SQLiteOpenHelper {
-    public static final String DATABASE_NAME = "nhahang";
+public class MyDatabase {
+    private static final String DATABASE_NAME = "nhahang";
     public static final int DATABASE_VERSION = 1;
-    public static final String TABLE_SO_BAN = "danh_sach_ban";
-    public static final String CL_ID = "id";
-    public static final String CL_NAME = "ten_ban";
-    public static final String CL_NUMBER = "so_ban";
+    private static final String TABLE_SO_BAN = "danh_sach_ban";
+    private static final String CL_ID = "id";
+    private static final String CL_NAME = "ten_ban";
+    private static final String CL_NUMBER = "so_ban";
     private final String databasePath;
+    private Context context;
     private SQLiteDatabase sqLiteDatabase;
 
     public MyDatabase(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
         databasePath = context.getFilesDir().getPath() + File.separator + DATABASE_NAME;
+        this.context = context;
         copyDatabaseFromAssets(context);
     }
 
     private void openDatabase() {
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            //  sqLiteDatabase=SQLiteDatabase.openDatabase(databasePath)
+            sqLiteDatabase = SQLiteDatabase.openDatabase(databasePath, null, SQLiteDatabase.OPEN_READWRITE);
         }
     }
 
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        String createDanhSachBan =
-                String.format("CREATE TABLE %s(%s INTEGER PRIMARY KEY, %s TEXT, %s TEXT)", TABLE_SO_BAN, CL_ID, CL_NAME, CL_NUMBER);
-        db.execSQL(createDanhSachBan);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String dropDanhSachBan =
-                String.format("DROP TABLE IF EXISTS %s", TABLE_SO_BAN);
-        db.execSQL(dropDanhSachBan);
-
-        onCreate(db);
+    private void closeDatabase() {
+        if (sqLiteDatabase == null || sqLiteDatabase.isOpen()) {
+            if (sqLiteDatabase != null) {
+                sqLiteDatabase.close();
+            }
+        }
     }
 
     private void copyDatabaseFromAssets(Context context) {
@@ -89,33 +80,33 @@ public class MyDatabase extends SQLiteOpenHelper {
     }
 
     public void addDanhSachBan(SoBan soBan) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        openDatabase();
 
         ContentValues values = new ContentValues();
         //   values.put(CL_ID, soBan.getId());
         values.put(CL_NAME, soBan.getTenBan());
         values.put(CL_NUMBER, soBan.getSoBan());
 
-        db.insert(TABLE_SO_BAN, null, values);
-        db.close();
+        sqLiteDatabase.insert(TABLE_SO_BAN, null, values);
+        closeDatabase();
     }
 
     public SoBan getDanhSachBan(int idDanhSachBan) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        openDatabase();
 
-        @SuppressLint("Recycle") Cursor cursor = db.query(TABLE_SO_BAN, null, CL_ID + "=?", new String[]{String.valueOf(idDanhSachBan)}, null, null, null);
+        @SuppressLint("Recycle") Cursor cursor = sqLiteDatabase.query(TABLE_SO_BAN, null, CL_ID + "=?", new String[]{String.valueOf(idDanhSachBan)}, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
         SoBan soBan = new SoBan(cursor.getString(0), cursor.getString(1), cursor.getString(2));
+        closeDatabase();
         return soBan;
     }
 
     public List<SoBan> getAllDanhSachBan() {
+        openDatabase();
         List<SoBan> soBans = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_SO_BAN;
-
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = sqLiteDatabase.rawQuery(query, null);
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {
@@ -123,7 +114,8 @@ public class MyDatabase extends SQLiteOpenHelper {
             soBans.add(soBan);
             cursor.moveToNext();
         }
-       cursor.close();
+        cursor.close();
+        closeDatabase();
         return soBans;
     }
 
