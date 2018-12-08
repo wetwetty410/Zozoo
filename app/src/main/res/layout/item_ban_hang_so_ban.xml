@@ -21,6 +21,6 @@
         android:layout_gravity="center"
         android:orientation="horizontal"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        tools:listitem="@layout/so_ban_item" />
+        tools:listitem="@layout/item_so_ban" />
 
 </LinearLayout>

@@ -41,6 +41,16 @@ public class BanHangPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
+    public CharSequence getPageTitle(int position) {
+        switch (position) {
+            case 0:
+                return "Bàn";
+            default:
+                return "Bàn";
+        }
+    }
+
+    @Override
     public int getCount() {
         return BAN_HANG_NUM_FRAGMENT;
     }

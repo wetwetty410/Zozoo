@@ -19,6 +19,6 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             tools:context="com.nqt.zozoo.banhang.BanHangSoBanFragment"
-            tools:listitem="@layout/fragment_ban_hang_so_ban_item" />
+            tools:listitem="@layout/item_ban_hang_so_ban" />
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

@@ -1,18 +1,23 @@
 package com.nqt.zozoo.banhang;
 
-import android.app.ActivityManager;
-import android.os.Build;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.nqt.zozoo.R;
 import com.nqt.zozoo.banhang.quanlyban.SoBanContent;
 
-public class BanHangActivity extends AppCompatActivity implements BanHangSoBanFragment.OnListFragmentInteractionListener {
+public class BanHangActivity extends AppCompatActivity implements View.OnClickListener, BanHangSoBanFragment.OnListFragmentInteractionListener {
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private Toolbar tlbBHSB;
+    private TextView txtTitle;
+    private ImageView imgBackStack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +26,20 @@ public class BanHangActivity extends AppCompatActivity implements BanHangSoBanFr
 
         tabLayout = findViewById(R.id.ban_hang_tab);
         viewPager = findViewById(R.id.ban_hang_viewpager);
+        tlbBHSB = findViewById(R.id.tlb_fragment_bhsb);
+        txtTitle = findViewById(R.id.txt_title);
+        imgBackStack = findViewById(R.id.img_backstack);
+
+        txtTitle.setText(R.string.ban_hang);
+        imgBackStack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        setSupportActionBar(tlbBHSB);
+        getSupportActionBar().setTitle("");
 
         setupViewPager();
         tabLayout.setupWithViewPager(viewPager);
@@ -58,5 +77,15 @@ public class BanHangActivity extends AppCompatActivity implements BanHangSoBanFr
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.img_backstack:
+                finish();
+                System.out.print("Close Activity");
+                break;
+        }
     }
 }

@@ -71,22 +71,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void clearAppData() {
-        try {
-            // clearing app data
-            if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
-                ((ActivityManager) getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData(); // note: it has a return value!
-            } else {
-                String packageName = getApplicationContext().getPackageName();
-                Runtime runtime = Runtime.getRuntime();
-                runtime.exec("pm clear " + packageName);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

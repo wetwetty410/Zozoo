@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nqt.zozoo.R;
@@ -38,7 +37,7 @@ public class BanHangSoBanRecyclerViewAdapter extends RecyclerView.Adapter<BanHan
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_ban_hang_so_ban_item, parent, false);
+                .inflate(R.layout.item_ban_hang_so_ban, parent, false);
         return new ViewHolder(view);
     }
 
@@ -54,7 +53,7 @@ public class BanHangSoBanRecyclerViewAdapter extends RecyclerView.Adapter<BanHan
             gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
             holder.recyclerView.setLayoutManager(gridLayoutManager);
         }
-        soBanRecyclerViewAdapter = new SoBanRecyclerViewAdapter(Collections.singletonList(mValues.get(position).soBan), mListener);
+        soBanRecyclerViewAdapter = new SoBanRecyclerViewAdapter(Collections.singletonList(mValues.get(position).soBan), mListener,context);
         holder.recyclerView.setAdapter(soBanRecyclerViewAdapter);
     }
 

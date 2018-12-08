@@ -4,11 +4,11 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:background="@drawable/table_style_green_24dp"
         android:id="@+id/txt_thu_tu_ban"
-        android:layout_width="85dp"
-        android:layout_height="80dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="5dp"
+        android:background="@drawable/ic_table_style_green"
         android:gravity="center" />
 
 </RelativeLayout>

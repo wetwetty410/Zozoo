@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.nqt.zozoo.R;
@@ -76,7 +75,6 @@ public class BanHangSoBanFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ban_hang_so_ban, container, false);
         rcvBanHangSoBan = view.findViewById(R.id.so_ban_list);
-
         // Tạo adapter cho recyclerView
         Context context = view.getContext();
         if (mColumnCount <= 1) {
@@ -88,6 +86,10 @@ public class BanHangSoBanFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();;
+    }
 
     @Override
     public void onAttach(Context context) {

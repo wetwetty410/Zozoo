@@ -22,7 +22,6 @@ import static com.nqt.zozoo.banhang.quanlyban.SoBanContent.SoBan;
 
 public class MyDatabase {
     private static final String DATABASE_NAME = "nhahang";
-    public static final int DATABASE_VERSION = 1;
     private static final String TABLE_SO_BAN = "danh_sach_ban";
     private static final String CL_ID = "id";
     private static final String CL_NAME = "ten_ban";
