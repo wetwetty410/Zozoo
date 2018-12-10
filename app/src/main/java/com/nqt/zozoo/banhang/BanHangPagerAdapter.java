@@ -5,8 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.nqt.zozoo.banhang.quanlyban.SoBanContent;
-import com.nqt.zozoo.database.MyDatabase;
+import com.nqt.zozoo.database.BanDatabase;
 
 /**
  * Created by USER on 11/30/2018.
@@ -20,7 +19,7 @@ public class BanHangPagerAdapter extends FragmentPagerAdapter {
 
     public BanHangPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
-        numItemSoBan = new SoBanContent(context).soBans.size();
+        numItemSoBan = new BanDatabase(context).getAllBan().size();
         this.context = context;
     }
 

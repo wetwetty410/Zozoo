@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nqt.zozoo.R;
-import com.nqt.zozoo.banhang.quanlyban.SoBanContent;
+import com.nqt.zozoo.utils.Ban;
 
 public class BanHangActivity extends AppCompatActivity implements View.OnClickListener, BanHangSoBanFragment.OnListFragmentInteractionListener {
     private TabLayout tabLayout;
@@ -70,7 +70,7 @@ public class BanHangActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
-    public void onListFragmentInteraction(SoBanContent.SoBan item) {
+    public void onListFragmentInteraction(Ban ban) {
 
     }
 

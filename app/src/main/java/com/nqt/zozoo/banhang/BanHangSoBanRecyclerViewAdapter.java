@@ -12,11 +12,15 @@ import android.widget.TextView;
 import com.nqt.zozoo.R;
 import com.nqt.zozoo.banhang.BanHangSoBanFragment.OnListFragmentInteractionListener;
 import com.nqt.zozoo.banhang.quanlyban.SoBanRecyclerViewAdapter;
+import com.nqt.zozoo.database.BanDatabase;
+import com.nqt.zozoo.database.LoaiBanDatabase;
+import com.nqt.zozoo.database.TangDatabase;
+import com.nqt.zozoo.utils.Ban;
+import com.nqt.zozoo.utils.LoaiBan;
+import com.nqt.zozoo.utils.Tang;
 
 import java.util.Collections;
 import java.util.List;
-
-import static com.nqt.zozoo.banhang.quanlyban.SoBanContent.SoBan;
 
 /**
  * TODO: Replace the implementation with code for your data type.
@@ -25,41 +29,57 @@ public class BanHangSoBanRecyclerViewAdapter extends RecyclerView.Adapter<BanHan
 
     private SoBanRecyclerViewAdapter soBanRecyclerViewAdapter;
     private Context context;
-    private List<SoBan> mValues;
+    private BanDatabase banDatabase;
+    private TangDatabase tangDatabase;
+    private List<Ban> banList;
+    private List<Tang> tangList;
+    int soTang;
     private final OnListFragmentInteractionListener mListener;
 
-    public BanHangSoBanRecyclerViewAdapter(List<SoBan> items, OnListFragmentInteractionListener listener, Context mContext) {
-        mValues = items;
+    public BanHangSoBanRecyclerViewAdapter(List<Ban> items, OnListFragmentInteractionListener listener, Context mContext) {
+        banList = items;
         mListener = listener;
         context = mContext;
+
+        banDatabase = new BanDatabase(context);
+        banList = banDatabase.getAllBan();
+
+        tangDatabase = new TangDatabase(context);
+        tangList = tangDatabase.getAllTang();
+        soTang = tangList.size();
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_ban_hang_so_ban, parent, false);
+
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         //holder.itemView;
-        holder.txtTiteSoBan.setText(mValues.get(position).tenBan);
-        int numColumn = Integer.parseInt(mValues.get(position).soBan);
-        if (numColumn <= 1) {
+        holder.txtTiteSoBan.setText(tangList.get(position).getTenTang());
+        String maTang = tangList.get(position).getMaTang();
+
+        // Lấy thông tin số bàn trong một tầng từ CSDL
+        int soBanTrongTang = banDatabase.getSoBan(maTang).size();
+        if (soBanTrongTang <= 1) {
             holder.recyclerView.setLayoutManager(new LinearLayoutManager(context));
         } else {
             GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 5);
             gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
             holder.recyclerView.setLayoutManager(gridLayoutManager);
         }
-        soBanRecyclerViewAdapter = new SoBanRecyclerViewAdapter(Collections.singletonList(mValues.get(position).soBan), mListener,context);
+        // Gắn item cho RecycleView bằng các adapter
+        soBanRecyclerViewAdapter = new SoBanRecyclerViewAdapter(soBanTrongTang, mListener, context);
         holder.recyclerView.setAdapter(soBanRecyclerViewAdapter);
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return soTang;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

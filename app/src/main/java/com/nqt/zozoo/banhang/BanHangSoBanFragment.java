@@ -6,13 +6,15 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 
 import com.nqt.zozoo.R;
-import com.nqt.zozoo.banhang.quanlyban.SoBanContent;
+import com.nqt.zozoo.database.BanDatabase;
+import com.nqt.zozoo.utils.Ban;
 
 import java.util.List;
 
@@ -32,8 +34,9 @@ public class BanHangSoBanFragment extends Fragment {
 
     private int mPage;
     private String mTitle;
-    private List<SoBanContent.SoBan> soBans;
+    private List<Ban> soBans;
     private int mColumnCount = 1;
+    private Display display;
     private OnListFragmentInteractionListener mListener;
     private ScrollView scrBanHangSoBan;
     private RecyclerView rcvBanHangSoBan;
@@ -61,7 +64,7 @@ public class BanHangSoBanFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        soBans = new SoBanContent(getContext()).soBans;
+        soBans = new BanDatabase(getContext()).getAllBan();
         // Nhận dữ liệu từ ViewPager chính
         if (getArguments() != null) {
             mPage = getArguments().getInt(PAGE, 0);
@@ -75,8 +78,10 @@ public class BanHangSoBanFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ban_hang_so_ban, container, false);
         rcvBanHangSoBan = view.findViewById(R.id.so_ban_list);
-        // Tạo adapter cho recyclerView
+        scrBanHangSoBan = view.findViewById(R.id.scr_ban_hang_so_ban);
         Context context = view.getContext();
+        // Tạo adapter cho recyclerView
+
         if (mColumnCount <= 1) {
             rcvBanHangSoBan.setLayoutManager(new LinearLayoutManager(context));
         } else {
@@ -88,7 +93,8 @@ public class BanHangSoBanFragment extends Fragment {
 
     @Override
     public void onResume() {
-        super.onResume();;
+        super.onResume();
+        ;
     }
 
     @Override
@@ -120,6 +126,6 @@ public class BanHangSoBanFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(SoBanContent.SoBan item);
+        void onListFragmentInteraction(Ban ban);
     }
 }
