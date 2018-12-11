@@ -10,9 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nqt.zozoo.R;
+import com.nqt.zozoo.adapter.BanHangPagerAdapter;
 import com.nqt.zozoo.utils.Ban;
+import com.nqt.zozoo.utils.MonAn;
 
-public class BanHangActivity extends AppCompatActivity implements View.OnClickListener, BanHangSoBanFragment.OnListFragmentInteractionListener {
+public class BanHangActivity extends AppCompatActivity implements View.OnClickListener,
+        BanHangSoBanFragment.OnListFragmentInteractionListener,
+        MonAnFragment.OnListFragmentInteractionListener {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Toolbar tlbBHSB;
@@ -87,5 +91,10 @@ public class BanHangActivity extends AppCompatActivity implements View.OnClickLi
                 System.out.print("Close Activity");
                 break;
         }
+    }
+
+    @Override
+    public void onListFragmentInteraction(MonAn monAn) {
+
     }
 }

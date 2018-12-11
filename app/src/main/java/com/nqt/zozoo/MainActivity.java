@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.nqt.zozoo.banhang.BanHangActivity;
+import com.nqt.zozoo.database.DatabaseManager;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       // clearAppData();
+        // clearAppData();
         toolbar = findViewById(R.id.toolbar);
         btnBanHang = findViewById(R.id.btn_ban_hang);
         btnNhaBep = findViewById(R.id.btn_nha_bep);

@@ -1,4 +1,4 @@
-package com.nqt.zozoo.banhang;
+package com.nqt.zozoo.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,15 +11,11 @@ import android.widget.TextView;
 
 import com.nqt.zozoo.R;
 import com.nqt.zozoo.banhang.BanHangSoBanFragment.OnListFragmentInteractionListener;
-import com.nqt.zozoo.banhang.quanlyban.SoBanRecyclerViewAdapter;
 import com.nqt.zozoo.database.BanDatabase;
-import com.nqt.zozoo.database.LoaiBanDatabase;
 import com.nqt.zozoo.database.TangDatabase;
 import com.nqt.zozoo.utils.Ban;
-import com.nqt.zozoo.utils.LoaiBan;
 import com.nqt.zozoo.utils.Tang;
 
-import java.util.Collections;
 import java.util.List;
 
 /**

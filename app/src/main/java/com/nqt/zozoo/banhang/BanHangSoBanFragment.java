@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 
 import com.nqt.zozoo.R;
+import com.nqt.zozoo.adapter.BanHangSoBanRecyclerViewAdapter;
 import com.nqt.zozoo.database.BanDatabase;
 import com.nqt.zozoo.utils.Ban;
 
@@ -94,7 +95,6 @@ public class BanHangSoBanFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ;
     }
 
     @Override
@@ -123,7 +123,7 @@ public class BanHangSoBanFragment extends Fragment {
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
-     */
+     */;
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(Ban ban);

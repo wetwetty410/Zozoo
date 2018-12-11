@@ -16,12 +16,10 @@ import java.io.InputStream;
 public class DatabaseManager {
     private static final String DATABASE_NAME = "nhahang";
     private final String databasePath;
-    private Context context;
     protected SQLiteDatabase sqLiteDatabase;
 
     public DatabaseManager(Context context) {
         databasePath = context.getFilesDir().getPath() + File.separator + DATABASE_NAME;
-        this.context = context;
         copyDatabaseFromAssets(context);
     }
 

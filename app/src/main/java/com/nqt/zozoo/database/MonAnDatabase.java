@@ -81,5 +81,4 @@ public class MonAnDatabase extends DatabaseManager {
         closeDatabase();
         return monAnList;
     }
-
 }
