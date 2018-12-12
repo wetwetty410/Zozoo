@@ -8,11 +8,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.nqt.zozoo.R;
-import com.nqt.zozoo.banhang.MonAnFragment;
 import com.nqt.zozoo.database.MonAnDatabase;
 import com.nqt.zozoo.utils.MonAn;
 
 import java.util.List;
+
+import static com.nqt.zozoo.banhang.MonAnFragment.OnListFragmentInteractionListener;
 
 /**
  * Created by USER on 12/11/2018.
@@ -23,10 +24,10 @@ public class MonAnRecyclerViewAdapter extends RecyclerView.Adapter<MonAnRecycler
     private Context context;
     private int soMonAn;
     private List<MonAn> monAnList;
-    private MonAnFragment.OnListFragmentInteractionListener mListener;
+    private OnListFragmentInteractionListener mListener;
 
 
-    public MonAnRecyclerViewAdapter(List<MonAn> monAns, MonAnFragment.OnListFragmentInteractionListener listener, Context mContext) {
+    public MonAnRecyclerViewAdapter(List<MonAn> monAns, OnListFragmentInteractionListener listener, Context mContext) {
         monAnList = monAns;
         mListener = listener;
         context = mContext;
