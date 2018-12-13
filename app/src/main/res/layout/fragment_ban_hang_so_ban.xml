@@ -5,20 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
-        android:id="@+id/scr_ban_hang_so_ban"
+    <FrameLayout
+        android:id="@+id/ban_hang"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/so_ban_list"
-            android:name="com.nqt.zozoo.BanHangFragment"
+        <ScrollView
+            android:id="@+id/scr_ban_hang_so_ban"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            tools:context="com.nqt.zozoo.banhang.BanHangSoBanFragment"
-            tools:listitem="@layout/item_ban_hang_so_ban" />
-    </ScrollView>
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/so_ban_list"
+                android:name="com.nqt.zozoo.BanHangFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                tools:context="com.nqt.zozoo.banhang.BanHangSoBanFragment"
+                tools:listitem="@layout/item_ban_hang_so_ban" />
+        </ScrollView>
+    </FrameLayout>
 </android.support.constraint.ConstraintLayout>

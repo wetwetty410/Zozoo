@@ -1,9 +1,7 @@
 package com.nqt.zozoo.adapter;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Display;
@@ -16,11 +14,10 @@ import android.widget.TextView;
 
 import com.nqt.zozoo.R;
 import com.nqt.zozoo.banhang.BanHangActivity;
-import com.nqt.zozoo.banhang.BanHangSoBanFragment;
 import com.nqt.zozoo.banhang.OrderFragment;
 import com.nqt.zozoo.utils.Ban;
 
-import static com.nqt.zozoo.banhang.BanHangSoBanFragment.*;
+import static com.nqt.zozoo.banhang.BanHangSoBanFragment.OnListFragmentInteractionListener;
 
 /**
  * Created by USER on 12/3/2018.
@@ -65,6 +62,26 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
         int marginHeight = (heightScreen - indexHeight) / 20;
         layoutParams.setMargins(marginWidth, marginHeight, marginWidth, marginHeight);
         holder.txtThuTuBan.setLayoutParams(layoutParams);
+        try {
+            holder.view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentTransaction transaction = ((BanHangActivity) context).getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.ban_hang, OrderFragment.newInstance(context), "Order");
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+
+//                       ((BanHangActivity) context).getFragmentManager()
+//                        .beginTransaction()
+//                        .add(OrderFragment.newInstance(context), "Order")
+//                        .commit();
+                    Log.d(TAGE, "onClick:OrderFragMent ");
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -81,17 +98,6 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
             super(itemView);
             view = itemView;
             txtThuTuBan = itemView.findViewById(R.id.txt_thu_tu_ban);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((BanHangActivity) context)
-                            .getFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.so_ban_list, OrderFragment.newInstance(context), "Order")
-                            .commit();
-                    Log.d(TAGE, "onClick:OrderFragMent ");
-                }
-            });
         }
 
 
