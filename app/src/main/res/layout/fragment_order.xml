@@ -9,12 +9,17 @@
         android:layout_height="0dp"
         android:layout_weight="4">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rcv_order"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        </android.support.v7.widget.RecyclerView>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcv_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </android.support.v7.widget.RecyclerView>
+        </ScrollView>
     </LinearLayout>
 
     <LinearLayout
@@ -27,13 +32,17 @@
             android:layout_height="match_parent"
             android:layout_weight="7">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rcv_thuc_an"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
-            </android.support.v7.widget.RecyclerView>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rcv_thuc_an"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
+                </android.support.v7.widget.RecyclerView>
+            </ScrollView>
         </LinearLayout>
 
         <LinearLayout
@@ -41,12 +50,17 @@
             android:layout_height="match_parent"
             android:layout_weight="3">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rcv_nhom_thuc_an"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
-            </android.support.v7.widget.RecyclerView>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rcv_nhom_thuc_an"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </android.support.v7.widget.RecyclerView>
+            </ScrollView>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
