@@ -12,8 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nqt.zozoo.R;
+import com.nqt.zozoo.adapter.orderadapter.DanhSachMonAdapter;
 import com.nqt.zozoo.adapter.orderadapter.NhomMonAnAdapter;
+import com.nqt.zozoo.database.MonAnDatabase;
 import com.nqt.zozoo.database.NhomMonAnDatabase;
+import com.nqt.zozoo.utils.MonAn;
 import com.nqt.zozoo.utils.NhomMonAn;
 
 import java.util.List;
@@ -24,11 +27,17 @@ import java.util.List;
 
 public class OrderFragment extends Fragment {
     private NhomMonAnDatabase nhomMonAnDatabase;
+    private MonAnDatabase monAnDatabase;
     private List<NhomMonAn> nhomMonAnList;
+    private List<MonAn> monAnList;
     private static Context mContext;
 
-    private OnListFragmentInteractionListener nhomMonAnListener;
+    private OnListFragmentInteractionListener mListener;
     private RecyclerView rcvNhomMonAn;
+    private RecyclerView rcvMonAn;
+
+    public OrderFragment() {
+    }
 
     public static OrderFragment newInstance(Context context) {
         mContext = context;
@@ -43,6 +52,9 @@ public class OrderFragment extends Fragment {
         super.onCreate(savedInstanceState);
         nhomMonAnDatabase = new NhomMonAnDatabase(mContext);
         nhomMonAnList = nhomMonAnDatabase.getAllNhomMonAn();
+
+        monAnDatabase = new MonAnDatabase(mContext);
+        monAnList = monAnDatabase.getAllMonAn();
     }
 
 
@@ -50,12 +62,17 @@ public class OrderFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_order, container, false);
-        rcvNhomMonAn = view.findViewById(R.id.rcv_nhom_thuc_an);
+        rcvNhomMonAn = view.findViewById(R.id.rcv_order_nhom_thuc_an);
+        rcvMonAn = view.findViewById(R.id.rcv_order_mon_an);
         Context context = view.getContext();
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-        rcvNhomMonAn.setLayoutManager(layoutManager);
-        rcvNhomMonAn.setAdapter(new NhomMonAnAdapter(nhomMonAnList, nhomMonAnListener, context));
+        LinearLayoutManager layoutManagerMonAn = new LinearLayoutManager(context);
+        rcvMonAn.setLayoutManager(layoutManagerMonAn);
+        rcvMonAn.setAdapter(new DanhSachMonAdapter(monAnList, mListener));
+
+        LinearLayoutManager layoutManagerNhomMon = new LinearLayoutManager(context);
+        rcvNhomMonAn.setLayoutManager(layoutManagerNhomMon);
+        rcvNhomMonAn.setAdapter(new NhomMonAnAdapter(nhomMonAnList, mListener, context));
 
         return view;
     }

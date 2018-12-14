@@ -31,9 +31,6 @@ public class MonAnRecyclerViewAdapter extends RecyclerView.Adapter<MonAnRecycler
         monAnList = monAns;
         mListener = listener;
         context = mContext;
-
-        monAnDatabase = new MonAnDatabase(context);
-        monAnList = monAnDatabase.getAllBan();
         soMonAn = monAnList.size();
     }
 

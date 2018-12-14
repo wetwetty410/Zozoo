@@ -11,14 +11,24 @@ public class MonAn {
     private String nhomMonAn;
     private int donGia;
     private String donViTinh;
+    private int soLuong;
 
-    public MonAn(String id, String maMonAn, String tenMonAn, String nhomMonAn, int donGia, String donViTinh) {
+    public MonAn(String id, String maMonAn, String tenMonAn, String nhomMonAn, int donGia, String donViTinh, int soLuong) {
         this.id = id;
         this.maMonAn = maMonAn;
         this.tenMonAn = tenMonAn;
         this.nhomMonAn = nhomMonAn;
         this.donGia = donGia;
         this.donViTinh = donViTinh;
+        this.soLuong = soLuong;
+    }
+
+    public int getSoLuong() {
+        return soLuong;
+    }
+
+    public void setSoLuong(int soLuong) {
+        this.soLuong = soLuong;
     }
 
     public String getId() {

@@ -41,7 +41,7 @@ public class MonAnFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         monAnDatabase = new MonAnDatabase(getContext());
-        monAnList = monAnDatabase.getAllBan();
+        monAnList = monAnDatabase.getAllMonAn();
         if (getArguments() != null) {
 
         }

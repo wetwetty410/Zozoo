@@ -23,6 +23,7 @@ public class MonAnDatabase extends DatabaseManager {
     private static final String MON_AN_NHOM = "nhom_mon_an";
     private static final String MON_AN_DON_GIA = "don_gia";
     private static final String MON_AN_DON_VI_TINH = "don_vi_tinh";
+    private static final String MON_AN_SO_LUONG = "so_luong";
 
     public MonAnDatabase(Context context) {
         super(context);
@@ -38,6 +39,7 @@ public class MonAnDatabase extends DatabaseManager {
         values.put(MON_AN_NHOM, monAn.getNhomMonAn());
         values.put(MON_AN_DON_GIA, monAn.getDonGia());
         values.put(MON_AN_DON_VI_TINH, monAn.getDonViTinh());
+        values.put(MON_AN_SO_LUONG, monAn.getSoLuong());
 
         sqLiteDatabase.insert(MON_AN, null, values);
         closeDatabase();
@@ -54,13 +56,14 @@ public class MonAnDatabase extends DatabaseManager {
                 cursor.getString(2),
                 cursor.getString(3),
                 cursor.getInt(4),
-                cursor.getString(5));
+                cursor.getString(5),
+                cursor.getInt(6));
         cursor.close();
         closeDatabase();
         return monAn;
     }
 
-    public List<MonAn> getAllBan() {
+    public List<MonAn> getAllMonAn() {
         openDatabase();
         List<MonAn> monAnList = new ArrayList<>();
         String query = "SELECT * FROM " + MON_AN;
@@ -73,7 +76,8 @@ public class MonAnDatabase extends DatabaseManager {
                     cursor.getString(2),
                     cursor.getString(3),
                     cursor.getInt(4),
-                    cursor.getString(5));
+                    cursor.getString(5),
+                    cursor.getInt(6));
             monAnList.add(monAn);
             cursor.moveToNext();
         }
