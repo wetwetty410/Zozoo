@@ -6,46 +6,42 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.nqt.zozoo.R;
-import com.nqt.zozoo.adapter.MonAnRecyclerViewAdapter;
-import com.nqt.zozoo.banhang.OrderFragment;
 import com.nqt.zozoo.database.NhomMonAnDatabase;
+import com.nqt.zozoo.utils.MonAn;
 import com.nqt.zozoo.utils.NhomMonAn;
 
 import java.util.List;
 
-import static com.nqt.zozoo.banhang.OrderFragment.*;
+import static com.nqt.zozoo.banhang.OrderFragment.OnListFragmentInteractionListener;
 
 /**
  * Created by USER on 12/12/2018.
  */
 
-public class NhomMonAnAdapter extends RecyclerView.Adapter<NhomMonAnAdapter.ViewHoler> {
-    private NhomMonAnDatabase nhomMonAnDatabase;
+public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.ViewHoler> {
     private OnClickRecyclerViewMonAn mListener;
-    private List<NhomMonAn> nhomMonAnList;
-    private Context mContext;
+    private MonAn monAnList;
     private int soNhomThucAn;
 
-    public NhomMonAnAdapter(List<NhomMonAn> nhomMonAns, OnClickRecyclerViewMonAn listener, Context context) {
+    public OrderListAdapter(MonAn monAns, OnClickRecyclerViewMonAn listener) {
         this.mListener = listener;
-        this.mContext = context;
-        this.nhomMonAnList = nhomMonAns;
-        soNhomThucAn = nhomMonAns.size();
+        this.monAnList = monAns;
     }
 
     @Override
     public ViewHoler onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_nhom_thuc_an, parent, false);
+                .inflate(R.layout.item_order_list, parent, false);
         return new ViewHoler(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHoler holder, int position) {
-        holder.btnNhomThucAn.setText(nhomMonAnList.get(position).getTenNhonMonAn());
-        holder.btnNhomThucAn.setOnClickListener(new View.OnClickListener() {
+        holder.txtTenMonAn.setText(monAnList.getTenMonAn());
+        holder.txtTenMonAn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             }
@@ -54,17 +50,17 @@ public class NhomMonAnAdapter extends RecyclerView.Adapter<NhomMonAnAdapter.View
 
     @Override
     public int getItemCount() {
-        return soNhomThucAn;
+        return 1;
     }
 
     public class ViewHoler extends RecyclerView.ViewHolder {
         private View view;
-        private Button btnNhomThucAn;
+        private TextView txtTenMonAn;
 
         public ViewHoler(View itemView) {
             super(itemView);
             view = itemView;
-            btnNhomThucAn = itemView.findViewById(R.id.btn_nhom_thuc_an);
+            txtTenMonAn = itemView.findViewById(R.id.txt_order_list_ten_mon_an);
         }
     }
 }
