@@ -1,6 +1,7 @@
 package com.nqt.zozoo.adapter.orderadapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.nqt.zozoo.R;
-import com.nqt.zozoo.banhang.OrderFragment;
-import com.nqt.zozoo.banhang.OrderFragment.OnListFragmentInteractionListener;
 import com.nqt.zozoo.utils.MonAn;
 
 import java.util.List;
@@ -20,15 +19,13 @@ import java.util.List;
 
 public class DanhSachMonAdapter extends RecyclerView.Adapter<DanhSachMonAdapter.ViewHolder> {
     private Context context;
-    private OnClickRecyclerViewMonAn orderListener;
+    private OnClickOrderFragment orderListener;
     private List<MonAn> monAnList;
-    private int soMonAn;
 
-    public DanhSachMonAdapter(List<MonAn> monAns, OnClickRecyclerViewMonAn orderListener) {
+
+    public DanhSachMonAdapter(List<MonAn> monAns, OnClickOrderFragment orderListener) {
         this.monAnList = monAns;
-        this.soMonAn = monAnList.size();
         this.orderListener = orderListener;
-        soMonAn = monAnList.size();
     }
 
 
@@ -41,6 +38,11 @@ public class DanhSachMonAdapter extends RecyclerView.Adapter<DanhSachMonAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        if (position%2==0){
+            holder.view.setBackgroundColor(Color.YELLOW);
+        }else {
+            holder.view.setBackgroundColor(Color.GREEN);
+        }
         holder.txtTenMon.setText(monAnList.get(position).getTenMonAn());
         holder.txtGiaTien.setText(String.valueOf(monAnList.get(position).getDonGia()));
         holder.txtDonVi.setText(monAnList.get(position).getDonViTinh());
@@ -49,17 +51,17 @@ public class DanhSachMonAdapter extends RecyclerView.Adapter<DanhSachMonAdapter.
 
     @Override
     public int getItemCount() {
-        return soMonAn;
+        return monAnList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private View view;
         private TextView txtTenMon;
         private TextView txtGiaTien;
         private TextView txtDonVi;
         private TextView txtSoLuong;
 
-        public ViewHolder(final View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             view = itemView;
             txtTenMon = itemView.findViewById(R.id.txt_order_ten_mon_an);
@@ -69,13 +71,16 @@ public class DanhSachMonAdapter extends RecyclerView.Adapter<DanhSachMonAdapter.
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                //    OrderFragment.onListFragmentInteractionListener(monAnList.get(getAdapterPosition()), getAdapterPosition());
+                    orderListener.OnListenerClickMonAn(monAnList.get(getAdapterPosition()), getAdapterPosition());
                 }
             });
         }
 
-        @Override
-        public void onClick(View v) {
-        }
+    }
+
+    private void deleteItem(List<MonAn> monAns, int position) {
+        monAns.remove(position);
+        notifyItemRemoved(position);
+        notifyItemChanged(position, monAns);
     }
 }

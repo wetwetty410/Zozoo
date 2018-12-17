@@ -2,42 +2,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#45dad8b1"
     android:padding="5dp">
 
-    <ScrollView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/txt_order_ten_mon_an"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/txt_order_ten_mon_an"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="7"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/txt_order_gia_mon"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:layout_weight="4"
+            android:gravity="right" />
 
-            <TextView
-                android:id="@+id/txt_order_gia_mon"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4" />
+        <TextView
+            android:id="@+id/txt_order_don_vi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="left" />
 
-            <TextView
-                android:layout_weight="1"
-                android:id="@+id/txt_order_don_vi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="sđfsdf" />
-
-            <TextView
-                android:id="@+id/txt_order_so_luong"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textStyle="bold" />
-        </LinearLayout>
-    </ScrollView>
+        <TextView
+            android:id="@+id/txt_order_so_luong"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold" />
+    </LinearLayout>
 </LinearLayout>

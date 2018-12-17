@@ -1,5 +1,7 @@
 package com.nqt.zozoo.utils;
 
+import java.util.List;
+
 /**
  * Created by USER on 12/10/2018.
  */
@@ -21,6 +23,11 @@ public class MonAn {
         this.donGia = donGia;
         this.donViTinh = donViTinh;
         this.soLuong = soLuong;
+    }
+
+    @Override
+    public int hashCode() {
+        return nhomMonAn.hashCode();
     }
 
     public int getSoLuong() {

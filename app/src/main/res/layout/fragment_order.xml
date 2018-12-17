@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="8dp"
-    android:background="#bfcff5d4"
+    android:background="#c7c7c7"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4">
+        android:layout_weight="4"
+        android:padding="5dp">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -27,7 +27,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6">
+        android:layout_weight="6"
+        android:padding="5dp">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -56,12 +57,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rcv_order_nhom_thuc_an"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                </android.support.v7.widget.RecyclerView>
+                    <Button
+                        android:id="@+id/btn_order_tat_ca_mon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/all" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rcv_order_nhom_thuc_an"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal">
+
+                    </android.support.v7.widget.RecyclerView>
+                </LinearLayout>
             </ScrollView>
         </LinearLayout>
     </LinearLayout>
