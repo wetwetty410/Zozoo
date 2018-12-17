@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nqt.zozoo.R;
@@ -108,6 +109,9 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
                 @Override
                 public void onBindViewHolder(ViewHoler holder, int position) {
                     holder.txtTenMonAn.setText(monAnOrder.get(position).getTenMonAn());
+                    holder.txtDonGia.setText(String.valueOf(monAnOrder.get(position).getDonGia()));
+                    holder.txtDonVi.setText(monAnOrder.get(position).getDonViTinh());
+                    holder.txtSoLuong.setText(String.valueOf("1"));
                 }
 
                 @Override
@@ -155,11 +159,42 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
     public class ViewHoler extends RecyclerView.ViewHolder {
         private View view;
         private TextView txtTenMonAn;
+        private TextView txtDonGia;
+        private TextView txtDonVi;
+        private TextView txtSoLuong;
+        private ImageView imgTang;
+        private ImageView imgGiam;
 
         public ViewHoler(View itemView) {
             super(itemView);
             view = itemView;
             txtTenMonAn = itemView.findViewById(R.id.txt_order_list_ten_mon_an);
+            txtDonGia = itemView.findViewById(R.id.txt_order_list_gia_tien);
+            txtDonVi = itemView.findViewById(R.id.txt_order_list_don_vi);
+            txtSoLuong = itemView.findViewById(R.id.txt_order_list_so_luong);
+            imgGiam = itemView.findViewById(R.id.img_order_giam_so_luong);
+            imgTang = itemView.findViewById(R.id.img_order_tang_so_luong);
+            imgGiam.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int soLuong = Integer.parseInt((String) txtSoLuong.getText());
+                    if (soLuong > 1) {
+                        soLuong--;
+                    }
+                    txtSoLuong.setText(String.valueOf(soLuong));
+                }
+            });
+
+            imgTang.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int soLuong = Integer.parseInt((String) txtSoLuong.getText());
+                    if (soLuong < 100) {
+                        soLuong++;
+                    }
+                    txtSoLuong.setText(String.valueOf(soLuong));
+                }
+            });
         }
     }
 }
