@@ -23,6 +23,7 @@ import com.nqt.zozoo.utils.MonAn;
 import com.nqt.zozoo.utils.NhomMonAn;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -35,9 +36,13 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
     private List<NhomMonAn> nhomMonAnList;
     private List<MonAn> monAnList;
     private List<MonAn> monAnOrder;
+    private HashMap<String, String> saveSoLuong;
     private static Context mContext;
 
     private Button btnTatCa;
+    private Button btnHuyBo;
+    private Button btnLuu;
+    private Button btnXoaHet;
     private RecyclerView rcvNhomMonAn;
     private RecyclerView rcvMonAn;
     private RecyclerView rcvOrder;
@@ -65,6 +70,7 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
         monAnDatabase = new MonAnDatabase(mContext);
         monAnList = monAnDatabase.getAllMonAn();
         monAnOrder = new ArrayList<>();
+        saveSoLuong = new HashMap<>();
     }
 
 
@@ -98,6 +104,8 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
     public void OnListenerClickMonAn(MonAn monAn, int position) {
         if (!monAnOrder.contains(monAn)) {
             monAnOrder.add(monAn);
+            saveSoLuong.put(monAn.getMaMonAn(), "1");
+
             orderAdapter = new RecyclerView.Adapter<ViewHoler>() {
                 @Override
                 public ViewHoler onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -111,7 +119,8 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
                     holder.txtTenMonAn.setText(monAnOrder.get(position).getTenMonAn());
                     holder.txtDonGia.setText(String.valueOf(monAnOrder.get(position).getDonGia()));
                     holder.txtDonVi.setText(monAnOrder.get(position).getDonViTinh());
-                    holder.txtSoLuong.setText(String.valueOf("1"));
+                    int soLuong = Integer.parseInt(saveSoLuong.get((monAnOrder.get(position).getMaMonAn())));
+                    holder.txtSoLuong.setText(String.valueOf(soLuong));
                 }
 
                 @Override
@@ -164,6 +173,7 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
         private TextView txtSoLuong;
         private ImageView imgTang;
         private ImageView imgGiam;
+        private ImageView imgXoa;
 
         public ViewHoler(View itemView) {
             super(itemView);
@@ -174,13 +184,23 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
             txtSoLuong = itemView.findViewById(R.id.txt_order_list_so_luong);
             imgGiam = itemView.findViewById(R.id.img_order_giam_so_luong);
             imgTang = itemView.findViewById(R.id.img_order_tang_so_luong);
+            imgXoa = itemView.findViewById(R.id.img_order_xoa);
+            imgXoa.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    monAnOrder.remove(getAdapterPosition());
+                }
+            });
             imgGiam.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int soLuong = Integer.parseInt((String) txtSoLuong.getText());
+                    String key = String.valueOf(monAnOrder.get(getAdapterPosition()).getMaMonAn());
+                    int soLuong = Integer.parseInt(saveSoLuong.get(key));
                     if (soLuong > 1) {
                         soLuong--;
                     }
+                    saveSoLuong.remove(key);
+                    saveSoLuong.put(key, String.valueOf(soLuong));
                     txtSoLuong.setText(String.valueOf(soLuong));
                 }
             });
@@ -188,10 +208,17 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
             imgTang.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int soLuong = Integer.parseInt((String) txtSoLuong.getText());
-                    if (soLuong < 100) {
+                    String key = String.valueOf(monAnOrder.get(getAdapterPosition()).getMaMonAn());
+                    int soLuong = Integer.parseInt(saveSoLuong.get(key));
+                    int soLuongMax = monAnOrder.get(getAdapterPosition()).getSoLuong();
+                    if (soLuongMax == 0) {
+                        soLuongMax = 100;
+                    }
+                    if (soLuong < soLuongMax) {
                         soLuong++;
                     }
+                    saveSoLuong.remove(key);
+                    saveSoLuong.put(key, String.valueOf(soLuong));
                     txtSoLuong.setText(String.valueOf(soLuong));
                 }
             });
