@@ -2,6 +2,11 @@ package com.nqt.zozoo.database;
 
 import android.content.Context;
 
+import com.nqt.zozoo.utils.Order;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by USER on 12/19/2018.
  */
@@ -18,5 +23,9 @@ public class OrderDatabase extends DatabaseManager {
         super(context);
     }
 
+    public List<Order> getAllOrder() {
+        List<Order> orderList = new ArrayList<>();
+        return orderList;
+    }
 
 }
