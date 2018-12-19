@@ -82,6 +82,9 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
         rcvMonAn = view.findViewById(R.id.rcv_order_mon_an);
         rcvOrder = view.findViewById(R.id.rcv_order_list);
         btnTatCa = view.findViewById(R.id.btn_order_tat_ca_mon);
+        btnHuyBo = view.findViewById(R.id.btn_order_huy_bo);
+        btnLuu = view.findViewById(R.id.btn_order_luu);
+
         Context context = view.getContext();
 
         LinearLayoutManager layoutManagerMonAn = new LinearLayoutManager(context);
@@ -97,6 +100,8 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
         rcvOrder.setLayoutManager(layoutManagerOrder);
 
         btnTatCa.setOnClickListener(this);
+        btnHuyBo.setOnClickListener(this);
+        btnLuu.setOnClickListener(this);
         return view;
     }
 
@@ -159,6 +164,9 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
         switch (v.getId()) {
             case R.id.btn_order_tat_ca_mon:
                 rcvMonAn.setAdapter(new DanhSachMonAdapter(monAnList, this));
+                break;
+            case R.id.btn_order_huy_bo:
+                getActivity().onBackPressed();
                 break;
             default:
                 break;

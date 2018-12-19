@@ -12,7 +12,7 @@ import java.util.Map;
  */
 
 public class Ban {
-    public String id;
+    private String id;
     private String maBan;
     private String tenBan;
     private String maTang;
