@@ -19,8 +19,10 @@ import com.nqt.zozoo.adapter.orderadapter.NhomMonAnAdapter;
 import com.nqt.zozoo.adapter.orderadapter.OnClickOrderFragment;
 import com.nqt.zozoo.database.MonAnDatabase;
 import com.nqt.zozoo.database.NhomMonAnDatabase;
+import com.nqt.zozoo.database.OrderDatabase;
 import com.nqt.zozoo.utils.MonAn;
 import com.nqt.zozoo.utils.NhomMonAn;
+import com.nqt.zozoo.utils.Order;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,11 +33,19 @@ import java.util.List;
  */
 
 public class OrderFragment extends Fragment implements OnClickOrderFragment, View.OnClickListener {
+    private static final String TABLE_STATUS = "table_status";
+    private static final String TABLE_NAME = "table_name";
+
+    private boolean tableStatus;
+    private String nameTable;
+
     private NhomMonAnDatabase nhomMonAnDatabase;
     private MonAnDatabase monAnDatabase;
+    private OrderDatabase orderDatabase;
     private List<NhomMonAn> nhomMonAnList;
     private List<MonAn> monAnList;
     private List<MonAn> monAnOrder;
+    private List<Order> orderList;
     private HashMap<String, String> saveSoLuong;
     private static Context mContext;
 
@@ -53,10 +63,12 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
     public OrderFragment() {
     }
 
-    public static OrderFragment newInstance(Context context) {
+    public static OrderFragment newInstance(Context context, boolean tableStatus, String nameTable) {
         mContext = context;
         Bundle args = new Bundle();
         OrderFragment fragment = new OrderFragment();
+        args.putBoolean(TABLE_STATUS, tableStatus);
+        args.putString(TABLE_NAME, nameTable);
         fragment.setArguments(args);
         return fragment;
     }
@@ -64,13 +76,23 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         nhomMonAnDatabase = new NhomMonAnDatabase(mContext);
         nhomMonAnList = nhomMonAnDatabase.getAllNhomMonAn();
 
         monAnDatabase = new MonAnDatabase(mContext);
         monAnList = monAnDatabase.getAllMonAn();
+
+        orderDatabase = new OrderDatabase(mContext);
+
+
         monAnOrder = new ArrayList<>();
         saveSoLuong = new HashMap<>();
+
+        if (getArguments() != null) {
+            tableStatus = getArguments().getBoolean(TABLE_STATUS);
+            nameTable = getArguments().getString(TABLE_NAME);
+        }
     }
 
 

@@ -17,6 +17,8 @@ import com.nqt.zozoo.banhang.BanHangActivity;
 import com.nqt.zozoo.banhang.OrderFragment;
 import com.nqt.zozoo.utils.Ban;
 
+import java.util.List;
+
 import static com.nqt.zozoo.banhang.BanHangSoBanFragment.OnListFragmentInteractionListener;
 
 /**
@@ -27,13 +29,14 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
 
     private static final String TAGE = "SoBanAdapter";
     private int soBans;
+    private List<Ban> banList;
     private Context context;
     private int widthScreen;
     private int heightScreen;
     private Display display;
     private OnListFragmentInteractionListener mListener;
 
-    public SoBanRecyclerViewAdapter(int items, OnListFragmentInteractionListener listener, Context mContext) {
+    public SoBanRecyclerViewAdapter(List<Ban> banList, int items, OnListFragmentInteractionListener listener, Context mContext) {
         soBans = items;
         mListener = listener;
         context = mContext;
@@ -67,14 +70,9 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
                 @Override
                 public void onClick(View v) {
                     FragmentTransaction transaction = ((BanHangActivity) context).getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.ban_hang, OrderFragment.newInstance(context), "Order");
+                    transaction.add(OrderFragment.newInstance(context,true, ), "Order");
                     transaction.addToBackStack(null);
                     transaction.commit();
-
-//                       ((BanHangActivity) context).getFragmentManager()
-//                        .beginTransaction()
-//                        .add(OrderFragment.newInstance(context), "Order")
-//                        .commit();
                     Log.d(TAGE, "onClick:OrderFragMent ");
                 }
             });

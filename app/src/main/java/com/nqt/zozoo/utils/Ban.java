@@ -17,13 +17,23 @@ public class Ban {
     private String tenBan;
     private String maTang;
     private String maLoaiBan;
+    private int statusBan;
 
-    public Ban(String id, String maBan, String tenBan, String maTang, String maLoaiBan) {
+    public Ban(String id, String maBan, String tenBan, String maTang, String maLoaiBan, int statusBan) {
         this.id = id;
         this.maBan = maBan;
         this.tenBan = tenBan;
         this.maTang = maTang;
         this.maLoaiBan = maLoaiBan;
+        this.statusBan = statusBan;
+    }
+
+    public int getStatusBan() {
+        return statusBan;
+    }
+
+    public void setStatusBan(int statusBan) {
+        this.statusBan = statusBan;
     }
 
     public String getId() {

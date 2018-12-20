@@ -22,6 +22,7 @@ public class BanDatabase extends DatabaseManager {
     private static final String TABLE_BAN_TEN_BAN = "ten_ban";
     private static final String TABLE_BAN_MA_TANG = "ma_tang";
     private static final String TABLE_BAN_MA_LOAI_BAN = "ma_loai_ban";
+    private static final String TABLE_BAN_STATUS = "status_ban";
 
     public BanDatabase(Context context) {
         super(context);
@@ -51,7 +52,8 @@ public class BanDatabase extends DatabaseManager {
                 cursor.getString(1),
                 cursor.getString(2),
                 cursor.getString(3),
-                cursor.getString(4));
+                cursor.getString(4),
+                cursor.getInt(5));
         closeDatabase();
         return soBan;
     }
@@ -68,7 +70,8 @@ public class BanDatabase extends DatabaseManager {
                     cursor.getString(1),
                     cursor.getString(2),
                     cursor.getString(3),
-                    cursor.getString(4));
+                    cursor.getString(4),
+                    cursor.getInt(5));
             soBans.add(soBan);
             cursor.moveToNext();
         }
@@ -88,7 +91,8 @@ public class BanDatabase extends DatabaseManager {
                     cursor.getString(1),
                     cursor.getString(2),
                     cursor.getString(3),
-                    cursor.getString(4));
+                    cursor.getString(4),
+                    cursor.getInt(5));
             soBans.add(soBan);
             cursor.moveToNext();
         }

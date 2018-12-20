@@ -22,4 +22,12 @@
             tools:context="com.nqt.zozoo.banhang.BanHangSoBanFragment"
             tools:listitem="@layout/item_ban_hang_so_ban" />
     </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_them_so_ban"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@android:drawable/ic_dialog_email" />
 </android.support.constraint.ConstraintLayout>

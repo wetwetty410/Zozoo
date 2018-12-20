@@ -69,7 +69,7 @@ public class BanHangSoBanRecyclerViewAdapter extends RecyclerView.Adapter<BanHan
             holder.recyclerView.setLayoutManager(gridLayoutManager);
         }
         // Gắn item cho RecycleView bằng các adapter
-        soBanRecyclerViewAdapter = new SoBanRecyclerViewAdapter(soBanTrongTang, mListener, context);
+        soBanRecyclerViewAdapter = new SoBanRecyclerViewAdapter(banList,,soBanTrongTang, mListener, context);
         holder.recyclerView.setAdapter(soBanRecyclerViewAdapter);
     }
 
