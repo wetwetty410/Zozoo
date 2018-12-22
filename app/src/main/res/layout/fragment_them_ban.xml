@@ -11,8 +11,43 @@
         android:layout_weight="2">
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcv_them_tang"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btn_them_tang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thêm" />
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_weight="2"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edt_them_ban"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btn_them_ban"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thêm" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcv_them_ban"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </ScrollView>
 
 </LinearLayout>

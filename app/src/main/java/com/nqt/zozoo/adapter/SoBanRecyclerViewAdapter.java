@@ -70,7 +70,7 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
                 @Override
                 public void onClick(View v) {
                     FragmentTransaction transaction = ((BanHangActivity) context).getSupportFragmentManager().beginTransaction();
-                    transaction.add(OrderFragment.newInstance(context,true, ), "Order");
+                    transaction.add(OrderFragment.newInstance(context,true,"zz" ), "Order");
                     transaction.addToBackStack(null);
                     transaction.commit();
                     Log.d(TAGE, "onClick:OrderFragMent ");
