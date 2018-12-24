@@ -9,15 +9,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.nqt.zozoo.R;
 import com.nqt.zozoo.adapter.SoBanRecyclerViewAdapter;
 import com.nqt.zozoo.adapter.thembanadapter.OnClickThemBanFragment;
 import com.nqt.zozoo.adapter.thembanadapter.ThemTangAdapter;
 import com.nqt.zozoo.database.TangDatabase;
+import com.nqt.zozoo.dialog.AddItemDialog;
 import com.nqt.zozoo.utils.Tang;
 
 import java.util.ArrayList;
@@ -27,11 +28,11 @@ import java.util.List;
  * Created by USER on 12/20/2018.
  */
 
-public class ThemBanFragment extends Fragment implements OnClickThemBanFragment {
+public class ThemBanFragment extends Fragment implements OnClickThemBanFragment, View.OnClickListener {
     private TangDatabase tangDatabase;
     private List<Tang> tangList;
     //   private HashMap<String, String> tenTang;
-    private List<String> tenTang;
+    private List<String> tenTangList;
     private static Context mContext;
 
     private RecyclerView rcvThemTang;
@@ -59,8 +60,8 @@ public class ThemBanFragment extends Fragment implements OnClickThemBanFragment 
         super.onCreate(savedInstanceState);
         tangDatabase = new TangDatabase(mContext);
         tangList = tangDatabase.getAllTang();
-        tenTang = new ArrayList<>();
-        for (Tang tang : tangList) tenTang.add(tang.getTenTang());
+        tenTangList = new ArrayList<>();
+        for (Tang tang : tangList) tenTangList.add(tang.getTenTang());
 //        tenTang = new HashMap<>();
 //        for (Tang tang : tangList) tenTang.put(tang.getMaTang(), tang.getTenTang());
     }
@@ -78,11 +79,41 @@ public class ThemBanFragment extends Fragment implements OnClickThemBanFragment 
         Context context = view.getContext();
         LinearLayoutManager llnManagerThemTang = new LinearLayoutManager(context);
         themTangAdapter = new ThemTangAdapter(tangList, this);
+        rcvThemTang.setLayoutManager(llnManagerThemTang);
+        rcvThemTang.setAdapter(themTangAdapter);
 
+        btnThemTang.setOnClickListener(this);
         return view;
     }
 
     @Override
-    public void onClcikThemTang(List<Tang> tangList) {
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_them_tang:
+                onClickBtnThemTang();
+                break;
+            default:
+                break;
+
+        }
+    }
+
+    private void onClickBtnThemTang() {
+        AddItemDialog addItemDialog = new AddItemDialog(getContext());
+        addItemDialog.setOnClickThemBanFragment(this);
+        addItemDialog.show();
+    }
+
+    @Override
+    public void OnClickThemTang(String tenTang) {
+        if (tenTangList.contains(tenTang)) {
+            Tang tang = new Tang();
+            String maTang = tangList.get(tangList.size() - 1).getId();
+            tang.setMaTang("t" + (Integer.parseInt(maTang) + 1));
+            tang.setTenTang(tenTang);
+            tangDatabase.addTang(tang);
+        } else {
+            Toast.makeText(getContext(), "Tầng đã tồn tại", Toast.LENGTH_LONG).show();
+        }
     }
 }

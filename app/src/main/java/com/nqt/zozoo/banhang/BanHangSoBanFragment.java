@@ -2,7 +2,9 @@ package com.nqt.zozoo.banhang;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,6 +43,7 @@ public class BanHangSoBanFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     private ScrollView scrBanHangSoBan;
     private RecyclerView rcvBanHangSoBan;
+    private FloatingActionButton actionButton;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -80,6 +83,16 @@ public class BanHangSoBanFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_ban_hang_so_ban, container, false);
         rcvBanHangSoBan = view.findViewById(R.id.so_ban_list);
         scrBanHangSoBan = view.findViewById(R.id.scr_ban_hang_so_ban);
+        actionButton = view.findViewById(R.id.fab_them_so_ban);
+
+        actionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.show(ThemBanFragment.newInstance(getContext()));
+            }
+        });
+
         Context context = view.getContext();
         // Tạo adapter cho recyclerView
 
@@ -88,7 +101,7 @@ public class BanHangSoBanFragment extends Fragment {
         } else {
             rcvBanHangSoBan.setLayoutManager(new GridLayoutManager(context, mColumnCount, GridLayoutManager.HORIZONTAL, false));
         }
-        rcvBanHangSoBan.setAdapter(new BanHangSoBanRecyclerViewAdapter(soBans, mListener, context));
+        rcvBanHangSoBan.setAdapter(new BanHangSoBanRecyclerViewAdapter(mListener, context));
         return view;
     }
 
@@ -123,7 +136,9 @@ public class BanHangSoBanFragment extends Fragment {
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
-     */;
+     */
+    ;
+
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(Ban ban);

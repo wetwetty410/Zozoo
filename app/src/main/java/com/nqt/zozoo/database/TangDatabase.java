@@ -1,6 +1,5 @@
 package com.nqt.zozoo.database;
 
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -24,7 +23,7 @@ public class TangDatabase extends DatabaseManager {
         super(context);
     }
 
-    public void addBan(Tang tang) {
+    public void addTang(Tang tang) {
         openDatabase();
 
         ContentValues values = new ContentValues();

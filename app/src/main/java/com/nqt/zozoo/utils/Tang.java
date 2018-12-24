@@ -9,6 +9,9 @@ public class Tang {
     private String maTang;
     private String tenTang;
 
+    public Tang() {
+    }
+
     public Tang(String id, String maTang, String tenTang) {
         this.id = id;
         this.maTang = maTang;
