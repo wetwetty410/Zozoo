@@ -29,20 +29,15 @@ public class BanHangSoBanRecyclerViewAdapter extends RecyclerView.Adapter<BanHan
     private TangDatabase tangDatabase;
     private List<Ban> banList;
     private List<Tang> tangList;
-    int soTang;
     private final OnListFragmentInteractionListener mListener;
 
-    public BanHangSoBanRecyclerViewAdapter(List<Ban> items, OnListFragmentInteractionListener listener, Context mContext) {
-        banList = items;
+    public BanHangSoBanRecyclerViewAdapter(OnListFragmentInteractionListener listener, Context mContext) {
         mListener = listener;
         context = mContext;
 
         banDatabase = new BanDatabase(context);
-        banList = banDatabase.getAllBan();
-
         tangDatabase = new TangDatabase(context);
         tangList = tangDatabase.getAllTang();
-        soTang = tangList.size();
     }
 
     @Override
@@ -60,23 +55,22 @@ public class BanHangSoBanRecyclerViewAdapter extends RecyclerView.Adapter<BanHan
         String maTang = tangList.get(position).getMaTang();
 
         // Lấy thông tin số bàn trong một tầng từ CSDL
-        int soBanTrongTang = banDatabase.getSoBan(maTang).size();
-        if (soBanTrongTang <= 1) {
+        banList = banDatabase.getSoBan(maTang);
+        if (banList.size() <= 1) {
             holder.recyclerView.setLayoutManager(new LinearLayoutManager(context));
         } else {
             GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 5);
             gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
             holder.recyclerView.setLayoutManager(gridLayoutManager);
         }
-        // Gắn item cho RecycleView bằng các adapter
-        //soBanRecyclerViewAdapter = new SoBanRecyclerViewAdapter(banList,
-        //        ,soBanTrongTang, mListener, context);
+        //       Gắn item cho RecycleView bằng các adapter
+        soBanRecyclerViewAdapter = new SoBanRecyclerViewAdapter(banList, mListener, context);
         holder.recyclerView.setAdapter(soBanRecyclerViewAdapter);
     }
 
     @Override
     public int getItemCount() {
-        return soTang;
+        return tangList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

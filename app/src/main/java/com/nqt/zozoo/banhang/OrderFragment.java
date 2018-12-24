@@ -4,8 +4,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +19,17 @@ import com.nqt.zozoo.R;
 import com.nqt.zozoo.adapter.orderadapter.DanhSachMonAdapter;
 import com.nqt.zozoo.adapter.orderadapter.NhomMonAnAdapter;
 import com.nqt.zozoo.adapter.orderadapter.OnClickOrderFragment;
+import com.nqt.zozoo.adapter.orderadapter.OrderListAdapter;
 import com.nqt.zozoo.database.MonAnDatabase;
 import com.nqt.zozoo.database.NhomMonAnDatabase;
 import com.nqt.zozoo.database.OrderDatabase;
+import com.nqt.zozoo.database.OrderListDatabase;
 import com.nqt.zozoo.utils.MonAn;
 import com.nqt.zozoo.utils.NhomMonAn;
 import com.nqt.zozoo.utils.Order;
+import com.nqt.zozoo.utils.OrderList;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -42,13 +46,17 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
     private NhomMonAnDatabase nhomMonAnDatabase;
     private MonAnDatabase monAnDatabase;
     private OrderDatabase orderDatabase;
+    private OrderListDatabase orderMonListDatabase;
+
     private List<NhomMonAn> nhomMonAnList;
     private List<MonAn> monAnList;
-    private List<MonAn> monAnOrder;
-    private List<Order> orderList;
-    private HashMap<String, String> saveSoLuong;
+    private Order order;
+    private List<OrderList> orderMonList;
     private static Context mContext;
 
+    private Toolbar toolbar;
+    private ImageView imgBack;
+    private TextView txtTitle;
     private Button btnTatCa;
     private Button btnHuyBo;
     private Button btnLuu;
@@ -56,9 +64,9 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
     private RecyclerView rcvNhomMonAn;
     private RecyclerView rcvMonAn;
     private RecyclerView rcvOrder;
-    private RecyclerView.Adapter<ViewHoler> orderAdapter;
 
     private DanhSachMonAdapter danhSachMonAdapter;
+    private OrderListAdapter orderListAdapter;
 
     public OrderFragment() {
     }
@@ -83,16 +91,16 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
         monAnDatabase = new MonAnDatabase(mContext);
         monAnList = monAnDatabase.getAllMonAn();
 
+        orderMonListDatabase = new OrderListDatabase(mContext);
+
+        orderMonList = new ArrayList<>();
         orderDatabase = new OrderDatabase(mContext);
-
-
-        monAnOrder = new ArrayList<>();
-        saveSoLuong = new HashMap<>();
 
         if (getArguments() != null) {
             tableStatus = getArguments().getBoolean(TABLE_STATUS);
             nameTable = getArguments().getString(TABLE_NAME);
         }
+
     }
 
 
@@ -100,6 +108,9 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_order, container, false);
+        toolbar = view.findViewById(R.id.tlb_fragment_order);
+        imgBack = view.findViewById(R.id.img_order_backstack);
+        txtTitle = view.findViewById(R.id.txt_order_title);
         rcvNhomMonAn = view.findViewById(R.id.rcv_order_nhom_thuc_an);
         rcvMonAn = view.findViewById(R.id.rcv_order_mon_an);
         rcvOrder = view.findViewById(R.id.rcv_order_list);
@@ -107,7 +118,19 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
         btnHuyBo = view.findViewById(R.id.btn_order_huy_bo);
         btnLuu = view.findViewById(R.id.btn_order_luu);
 
+
         Context context = view.getContext();
+        final AppCompatActivity appCompatActivity = ((AppCompatActivity) getActivity());
+        appCompatActivity.setSupportActionBar(toolbar);
+        appCompatActivity.getSupportActionBar().setTitle("");
+        txtTitle.setText("Order");
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                appCompatActivity.onBackPressed();
+            }
+        });
+
 
         LinearLayoutManager layoutManagerMonAn = new LinearLayoutManager(context);
         rcvMonAn.setLayoutManager(layoutManagerMonAn);
@@ -121,6 +144,25 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
         LinearLayoutManager layoutManagerOrder = new LinearLayoutManager(context);
         rcvOrder.setLayoutManager(layoutManagerOrder);
 
+        if (tableStatus) {
+            // khi bàn có table là true, bàn đang được sử dụng
+            order = orderDatabase.getOrder(nameTable);
+            orderMonList = orderMonListDatabase.getOrderListWithCodeOrder(order.getMaOrder());
+            orderListAdapter = new OrderListAdapter(orderMonList);
+            rcvOrder.setAdapter(orderListAdapter);
+
+            for (OrderList orderList : orderMonList) {
+                for (MonAn monAn : monAnList) {
+                    if (monAn.getMaMonAn().equals(orderList.getMaMonAn())) {
+                        monAnList.remove(monAn);
+                    }
+                }
+            }
+
+        } else {
+//            order = Iterables.getLast(orderDatabase.getAllOrder(),null);
+        }
+
         btnTatCa.setOnClickListener(this);
         btnHuyBo.setOnClickListener(this);
         btnLuu.setOnClickListener(this);
@@ -129,39 +171,23 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
 
     @Override
     public void OnListenerClickMonAn(MonAn monAn, int position) {
-        if (!monAnOrder.contains(monAn)) {
-            monAnOrder.add(monAn);
-            saveSoLuong.put(monAn.getMaMonAn(), "1");
-
-            orderAdapter = new RecyclerView.Adapter<ViewHoler>() {
-                @Override
-                public ViewHoler onCreateViewHolder(ViewGroup parent, int viewType) {
-                    View view = LayoutInflater.from(parent.getContext())
-                            .inflate(R.layout.item_order_list, parent, false);
-                    return new ViewHoler(view);
-                }
-
-                @Override
-                public void onBindViewHolder(ViewHoler holder, int position) {
-                    holder.txtTenMonAn.setText(monAnOrder.get(position).getTenMonAn());
-                    holder.txtDonGia.setText(String.valueOf(monAnOrder.get(position).getDonGia()));
-                    holder.txtDonVi.setText(monAnOrder.get(position).getDonViTinh());
-                    int soLuong = Integer.parseInt(saveSoLuong.get((monAnOrder.get(position).getMaMonAn())));
-                    holder.txtSoLuong.setText(String.valueOf(soLuong));
-                }
-
-                @Override
-                public int getItemCount() {
-                    return monAnOrder.size();
-                }
-            };
-            orderAdapter.notifyDataSetChanged();
-            rcvOrder.setAdapter(orderAdapter);
-
-            monAnList.remove(monAn);
-            rcvMonAn.setAdapter(new DanhSachMonAdapter(monAnList, this));
+        String maOrder = "";
+        monAnList.remove(monAn);
+        rcvMonAn.setAdapter(new DanhSachMonAdapter(monAnList, this));
+        OrderList orderList = new OrderList();
+        orderList.setMaMonAn(monAn.getMaMonAn());
+        orderList.setTenMonAn(monAn.getTenMonAn());
+        orderList.setGiaTien(String.valueOf(monAn.getDonGia()));
+        if (order != null) {
+            maOrder = "OD" + (Integer.parseInt(order.getId()) - 1500) + 1500 + 1;
+        } else {
+            maOrder = "OD" + 1500;
         }
-
+        orderList.setMaOrder(maOrder);
+        orderList.setSoLuong(1);
+        orderMonList.add(orderList);
+        orderListAdapter = new OrderListAdapter(orderMonList);
+        rcvOrder.setAdapter(orderListAdapter);
     }
 
     @Override
@@ -169,6 +195,11 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
         List<MonAn> newMonAnList = removeItemDEFNhom(monAnList, nhomMonAn.getMaNhonMonAn());
         danhSachMonAdapter = new DanhSachMonAdapter(newMonAnList, this);
         rcvMonAn.setAdapter(danhSachMonAdapter);
+    }
+
+    @Override
+    public void OnClickRemoveItem(MonAn monAn, int position) {
+
     }
 
     public List<MonAn> removeItemDEFNhom(List<MonAn> monAns, String manhom) {
@@ -192,66 +223,6 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
                 break;
             default:
                 break;
-        }
-    }
-
-    public class ViewHoler extends RecyclerView.ViewHolder {
-        private View view;
-        private TextView txtTenMonAn;
-        private TextView txtDonGia;
-        private TextView txtDonVi;
-        private TextView txtSoLuong;
-        private ImageView imgTang;
-        private ImageView imgGiam;
-        private ImageView imgXoa;
-
-        public ViewHoler(View itemView) {
-            super(itemView);
-            view = itemView;
-            txtTenMonAn = itemView.findViewById(R.id.txt_order_list_ten_mon_an);
-            txtDonGia = itemView.findViewById(R.id.txt_order_list_gia_tien);
-            txtDonVi = itemView.findViewById(R.id.txt_order_list_don_vi);
-            txtSoLuong = itemView.findViewById(R.id.txt_order_list_so_luong);
-            imgGiam = itemView.findViewById(R.id.img_order_giam_so_luong);
-            imgTang = itemView.findViewById(R.id.img_order_tang_so_luong);
-            imgXoa = itemView.findViewById(R.id.img_order_xoa);
-            imgXoa.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    monAnOrder.remove(getAdapterPosition());
-                }
-            });
-            imgGiam.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String key = String.valueOf(monAnOrder.get(getAdapterPosition()).getMaMonAn());
-                    int soLuong = Integer.parseInt(saveSoLuong.get(key));
-                    if (soLuong > 1) {
-                        soLuong--;
-                    }
-                    saveSoLuong.remove(key);
-                    saveSoLuong.put(key, String.valueOf(soLuong));
-                    txtSoLuong.setText(String.valueOf(soLuong));
-                }
-            });
-
-            imgTang.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String key = String.valueOf(monAnOrder.get(getAdapterPosition()).getMaMonAn());
-                    int soLuong = Integer.parseInt(saveSoLuong.get(key));
-                    int soLuongMax = monAnOrder.get(getAdapterPosition()).getSoLuong();
-                    if (soLuongMax == 0) {
-                        soLuongMax = 100;
-                    }
-                    if (soLuong < soLuongMax) {
-                        soLuong++;
-                    }
-                    saveSoLuong.remove(key);
-                    saveSoLuong.put(key, String.valueOf(soLuong));
-                    txtSoLuong.setText(String.valueOf(soLuong));
-                }
-            });
         }
     }
 }

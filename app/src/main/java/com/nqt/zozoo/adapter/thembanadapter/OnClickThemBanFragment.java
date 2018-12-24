@@ -9,5 +9,5 @@ import java.util.List;
  */
 
 public interface OnClickThemBanFragment {
-    void onClcikThemTang(List<Tang> tangList);
+    void OnClickThemTang(String tenTang);
 }

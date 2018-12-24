@@ -1,15 +1,17 @@
 package com.nqt.zozoo.adapter;
 
-import android.support.v4.app.FragmentTransaction;
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nqt.zozoo.R;
@@ -28,7 +30,6 @@ import static com.nqt.zozoo.banhang.BanHangSoBanFragment.OnListFragmentInteracti
 public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecyclerViewAdapter.ViewHolder> {
 
     private static final String TAGE = "SoBanAdapter";
-    private int soBans;
     private List<Ban> banList;
     private Context context;
     private int widthScreen;
@@ -36,8 +37,8 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
     private Display display;
     private OnListFragmentInteractionListener mListener;
 
-    public SoBanRecyclerViewAdapter(List<Ban> banList, int items, OnListFragmentInteractionListener listener, Context mContext) {
-        soBans = items;
+    public SoBanRecyclerViewAdapter(List<Ban> bans, OnListFragmentInteractionListener listener, Context mContext) {
+        banList = bans;
         mListener = listener;
         context = mContext;
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -54,23 +55,22 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.txtThuTuBan.setText(String.valueOf(position + 1));
         holder.txtThuTuBan.setBackgroundResource(R.drawable.ic_table_style_green);
-        int indexWidth = (int) (widthScreen * (6 / 5.5)) - (int) widthScreen / 6;
-        int indexHeight = (int) (heightScreen * (6 / 5.5)) - (int) heightScreen / 6;
-        holder.txtThuTuBan.setWidth(indexWidth / 6);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        int marginWidth = (widthScreen - indexWidth) / 10;
-        int marginHeight = (heightScreen - indexHeight) / 20;
-        layoutParams.setMargins(marginWidth, marginHeight, marginWidth, marginHeight);
-        holder.txtThuTuBan.setLayoutParams(layoutParams);
+        int indexWidth = (int) (convertDpToPixel(widthScreen, context) - (convertDpToPixel(5, context) * 6));
+        holder.txtThuTuBan.setWidth(indexWidth / 5);
         try {
             holder.view.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("ResourceType")
                 @Override
                 public void onClick(View v) {
+
+                    boolean statusBan = banList.get(position).getStatusBan() == 1;
+                    String nameBan = banList.get(position).getMaBan();
+
                     FragmentTransaction transaction = ((BanHangActivity) context).getSupportFragmentManager().beginTransaction();
-                    transaction.add(OrderFragment.newInstance(context,true,"zz" ), "Order");
+                    transaction.add(android.R.id.content, OrderFragment.newInstance(context, statusBan, nameBan));
                     transaction.addToBackStack(null);
                     transaction.commit();
                     Log.d(TAGE, "onClick:OrderFragMent ");
@@ -84,13 +84,12 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
 
     @Override
     public int getItemCount() {
-        return soBans;
+        return banList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private View view;
         private TextView txtThuTuBan;
-        private Ban ban;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -98,7 +97,13 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
             txtThuTuBan = itemView.findViewById(R.id.txt_thu_tu_ban);
         }
 
+    }
 
+    public static float convertDpToPixel(float dp, Context context) {
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return px;
     }
 
 }

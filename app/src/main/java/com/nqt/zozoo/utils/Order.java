@@ -1,22 +1,37 @@
 package com.nqt.zozoo.utils;
 
-/**
- * Created by USER on 12/19/2018.
- */
 
 public class Order {
     private String id;
     private String maOrder;
-    private String danhSachOrder;
     private String maBan;
-    private String time;
+    private String nguoiOrder;
+    private String timeCreate;
+    private String timeUpdate;
 
-    public Order(String id, String maOrder, String danhSachOrder, String maBan, String time) {
+    public Order(String id, String maOrder, String maBan, String nguoiOrder, String timeCreate, String timeUpdate) {
         this.id = id;
         this.maOrder = maOrder;
-        this.danhSachOrder = danhSachOrder;
         this.maBan = maBan;
-        this.time = time;
+        this.nguoiOrder = nguoiOrder;
+        this.timeCreate = timeCreate;
+        this.timeUpdate = timeUpdate;
+    }
+
+    public String getTimeCreate() {
+        return timeCreate;
+    }
+
+    public void setTimeCreate(String timeCreate) {
+        this.timeCreate = timeCreate;
+    }
+
+    public String getTimeUpdate() {
+        return timeUpdate;
+    }
+
+    public void setTimeUpdate(String timeUpdate) {
+        this.timeUpdate = timeUpdate;
     }
 
     public String getId() {
@@ -35,14 +50,6 @@ public class Order {
         this.maOrder = maOrder;
     }
 
-    public String getDanhSachOrder() {
-        return danhSachOrder;
-    }
-
-    public void setDanhSachOrder(String danhSachOrder) {
-        this.danhSachOrder = danhSachOrder;
-    }
-
     public String getMaBan() {
         return maBan;
     }
@@ -51,22 +58,12 @@ public class Order {
         this.maBan = maBan;
     }
 
-    public String getTime() {
-        return time;
+    public String getNguoiOrder() {
+        return nguoiOrder;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setNguoiOrder(String nguoiOrder) {
+        this.nguoiOrder = nguoiOrder;
     }
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id='" + id + '\'' +
-                ", maOrder='" + maOrder + '\'' +
-                ", danhSachOrder='" + danhSachOrder + '\'' +
-                ", maBan='" + maBan + '\'' +
-                ", time='" + time + '\'' +
-                '}';
-    }
 }

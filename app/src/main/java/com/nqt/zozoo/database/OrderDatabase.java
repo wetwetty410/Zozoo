@@ -9,17 +9,13 @@ import com.nqt.zozoo.utils.Order;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by USER on 12/19/2018.
- */
-
 public class OrderDatabase extends DatabaseManager {
-    public static final String TABLE_ORDER = "order_mon_an";
-    public static final String TABLE_ORDER_ID = "id";
-    public static final String TABLE_ORDER_MA = "ma_order";
-    public static final String TABLE_ORDER_DANH_SACH = "danh_sach_order";
-    public static final String TABLE_ORDER_MA_BAN = "ma_ban";
-    public static final String TABLE_ORDER_THOI_GIAN = "time";
+    private static final String TABLE_ORDER = "order";
+    private static final String TABLE_ORDER_ID = "id";
+    private static final String TABLE_ORDER_MA = "ma_order";
+    private static final String TABLE_ORDER_MA_BAN = "ma_ban";
+    private static final String TABLE_ORDER_NGUOI_ORDER = "nguoi_order";
+    private static final String TABLE_ORDER_THOI_GIAN = "time_create";
 
     public OrderDatabase(Context context) {
         super(context);
@@ -29,15 +25,15 @@ public class OrderDatabase extends DatabaseManager {
         openDatabase();
         ContentValues values = new ContentValues();
         values.put(TABLE_ORDER_MA, order.getMaOrder());
-        values.put(TABLE_ORDER_DANH_SACH, order.getDanhSachOrder());
+        values.put(TABLE_ORDER_NGUOI_ORDER, order.getNguoiOrder());
         values.put(TABLE_ORDER_MA_BAN, order.getMaBan());
-        values.put(TABLE_ORDER_THOI_GIAN, order.getTime());
+        values.put(TABLE_ORDER_THOI_GIAN, order.getTimeCreate());
         sqLiteDatabase.insert(TABLE_ORDER, null, values);
 
         closeDatabase();
     }
 
-    private List<Order> getAllOrder() {
+    public List<Order> getAllOrder() {
         openDatabase();
         List<Order> orderList = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_ORDER;
@@ -50,8 +46,8 @@ public class OrderDatabase extends DatabaseManager {
                     cursor.getString(1),
                     cursor.getString(2),
                     cursor.getString(3),
-                    cursor.getString(4)
-            );
+                    cursor.getString(4),
+                    cursor.getString(5));
             orderList.add(order);
             cursor.moveToNext();
         }
@@ -60,11 +56,11 @@ public class OrderDatabase extends DatabaseManager {
         return orderList;
     }
 
-    private Order getOrder(int idOrder) {
+    public Order getOrder(String maBan) {
         openDatabase();
         Cursor cursor = sqLiteDatabase.query(TABLE_ORDER, null,
-                TABLE_ORDER_ID + "=?",
-                new String[]{String.valueOf(idOrder)}, null, null, null);
+                TABLE_ORDER_MA_BAN + "=?",
+                new String[]{String.valueOf(maBan)}, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
@@ -73,7 +69,8 @@ public class OrderDatabase extends DatabaseManager {
                 cursor.getString(1),
                 cursor.getString(2),
                 cursor.getString(3),
-                cursor.getString(4)
+                cursor.getString(4),
+                cursor.getString(5)
         );
         cursor.close();
         closeDatabase();
@@ -85,9 +82,9 @@ public class OrderDatabase extends DatabaseManager {
 
         ContentValues values = new ContentValues();
         values.put(TABLE_ORDER_MA, order.getMaOrder());
-        values.put(TABLE_ORDER_DANH_SACH, order.getDanhSachOrder());
+        values.put(TABLE_ORDER_NGUOI_ORDER, order.getNguoiOrder());
         values.put(TABLE_ORDER_MA_BAN, order.getMaBan());
-        values.put(TABLE_ORDER_THOI_GIAN, order.getTime());
+        values.put(TABLE_ORDER_THOI_GIAN, order.getTimeCreate());
         sqLiteDatabase.update(TABLE_ORDER, values, TABLE_ORDER_ID + "=?",
                 new String[]{String.valueOf(idOrder)});
         closeDatabase();

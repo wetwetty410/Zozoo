@@ -12,4 +12,6 @@ public interface OnClickOrderFragment {
 
     void OnListenerClickNhomMonAn(NhomMonAn nhomMonAn, int position);
 
+    void OnClickRemoveItem(MonAn monAn, int position);
+
 }
