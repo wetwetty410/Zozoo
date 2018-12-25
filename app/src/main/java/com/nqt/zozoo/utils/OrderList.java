@@ -68,4 +68,18 @@ public class OrderList {
     public void setGiaTien(String giaTien) {
         this.giaTien = giaTien;
     }
+
+    public boolean equalsMaMonAn(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        OrderList list = (OrderList) o;
+
+        return maMonAn.equals(list.maMonAn);
+    }
+
+    @Override
+    public int hashCode() {
+        return maMonAn.hashCode();
+    }
 }

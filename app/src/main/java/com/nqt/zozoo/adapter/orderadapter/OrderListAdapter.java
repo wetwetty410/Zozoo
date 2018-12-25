@@ -20,14 +20,12 @@ import java.util.List;
 
 public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.ViewHoler> {
     private List<OrderList> monAnOrder;
-    private HashMap<String, String> saveSoLuong;
-    private MonAn monAn;
+    private OnClickOrderFragment onClickOrderFragment;
 
 
-    public OrderListAdapter(List<OrderList> orderList) {
+    public OrderListAdapter(List<OrderList> orderList, OnClickOrderFragment onClickOrderFragment) {
+        this.onClickOrderFragment = onClickOrderFragment;
         this.monAnOrder = orderList;
-        this.monAn = monAn;
-        saveSoLuong = new HashMap<>();
     }
 
     @Override
@@ -41,9 +39,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.View
     public void onBindViewHolder(ViewHoler holder, int position) {
         holder.txtTenMonAn.setText(monAnOrder.get(position).getTenMonAn());
         holder.txtDonGia.setText(String.valueOf(monAnOrder.get(position).getGiaTien()));
-        String maMonAn = (monAnOrder.get(position).getMaMonAn());
-        int soLuong = Integer.parseInt(saveSoLuong.get(maMonAn));
-        holder.txtSoLuong.setText(String.valueOf(soLuong));
+        holder.txtSoLuong.setText(String.valueOf(monAnOrder.get(position).getSoLuong()));
     }
 
     @Override
@@ -74,40 +70,35 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.View
             imgXoa.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    monAnOrder.remove(getAdapterPosition());
+                    onClickOrderFragment.OnClickRemoveItem(monAnOrder.get(getAdapterPosition()), getAdapterPosition());
                 }
             });
             imgGiam.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String key = String.valueOf(monAnOrder.get(getAdapterPosition()).getMaOrder());
-                    int soLuong = Integer.parseInt(saveSoLuong.get(key));
-                    if (soLuong > 1) {
+                    int soLuong = monAnOrder.get(getAdapterPosition()).getSoLuong();
+                    if (soLuong > 0) {
                         soLuong--;
                     }
-                    saveSoLuong.remove(key);
-                    saveSoLuong.put(key, String.valueOf(soLuong));
-                    txtSoLuong.setText(String.valueOf(soLuong));
+                    monAnOrder.get(getAdapterPosition()).setSoLuong(soLuong);
+                    txtSoLuong.setText(String.valueOf(monAnOrder.get(getAdapterPosition()).getSoLuong()));
+                    onClickOrderFragment.OnClickGiamSoLuong(monAnOrder.get(getAdapterPosition()), getAdapterPosition());
                 }
             });
 
             imgTang.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String key = String.valueOf(monAnOrder.get(getAdapterPosition()).getMaMonAn());
-                    int soLuong = Integer.parseInt(saveSoLuong.get(key));
-                    int soLuongMax = monAnOrder.get(getAdapterPosition()).getSoLuong();
-                    if (soLuongMax == 0) {
-                        soLuongMax = 100;
-                    }
-                    if (soLuong < soLuongMax) {
+                    int soLuong = monAnOrder.get(getAdapterPosition()).getSoLuong();
+                    if (soLuong < 1000) {
                         soLuong++;
                     }
-                    saveSoLuong.remove(key);
-                    saveSoLuong.put(key, String.valueOf(soLuong));
-                    txtSoLuong.setText(String.valueOf(soLuong));
+                    monAnOrder.get(getAdapterPosition()).setSoLuong(soLuong);
+                    txtSoLuong.setText(String.valueOf(monAnOrder.get(getAdapterPosition()).getSoLuong()));
+                    onClickOrderFragment.OnClickTangSoLuong(monAnOrder.get(getAdapterPosition()), getAdapterPosition());
                 }
             });
         }
     }
+
 }

@@ -89,7 +89,9 @@ public class BanHangSoBanFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.show(ThemBanFragment.newInstance(getContext()));
+                transaction.add(android.R.id.content, ThemBanFragment.newInstance(getContext()));
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
 

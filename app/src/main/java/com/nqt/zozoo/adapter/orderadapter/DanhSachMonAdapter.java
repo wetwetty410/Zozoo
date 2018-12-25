@@ -45,8 +45,6 @@ public class DanhSachMonAdapter extends RecyclerView.Adapter<DanhSachMonAdapter.
         }
         holder.txtTenMon.setText(monAnList.get(position).getTenMonAn());
         holder.txtGiaTien.setText(String.valueOf(monAnList.get(position).getDonGia()));
-        holder.txtDonVi.setText(monAnList.get(position).getDonViTinh());
-        holder.txtSoLuong.setText(String.valueOf(monAnList.get(position).getSoLuong()));
     }
 
     @Override
@@ -66,8 +64,6 @@ public class DanhSachMonAdapter extends RecyclerView.Adapter<DanhSachMonAdapter.
             view = itemView;
             txtTenMon = itemView.findViewById(R.id.txt_order_ten_mon_an);
             txtGiaTien = itemView.findViewById(R.id.txt_order_gia_mon);
-            txtDonVi = itemView.findViewById(R.id.txt_order_don_vi);
-            txtSoLuong = itemView.findViewById(R.id.txt_order_so_luong);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

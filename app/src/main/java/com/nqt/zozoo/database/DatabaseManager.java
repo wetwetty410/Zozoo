@@ -16,7 +16,7 @@ import java.io.InputStream;
 public class DatabaseManager {
     private static final String DATABASE_NAME = "nhahang";
     private final String databasePath;
-    protected SQLiteDatabase sqLiteDatabase;
+    SQLiteDatabase sqLiteDatabase;
 
     public DatabaseManager(Context context) {
         databasePath = context.getFilesDir().getPath() + File.separator + DATABASE_NAME;
@@ -30,10 +30,8 @@ public class DatabaseManager {
     }
 
     void closeDatabase() {
-        if (sqLiteDatabase == null || sqLiteDatabase.isOpen()) {
-            if (sqLiteDatabase != null) {
-                sqLiteDatabase.close();
-            }
+        if (sqLiteDatabase != null || sqLiteDatabase.isOpen()) {
+            sqLiteDatabase.close();
         }
     }
 

@@ -37,8 +37,17 @@ public class BanDatabase extends DatabaseManager {
         values.put(TABLE_BAN_TEN_BAN, ban.getTenBan());
         values.put(TABLE_BAN_MA_TANG, ban.getMaTang());
         values.put(TABLE_BAN_MA_LOAI_BAN, ban.getMaLoaiBan());
-
         sqLiteDatabase.insert(TABLE_BAN, null, values);
+        closeDatabase();
+    }
+
+    public void updateStatusBan(int status, String maBan) {
+        openDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(TABLE_BAN_STATUS, status);
+        sqLiteDatabase.update(TABLE_BAN, values, TABLE_BAN_MA_BAN + "=?",
+                new String[]{String.valueOf(maBan)});
         closeDatabase();
     }
 

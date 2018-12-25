@@ -9,6 +9,9 @@ public class Order {
     private String timeCreate;
     private String timeUpdate;
 
+    public Order() {
+    }
+
     public Order(String id, String maOrder, String maBan, String nguoiOrder, String timeCreate, String timeUpdate) {
         this.id = id;
         this.maOrder = maOrder;

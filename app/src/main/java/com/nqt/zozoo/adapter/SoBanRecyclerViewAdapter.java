@@ -45,6 +45,8 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
         display = wm.getDefaultDisplay();
         widthScreen = display.getWidth();
         heightScreen = display.getHeight();
+        widthScreen = Resources.getSystem().getDisplayMetrics().widthPixels;
+        heightScreen = Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 
     @Override
@@ -56,8 +58,14 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+        final boolean statusBan = banList.get(position).getStatusBan() == 1;
         holder.txtThuTuBan.setText(String.valueOf(position + 1));
-        holder.txtThuTuBan.setBackgroundResource(R.drawable.ic_table_style_green);
+        if (statusBan) {
+            holder.txtThuTuBan.setBackgroundResource(R.drawable.ic_table_style_red);
+        }else {
+            holder.txtThuTuBan.setBackgroundResource(R.drawable.ic_table_style_green);
+
+        }
         int indexWidth = (int) (convertDpToPixel(widthScreen, context) - (convertDpToPixel(5, context) * 6));
         holder.txtThuTuBan.setWidth(indexWidth / 5);
         try {
@@ -66,7 +74,6 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
                 @Override
                 public void onClick(View v) {
 
-                    boolean statusBan = banList.get(position).getStatusBan() == 1;
                     String nameBan = banList.get(position).getMaBan();
 
                     FragmentTransaction transaction = ((BanHangActivity) context).getSupportFragmentManager().beginTransaction();
