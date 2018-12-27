@@ -70,7 +70,7 @@ public class OrderDatabase extends DatabaseManager {
         Cursor cursor = sqLiteDatabase.query(TABLE_ORDER,
                 null,
                 TABLE_ORDER_MA_BAN + "=?",
-                new String[]{String.valueOf(maBan)}, null, null, null);
+                new String[]{String.valueOf(maBan)}, null, null, TABLE_ORDER_ID + " DESC");
         if (cursor != null) {
             cursor.moveToFirst();
         }
@@ -101,10 +101,11 @@ public class OrderDatabase extends DatabaseManager {
         closeDatabase();
     }
 
-    public void deleteOrder(String maBan) {
+    public void deleteOrder(String id) {
         openDatabase();
-        sqLiteDatabase.delete(TABLE_ORDER, TABLE_ORDER_MA_BAN + "=?",
-                new String[]{maBan});
+        sqLiteDatabase.delete(TABLE_ORDER, TABLE_ORDER_ID + "=?",
+                new String[]{id
+        });
         closeDatabase();
     }
 

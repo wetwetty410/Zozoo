@@ -41,10 +41,6 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
         banList = bans;
         mListener = listener;
         context = mContext;
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        display = wm.getDefaultDisplay();
-        widthScreen = display.getWidth();
-        heightScreen = display.getHeight();
         widthScreen = Resources.getSystem().getDisplayMetrics().widthPixels;
         heightScreen = Resources.getSystem().getDisplayMetrics().heightPixels;
     }

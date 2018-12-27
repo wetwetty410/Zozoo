@@ -1,6 +1,7 @@
 package com.nqt.zozoo.banhang;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.common.collect.Iterables;
 import com.nqt.zozoo.R;
 import com.nqt.zozoo.adapter.orderadapter.DanhSachMonAdapter;
 import com.nqt.zozoo.adapter.orderadapter.NhomMonAnAdapter;
@@ -34,6 +36,7 @@ import com.nqt.zozoo.utils.OrderList;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -48,6 +51,7 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
     private String nameTable;
     private HashMap<String, String> saveSoLuong;
     private String maOrder;
+    private List<String> maDelete;
 
     private NhomMonAnDatabase nhomMonAnDatabase;
     private MonAnDatabase monAnDatabase;
@@ -104,6 +108,7 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
         orderMonListOld = orderMonListDatabase.getAllOrderList();
 
         orderMonList = new ArrayList<>();
+        maDelete = new ArrayList<>();
         saveSoLuong = new HashMap<>();
         orderDatabase = new OrderDatabase(mContext);
 
@@ -166,12 +171,12 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
             orderListAdapter = new OrderListAdapter(orderMonList, this);
             rcvOrder.setAdapter(orderListAdapter);
 
-        } else {
-//            order = Iterables.getLast(orderDatabase.getAllOrder(),null);
         }
         List<Order> list = orderDatabase.getAllOrder();
         if (list == null || list.size() == 0) {
             maOrder = "OD" + 1500;
+        } else {
+            maOrder = "OD" + (Iterables.getLast(orderDatabase.getAllOrder()).getMaOrder().substring(2) + 10);
         }
         imgBack.setOnClickListener(this);
         btnTatCa.setOnClickListener(this);
@@ -183,24 +188,29 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
 
     @Override
     public void OnListenerClickMonAn(MonAn monAn, int position) {
-        try {
-            OrderList orderList = new OrderList();
-            String maMonAn = monAn.getMaMonAn() + orderMonList.size();
-            orderList.setMaMonAn(monAn.getMaMonAn() + orderMonList.size());
-            orderList.setTenMonAn(monAn.getTenMonAn());
-            orderList.setGiaTien(String.valueOf(monAn.getDonGia()));
-            orderList.setMaOrder(maOrder);
 
-            if (!saveSoLuong.containsKey(maMonAn)) {
-                saveSoLuong.put(maMonAn, "1");
+        OrderList orderList = new OrderList();
+        String maMonAn = monAn.getMaMonAn() + orderMonList.size();
+        if (orderMonList.size() != 0) {
+            OrderList ord = Iterables.getLast(orderMonList);
+            if (ord != null) {
+                orderList.setMaMonAn(monAn.getMaMonAn().substring(0, 2) + (Integer.parseInt(ord.getMaMonAn().substring(2)) + 10));
             }
-            orderList.setSoLuong(Integer.parseInt(saveSoLuong.get(maMonAn)));
-            orderMonList.add(orderList);
-            orderListAdapter = new OrderListAdapter(orderMonList, this);
-            rcvOrder.setAdapter(orderListAdapter);
-        } catch (Exception e) {
-            Toast.makeText(getContext(), "FAIL", Toast.LENGTH_LONG).show();
+        } else {
+            orderList.setMaMonAn(maMonAn);
         }
+        orderList.setTenMonAn(monAn.getTenMonAn());
+        orderList.setGiaTien(String.valueOf(monAn.getDonGia()));
+        orderList.setMaOrder(maOrder);
+
+        if (!saveSoLuong.containsKey(maMonAn)) {
+            saveSoLuong.put(maMonAn, "1");
+        }
+        orderList.setSoLuong(Integer.parseInt(saveSoLuong.get(maMonAn)));
+        orderMonList.add(orderList);
+        orderListAdapter = new OrderListAdapter(orderMonList, this);
+        rcvOrder.setAdapter(orderListAdapter);
+
     }
 
     @Override
@@ -212,6 +222,7 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
 
     @Override
     public void OnClickRemoveItem(OrderList orderList, int position) {
+        maDelete.add(orderList.getMaMonAn());
         orderMonList.remove(orderList);
         orderListAdapter = new OrderListAdapter(orderMonList, this);
         rcvOrder.setAdapter(orderListAdapter);
@@ -260,7 +271,24 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
                 rcvOrder.setAdapter(orderListAdapter);
                 break;
             case R.id.btn_order_luu:
-                doOnclickLuuButton();
+                if (orderMonList.size() == 0 && orderMonListOld.size() != 0) {
+                    orderMonListDatabase.deleteOrderList(maOrder);
+                    if (orderMonList.isEmpty()) {
+                        orderDatabase.deleteOrder(order.getId());
+                        int statusTable = 0;
+                        banDatabase.updateStatusBan(statusTable, nameTable);
+                    }
+                    orderDatabase.updateOrder(order, Integer.parseInt(order.getId()));
+                    getActivity().recreate();
+                    Toast.makeText(getContext(), "Lưu thành công", Toast.LENGTH_LONG).show();
+                    getActivity().onBackPressed();
+                    break;
+                }
+                if (orderMonList.size() != 0) {
+                    doOnclickLuuButton();
+                } else {
+                    Toast.makeText(getContext(), "Không có gì để lưu", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.img_order_backstack:
                 getActivity().onBackPressed();
@@ -277,7 +305,10 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
             order.setTimeUpdate(String.valueOf(time));
             orderDatabase.updateOrder(order, Integer.parseInt(order.getId()));
             for (OrderList list : orderMonList) {
-                orderMonListDatabase.updateOrderList(list, list.getMaMonAn());
+                orderMonListDatabase.updateOrderList(list, list.getMaMonAn(), maOrder);
+            }
+            for (String maDele : maDelete) {
+                orderMonListDatabase.deleteOrderListWithMaMonAn(maOrder, maDele);
             }
         } else {
             Order order = new Order();
@@ -292,11 +323,16 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
             banDatabase.updateStatusBan(statusTable, nameTable);
 
             for (OrderList list : orderMonList) {
-                orderMonListDatabase.updateOrderList(list, list.getMaMonAn());
+                orderMonListDatabase.addOrderList(list);
             }
         }
-        Toast.makeText(getContext(), "Lưu thành công", Toast.LENGTH_LONG).show();
+        if (orderMonList.isEmpty()) {
+            orderDatabase.deleteOrder(order.getId());
+            int statusTable = 0;
+            banDatabase.updateStatusBan(statusTable, nameTable);
+        }
         getActivity().recreate();
+        Toast.makeText(getContext(), "Lưu thành công", Toast.LENGTH_LONG).show();
         getActivity().onBackPressed();
     }
 }

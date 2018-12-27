@@ -26,7 +26,7 @@ public class OrderListDatabase extends DatabaseManager {
         super(context);
     }
 
-    public void addOrerList(OrderList orderList) {
+    public void addOrderList(OrderList orderList) {
         openDatabase();
         ContentValues values = new ContentValues();
         values.put(TABLE_ORDER_MA, orderList.getMaOrder());
@@ -35,7 +35,6 @@ public class OrderListDatabase extends DatabaseManager {
         values.put(TABLE_ORDER_GIA_TIEN, orderList.getGiaTien());
         values.put(TABLE_ORDER_SO_LUONG, orderList.getSoLuong());
         sqLiteDatabase.insert(TABLE_ORDER, null, values);
-
         closeDatabase();
     }
 
@@ -109,16 +108,17 @@ public class OrderListDatabase extends DatabaseManager {
     }
 
 
-    public void updateOrderList(OrderList orderList, String maOrderList) {
+    public void updateOrderList(OrderList orderList, String maOrderList, String maOrder) {
         openDatabase();
 
         ContentValues values = new ContentValues();
         values.put(TABLE_ORDER_MA, orderList.getMaOrder());
         values.put(TABLE_ORDER_TEN_MON_AN, orderList.getTenMonAn());
+        values.put(TABLE_ORDER_MA_MON_AN, orderList.getMaMonAn());
         values.put(TABLE_ORDER_GIA_TIEN, orderList.getGiaTien());
         values.put(TABLE_ORDER_SO_LUONG, orderList.getSoLuong());
-        int index = sqLiteDatabase.update(TABLE_ORDER, values, TABLE_ORDER_MA_MON_AN + "=?",
-                new String[]{maOrderList});
+        int index = sqLiteDatabase.update(TABLE_ORDER, values, TABLE_ORDER_MA_MON_AN + "=? AND " + TABLE_ORDER_MA + "=?",
+                new String[]{maOrderList, maOrder});
         if (index == 0) {
             sqLiteDatabase.insert(TABLE_ORDER, null, values);
         }
@@ -129,6 +129,13 @@ public class OrderListDatabase extends DatabaseManager {
         openDatabase();
         sqLiteDatabase.delete(TABLE_ORDER, TABLE_ORDER_MA + "=?",
                 new String[]{maOrder});
+        closeDatabase();
+    }
+
+    public void deleteOrderListWithMaMonAn(String maOrder, String maMonAn) {
+        openDatabase();
+        sqLiteDatabase.delete(TABLE_ORDER, TABLE_ORDER_MA_MON_AN + "=? AND " + TABLE_ORDER_MA + "=?",
+                new String[]{maMonAn, maOrder});
         closeDatabase();
     }
 }

@@ -38,7 +38,7 @@ public class ThemTangAdapter extends RecyclerView.Adapter<ThemTangAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return 0;
+        return tangList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
