@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.nqt.zozoo.R;
+import com.nqt.zozoo.adapter.thembanadapter.OnClickThemBanFragment;
 import com.nqt.zozoo.banhang.BanHangActivity;
 import com.nqt.zozoo.banhang.OrderFragment;
 import com.nqt.zozoo.utils.Ban;
@@ -34,13 +35,24 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
     private Context context;
     private int widthScreen;
     private int heightScreen;
+    private boolean mIsThemBan;
     private Display display;
     private OnListFragmentInteractionListener mListener;
+    private OnClickThemBanFragment mThemListener;
 
     public SoBanRecyclerViewAdapter(List<Ban> bans, OnListFragmentInteractionListener listener, Context mContext) {
         banList = bans;
         mListener = listener;
         context = mContext;
+        widthScreen = Resources.getSystem().getDisplayMetrics().widthPixels;
+        heightScreen = Resources.getSystem().getDisplayMetrics().heightPixels;
+    }
+
+    public SoBanRecyclerViewAdapter(List<Ban> bans, OnClickThemBanFragment listener, Context mContext, boolean isThemBan) {
+        banList = bans;
+        mThemListener = listener;
+        context = mContext;
+        mIsThemBan = isThemBan;
         widthScreen = Resources.getSystem().getDisplayMetrics().widthPixels;
         heightScreen = Resources.getSystem().getDisplayMetrics().heightPixels;
     }
@@ -58,13 +70,13 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
         holder.txtThuTuBan.setText(String.valueOf(position + 1));
         if (statusBan) {
             holder.txtThuTuBan.setBackgroundResource(R.drawable.ic_table_style_red);
-        }else {
+        } else {
             holder.txtThuTuBan.setBackgroundResource(R.drawable.ic_table_style_green);
 
         }
         int indexWidth = (int) (convertDpToPixel(widthScreen, context) - (convertDpToPixel(5, context) * 6));
         holder.txtThuTuBan.setWidth(indexWidth / 5);
-        try {
+        if (!mIsThemBan) {
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @SuppressLint("ResourceType")
                 @Override
@@ -79,10 +91,7 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
                     Log.d(TAGE, "onClick:OrderFragMent ");
                 }
             });
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-
     }
 
     @Override

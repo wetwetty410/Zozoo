@@ -56,13 +56,10 @@ public class BanHangSoBanRecyclerViewAdapter extends RecyclerView.Adapter<BanHan
 
         // Lấy thông tin số bàn trong một tầng từ CSDL
         banList = banDatabase.getSoBan(maTang);
-        if (banList.size() <= 1) {
-            holder.recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        } else {
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 5);
-            gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
-            holder.recyclerView.setLayoutManager(gridLayoutManager);
-        }
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 5);
+        holder.recyclerView.setLayoutManager(gridLayoutManager);
+
         //       Gắn item cho RecycleView bằng các adapter
         soBanRecyclerViewAdapter = new SoBanRecyclerViewAdapter(banList, mListener, context);
         holder.recyclerView.setAdapter(soBanRecyclerViewAdapter);

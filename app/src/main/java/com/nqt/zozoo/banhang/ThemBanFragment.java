@@ -44,6 +44,8 @@ public class ThemBanFragment extends Fragment implements OnClickThemBanFragment,
     private List<String> tenTangList;
     private static Context mContext;
 
+    private String maTang;
+
     private Toolbar toolbar;
     private ImageView imgBack;
     private TextView txtTitle;
@@ -76,8 +78,9 @@ public class ThemBanFragment extends Fragment implements OnClickThemBanFragment,
         tenTangList = new ArrayList<>();
         for (Tang tang : tangList) tenTangList.add(tang.getTenTang());
 
+        maTang = tangList.get(0).getMaTang();
         banDatabase = new BanDatabase(mContext);
-        banList = banDatabase.getAllBan();
+        banList = banDatabase.getSoBan(maTang);
 //        tenTang = new HashMap<>();
 //        for (Tang tang : tangList) tenTang.put(tang.getMaTang(), tang.getTenTang());
     }
@@ -111,8 +114,12 @@ public class ThemBanFragment extends Fragment implements OnClickThemBanFragment,
         rcvThemTang.setAdapter(themTangAdapter);
 
         GridLayoutManager gridLayoutManagerThemBan = new GridLayoutManager(context, 5);
-        soBanRecyclerViewAdapter = new SoBanRecyclerViewAdapter(banList)
+        soBanRecyclerViewAdapter = new SoBanRecyclerViewAdapter(banList, this, mContext, true);
+        rcvThemBan.setLayoutManager(gridLayoutManagerThemBan);
+        rcvThemBan.setAdapter(soBanRecyclerViewAdapter);
+
         btnThemTang.setOnClickListener(this);
+        imgBack.setOnClickListener(this);
         return view;
     }
 
@@ -121,6 +128,9 @@ public class ThemBanFragment extends Fragment implements OnClickThemBanFragment,
         switch (v.getId()) {
             case R.id.btn_them_tang:
                 onClickBtnThemTang();
+                break;
+            case R.id.img_them_ban_backstack:
+                getActivity().onBackPressed();
                 break;
             default:
                 break;
