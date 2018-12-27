@@ -59,6 +59,7 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
     private List<MonAn> monAnList;
     private Order order;
     private List<OrderList> orderMonList;
+    private List<OrderList> orderMonListOld;
     private static Context mContext;
 
     private Toolbar toolbar;
@@ -100,6 +101,7 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
         monAnList = monAnDatabase.getAllMonAn();
 
         orderMonListDatabase = new OrderListDatabase(mContext);
+        orderMonListOld = orderMonListDatabase.getAllOrderList();
 
         orderMonList = new ArrayList<>();
         saveSoLuong = new HashMap<>();
@@ -136,13 +138,6 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
         appCompatActivity.setSupportActionBar(toolbar);
         appCompatActivity.getSupportActionBar().setTitle("");
         txtTitle.setText("Order");
-        imgBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                appCompatActivity.onBackPressed();
-            }
-        });
-
 
         LinearLayoutManager layoutManagerMonAn = new LinearLayoutManager(context);
         rcvMonAn.setLayoutManager(layoutManagerMonAn);
@@ -161,23 +156,24 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
 
             // khi bàn có table là true, bàn đang được sử dụng
             order = orderDatabase.getOrder(nameTable);
-            orderMonList = orderMonListDatabase.getOrderListWithCodeOrder(order.getMaOrder());
+            maOrder = order.getMaOrder();
+
+            orderMonList = orderMonListDatabase.getOrderListWithCodeOrder(maOrder);
 
             for (OrderList list : orderMonList)
                 saveSoLuong.put(list.getMaMonAn(), String.valueOf(list.getSoLuong()));
 
             orderListAdapter = new OrderListAdapter(orderMonList, this);
             rcvOrder.setAdapter(orderListAdapter);
-            maOrder = "OD" + (Integer.parseInt(order.getId()) - 1500) + 1500 + 1;
 
         } else {
 //            order = Iterables.getLast(orderDatabase.getAllOrder(),null);
         }
-
-        if (orderDatabase.getAllOrder() == null) {
+        List<Order> list = orderDatabase.getAllOrder();
+        if (list == null || list.size() == 0) {
             maOrder = "OD" + 1500;
         }
-
+        imgBack.setOnClickListener(this);
         btnTatCa.setOnClickListener(this);
         btnHuyBo.setOnClickListener(this);
         btnLuu.setOnClickListener(this);
@@ -262,8 +258,13 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
                 orderMonList.clear();
                 orderListAdapter = new OrderListAdapter(orderMonList, this);
                 rcvOrder.setAdapter(orderListAdapter);
+                break;
             case R.id.btn_order_luu:
                 doOnclickLuuButton();
+                break;
+            case R.id.img_order_backstack:
+                getActivity().onBackPressed();
+                break;
             default:
                 break;
         }
@@ -271,25 +272,27 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
 
     private void doOnclickLuuButton() {
         if (tableStatus) {
-            Order order = new Order();
-            order.setMaBan(nameTable);
-            order.setMaOrder(maOrder);
             // TODO:Update Người Order
-            order.setTimeUpdate(String.valueOf(Calendar.getInstance().getTime()));
+            long time = System.currentTimeMillis();
+            order.setTimeUpdate(String.valueOf(time));
             orderDatabase.updateOrder(order, Integer.parseInt(order.getId()));
+            for (OrderList list : orderMonList) {
+                orderMonListDatabase.updateOrderList(list, list.getMaMonAn());
+            }
         } else {
             Order order = new Order();
             order.setMaBan(nameTable);
             //TODO: Thêm người order
             order.setMaOrder(maOrder);
-            order.setTimeCreate(String.valueOf(Calendar.getInstance().getTime()));
+            long time = System.currentTimeMillis();
+            order.setTimeCreate(String.valueOf(time));
             orderDatabase.addOrder(order);
 
             int statusTable = 1;
             banDatabase.updateStatusBan(statusTable, nameTable);
 
             for (OrderList list : orderMonList) {
-                orderMonListDatabase.addOrerList(list);
+                orderMonListDatabase.updateOrderList(list, list.getMaMonAn());
             }
         }
         Toast.makeText(getContext(), "Lưu thành công", Toast.LENGTH_LONG).show();

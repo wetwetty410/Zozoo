@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 public class OrderListDatabase extends DatabaseManager {
-    private static final String TABLE_ORDER = "order_list";
+    private static final String TABLE_ORDER = "orders_list";
     private static final String TABLE_ORDER_ID = "id";
     private static final String TABLE_ORDER_MA = "ma_order";
     private static final String TABLE_ORDER_MA_MON_AN = "ma_mon_an";
@@ -109,17 +109,19 @@ public class OrderListDatabase extends DatabaseManager {
     }
 
 
-    public void updateOrderList(OrderList orderList, int idOrderList) {
+    public void updateOrderList(OrderList orderList, String maOrderList) {
         openDatabase();
 
         ContentValues values = new ContentValues();
         values.put(TABLE_ORDER_MA, orderList.getMaOrder());
-        values.put(TABLE_ORDER_MA_MON_AN, orderList.getMaMonAn());
         values.put(TABLE_ORDER_TEN_MON_AN, orderList.getTenMonAn());
         values.put(TABLE_ORDER_GIA_TIEN, orderList.getGiaTien());
         values.put(TABLE_ORDER_SO_LUONG, orderList.getSoLuong());
-        sqLiteDatabase.update(TABLE_ORDER, values, TABLE_ORDER_ID + "=?",
-                new String[]{String.valueOf(idOrderList)});
+        int index = sqLiteDatabase.update(TABLE_ORDER, values, TABLE_ORDER_MA_MON_AN + "=?",
+                new String[]{maOrderList});
+        if (index == 0) {
+            sqLiteDatabase.insert(TABLE_ORDER, null, values);
+        }
         closeDatabase();
     }
 

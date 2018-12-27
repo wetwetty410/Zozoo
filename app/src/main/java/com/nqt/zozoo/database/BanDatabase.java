@@ -92,7 +92,10 @@ public class BanDatabase extends DatabaseManager {
     public List<Ban> getSoBan(String maTang) {
         openDatabase();
         List<Ban> soBans = new ArrayList<>();
-        Cursor cursor = sqLiteDatabase.query(TABLE_BAN, null, TABLE_BAN_MA_TANG + "=?", new String[]{maTang}, null, null, null);
+        Cursor cursor = sqLiteDatabase.query(TABLE_BAN, null,
+                TABLE_BAN_MA_TANG + "=?",
+                new String[]{maTang},
+                null, null, null);
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {

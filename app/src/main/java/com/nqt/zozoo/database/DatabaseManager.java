@@ -14,7 +14,7 @@ import java.io.InputStream;
  */
 
 public class DatabaseManager {
-    private static final String DATABASE_NAME = "nhahang";
+    private static final String DATABASE_NAME = "nhahang.db";
     private final String databasePath;
     SQLiteDatabase sqLiteDatabase;
 
@@ -25,12 +25,16 @@ public class DatabaseManager {
 
     void openDatabase() {
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            sqLiteDatabase = SQLiteDatabase.openDatabase(databasePath, null, SQLiteDatabase.OPEN_READWRITE);
+            sqLiteDatabase = SQLiteDatabase.openDatabase(databasePath,
+                    null,
+                    SQLiteDatabase.OPEN_READWRITE);
+            sqLiteDatabase.rawQuery("PRAGMA journal_mode='OFF'", null).close();
+            sqLiteDatabase.rawQuery("PRAGMA locking_mode = 'EXCLUSIVE'", null).close();
         }
     }
 
     void closeDatabase() {
-        if (sqLiteDatabase != null || sqLiteDatabase.isOpen()) {
+        if (sqLiteDatabase != null && sqLiteDatabase.isOpen()) {
             sqLiteDatabase.close();
         }
     }
@@ -54,10 +58,9 @@ public class DatabaseManager {
             while ((length = inputStream.read(buff)) != -1) {
                 outputStream.write(buff, 0, length);
             }
-
             inputStream.close();
             outputStream.close();
-
+            file.setWritable(true);
         } catch (IOException e) {
             e.printStackTrace();
         }

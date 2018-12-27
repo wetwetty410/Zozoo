@@ -8,17 +8,20 @@ import android.support.annotation.Nullable;
 
 import com.nqt.zozoo.utils.Order;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class OrderDatabase extends DatabaseManager {
-    private static final String TABLE_ORDER = "'order'";
-    private static final String TABLE_ORDER_ID = "'id'";
-    private static final String TABLE_ORDER_MA = "'ma_order'";
-    private static final String TABLE_ORDER_MA_BAN = "'ma_ban'";
-    private static final String TABLE_ORDER_NGUOI_ORDER = "'nguoi_order'";
-    private static final String TABLE_ORDER_THOI_GIAN_CREATE = "'time_create'";
-    private static final String TABLE_ORDER_THOI_GIAN_UPDATE = "'time_update'";
+    private static final String TABLE_ORDER = "orders";
+    private static final String TABLE_ORDER_ID = "id";
+    private static final String TABLE_ORDER_MA = "ma_order";
+    private static final String TABLE_ORDER_MA_BAN = "ma_ban";
+    private static final String TABLE_ORDER_NGUOI_ORDER = "nguoi_order";
+    private static final String TABLE_ORDER_THOI_GIAN_CREATE = "time_create";
+    private static final String TABLE_ORDER_THOI_GIAN_UPDATE = "time_update";
 
     public OrderDatabase(Context context) {
         super(context);
@@ -27,13 +30,13 @@ public class OrderDatabase extends DatabaseManager {
     public void addOrder(Order order) {
         openDatabase();
         ContentValues values = new ContentValues();
+        values.put(TABLE_ORDER_ID, order.getId());
         values.put(TABLE_ORDER_MA, order.getMaOrder());
         values.put(TABLE_ORDER_MA_BAN, order.getMaBan());
         values.put(TABLE_ORDER_NGUOI_ORDER, order.getNguoiOrder());
         values.put(TABLE_ORDER_THOI_GIAN_CREATE, order.getTimeCreate());
         values.put(TABLE_ORDER_THOI_GIAN_UPDATE, order.getTimeUpdate());
         sqLiteDatabase.insert(TABLE_ORDER, null, values);
-
         closeDatabase();
     }
 
@@ -71,7 +74,7 @@ public class OrderDatabase extends DatabaseManager {
         if (cursor != null) {
             cursor.moveToFirst();
         }
-        Order order = new Order(
+        Order orders = new Order(
                 cursor.getString(0),
                 cursor.getString(1),
                 cursor.getString(2),
@@ -81,7 +84,7 @@ public class OrderDatabase extends DatabaseManager {
         );
         cursor.close();
         closeDatabase();
-        return order;
+        return orders;
     }
 
     public void updateOrder(Order order, int idOrder) {
@@ -103,5 +106,18 @@ public class OrderDatabase extends DatabaseManager {
         sqLiteDatabase.delete(TABLE_ORDER, TABLE_ORDER_MA_BAN + "=?",
                 new String[]{maBan});
         closeDatabase();
+    }
+
+    private String formatDate(String dateStr) {
+        try {
+            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = fmt.parse(dateStr);
+            SimpleDateFormat fmtOut = new SimpleDateFormat("MMM d");
+            return fmtOut.format(date);
+        } catch (ParseException e) {
+
+        }
+
+        return "";
     }
 }
