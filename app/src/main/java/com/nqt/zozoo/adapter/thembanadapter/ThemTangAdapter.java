@@ -71,19 +71,28 @@ public class ThemTangAdapter extends RecyclerView.Adapter<ThemTangAdapter.ViewHo
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    openMenu(v, getAdapterPosition());
+                    openMenu(v, tangList.get(getAdapterPosition()), getAdapterPosition());
                     return true;
                 }
             });
         }
 
-        private void openMenu(View view, final int position) {
+        private void openMenu(View view, final Tang tang, final int position) {
             PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
             popupMenu.getMenuInflater().inflate(R.menu.menu_edit_tang, popupMenu.getMenu());
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-
+                    switch (item.getItemId()) {
+                        case R.id.menu_doi_ten_tang:
+                            onClickThemBanFragment.OnClickDoiTenTang(tang, position);
+                            break;
+                        case R.id.menu_xoa_tang:
+                            onClickThemBanFragment.OnClickXoaTang(tang, position);
+                            break;
+                        default:
+                            break;
+                    }
                     return false;
                 }
             });

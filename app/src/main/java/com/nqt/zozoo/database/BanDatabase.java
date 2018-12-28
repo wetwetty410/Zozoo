@@ -51,6 +51,17 @@ public class BanDatabase extends DatabaseManager {
         closeDatabase();
     }
 
+    public void updateBan(Ban ban, String idBan) {
+        openDatabase();
+        ContentValues values = new ContentValues();
+        values.put(TABLE_BAN_MA_BAN, ban.getMaBan());
+        values.put(TABLE_BAN_TEN_BAN, ban.getTenBan());
+        values.put(TABLE_BAN_MA_TANG, ban.getMaTang());
+        values.put(TABLE_BAN_MA_LOAI_BAN, ban.getMaLoaiBan());
+        sqLiteDatabase.update(TABLE_BAN, values, TABLE_BAN_ID + "=?", new String[]{idBan});
+        closeDatabase();
+    }
+
     public Ban getBan(int idDanhSachBan) {
         openDatabase();
 

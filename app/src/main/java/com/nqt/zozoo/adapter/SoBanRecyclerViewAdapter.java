@@ -9,9 +9,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.nqt.zozoo.R;
@@ -19,6 +21,7 @@ import com.nqt.zozoo.adapter.thembanadapter.OnClickThemBanFragment;
 import com.nqt.zozoo.banhang.BanHangActivity;
 import com.nqt.zozoo.banhang.OrderFragment;
 import com.nqt.zozoo.utils.Ban;
+import com.nqt.zozoo.utils.Tang;
 
 import java.util.List;
 
@@ -66,7 +69,7 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.txtThuTuBan.setText(String.valueOf(position + 1));
+        holder.txtThuTuBan.setText(banList.get(position).getTenBan());
         final boolean statusBan = banList.get(position).getStatusBan() == 1;
         if (statusBan) {
             holder.txtThuTuBan.setBackgroundResource(R.drawable.ic_table_style_red);
@@ -114,6 +117,35 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
                     }
                 }
             });
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    openMenu(v, banList.get(getAdapterPosition()), getAdapterPosition());
+                    return false;
+                }
+            });
+        }
+
+        private void openMenu(View view, final Ban ban, final int position) {
+            PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
+            popupMenu.getMenuInflater().inflate(R.menu.menu_edit_tang, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.menu_doi_ten_tang:
+                            mThemListener.OnClickDoiTenBan(ban, position);
+                            break;
+                        case R.id.menu_xoa_tang:
+                            mThemListener.OnClickXoaBan(ban, position);
+                            break;
+                        default:
+                            break;
+                    }
+                    return false;
+                }
+            });
+            popupMenu.show();
         }
     }
 }

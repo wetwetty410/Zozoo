@@ -1,9 +1,11 @@
 package com.nqt.zozoo.banhang;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,7 +27,7 @@ import com.nqt.zozoo.adapter.thembanadapter.OnClickThemBanFragment;
 import com.nqt.zozoo.adapter.thembanadapter.ThemTangAdapter;
 import com.nqt.zozoo.database.BanDatabase;
 import com.nqt.zozoo.database.TangDatabase;
-import com.nqt.zozoo.dialog.AddItemDialog;
+import com.nqt.zozoo.dialog.ThemTangItemDialog;
 import com.nqt.zozoo.utils.Ban;
 import com.nqt.zozoo.utils.Tang;
 
@@ -119,6 +121,7 @@ public class ThemBanFragment extends Fragment implements OnClickThemBanFragment,
         rcvThemBan.setLayoutManager(gridLayoutManagerThemBan);
         rcvThemBan.setAdapter(soBanRecyclerViewAdapter);
 
+        btnThemBan.setOnClickListener(this);
         btnThemTang.setOnClickListener(this);
         imgBack.setOnClickListener(this);
         return view;
@@ -131,18 +134,63 @@ public class ThemBanFragment extends Fragment implements OnClickThemBanFragment,
                 onClickBtnThemTang();
                 break;
             case R.id.img_them_ban_backstack:
+                getActivity().recreate();
                 getActivity().onBackPressed();
                 break;
+            case R.id.btn_them_ban:
+                onClickBtnThemBan();
             default:
                 break;
 
         }
     }
 
+    private void onClickBtnThemBan() {
+        String tenBan = String.valueOf(edtThemBan.getText());
+        if (tenBan.matches("")) {
+            Toast.makeText(getContext(), "Không có gì để thêm!", Toast.LENGTH_SHORT).show();
+        } else if (checkTenBanExist(tenBan)) {
+            Ban ban = new Ban();
+            int maBan = Integer.parseInt(Iterables.getLast(banDatabase.getAllBan()).getId());
+            ban.setMaBan("b" + (maBan + 1));
+            ban.setMaLoaiBan("v1");
+            ban.setMaTang(maTang);
+            ban.setTenBan(tenBan);
+            banDatabase.addBan(ban);
+            banList.add(ban);
+            Toast.makeText(getContext(), "Thêm bàn thành công!", Toast.LENGTH_SHORT).show();
+            soBanRecyclerViewAdapter = new SoBanRecyclerViewAdapter(banList, this, mContext, true);
+            rcvThemBan.setAdapter(soBanRecyclerViewAdapter);
+        } else {
+            Toast.makeText(getContext(), "Bàn đã tồn tại!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean checkTenBanExist(String tenBan) {
+        for (Ban ban : banList) {
+            if (ban.getTenBan().equalsIgnoreCase(tenBan)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private void onClickBtnThemTang() {
-        AddItemDialog addItemDialog = new AddItemDialog(getContext());
-        addItemDialog.setOnClickThemBanFragment(this);
-        addItemDialog.show();
+        ThemTangItemDialog themTangItemDialog = new ThemTangItemDialog(getContext());
+        themTangItemDialog.setOnClickThemBanFragment(this);
+        themTangItemDialog.show();
+    }
+
+    private void onClickBtnSuaTang(Tang tang) {
+        ThemTangItemDialog themTangItemDialog = new ThemTangItemDialog(getContext(), tang, "editTang");
+        themTangItemDialog.setOnClickThemBanFragment(this);
+        themTangItemDialog.show();
+    }
+
+    private void onClickBtnSuaBan(Ban ban) {
+        ThemTangItemDialog themTangItemDialog = new ThemTangItemDialog(getContext(), ban, "editBan");
+        themTangItemDialog.setOnClickThemBanFragment(this);
+        themTangItemDialog.show();
     }
 
     @Override
@@ -155,11 +203,46 @@ public class ThemBanFragment extends Fragment implements OnClickThemBanFragment,
             tang.setMaTang("t" + (Integer.parseInt(maTang) + 1));
             tang.setTenTang(tenTang);
             tangList.add(tang);
+            tenTangList.add(tenTang);
             tangDatabase.addTang(tang);
             themTangAdapter = new ThemTangAdapter(tangList, this);
             rcvThemTang.setAdapter(themTangAdapter);
+            Toast.makeText(getContext(), "Thêm thành công", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(getContext(), "Tầng đã tồn tại", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Tầng đã tồn tại", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void OnClickSuaTang(Tang tang, String tenTang) {
+        if (tenTang.matches("")) {
+            Toast.makeText(getContext(), "Bạn chưa điền tên tầng", Toast.LENGTH_SHORT).show();
+        } else if (!tenTangList.contains(tenTang)) {
+            tang.setTenTang(tenTang);
+            tangDatabase.updateTang(tang, tang.getId());
+            tangList = tangDatabase.getAllTang();
+            themTangAdapter = new ThemTangAdapter(tangList, this);
+            rcvThemTang.setAdapter(themTangAdapter);
+            Toast.makeText(getContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+
+        } else {
+            Toast.makeText(getContext(), "Tầng đã tồn tại", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void OnClickSuaBan(Ban ban, String tenBan) {
+        if (tenBan.matches("")) {
+            Toast.makeText(getContext(), "Bạn chưa điền tên bàn", Toast.LENGTH_SHORT).show();
+        } else if (checkTenBanExist(tenBan)) {
+            ban.setTenBan(tenBan);
+            banDatabase.updateBan(ban, ban.getId());
+            banList = banDatabase.getSoBan(maTang);
+            soBanRecyclerViewAdapter = new SoBanRecyclerViewAdapter(banList, this, mContext, true);
+            rcvThemBan.setAdapter(soBanRecyclerViewAdapter);
+            Toast.makeText(getContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getContext(), "Bàn đã tồn tại", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -169,5 +252,51 @@ public class ThemBanFragment extends Fragment implements OnClickThemBanFragment,
         banList = banDatabase.getSoBan(maTang);
         soBanRecyclerViewAdapter = new SoBanRecyclerViewAdapter(banList, this, mContext, true);
         rcvThemBan.setAdapter(soBanRecyclerViewAdapter);
+    }
+
+    @Override
+    public void OnClickDoiTenTang(Tang tang, int position) {
+        onClickBtnSuaTang(tang);
+    }
+
+    @Override
+    public void OnClickXoaTang(final Tang tang, int position) {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        alertDialog.setMessage("Bạn có chắc chắn muốn xóa?");
+        alertDialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                tangDatabase.deleteTang(tang.getId());
+            }
+        });
+        alertDialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).show();
+    }
+
+    @Override
+    public void OnClickDoiTenBan(Ban ban, int position) {
+        onClickBtnSuaBan(ban);
+    }
+
+    @Override
+    public void OnClickXoaBan(final Ban ban, int position) {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        alertDialog.setMessage("Bạn có chắc chắn muốn xóa?");
+        alertDialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                tangDatabase.deleteTang(ban.getId());
+            }
+        });
+        alertDialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).show();
     }
 }

@@ -19,6 +19,9 @@ public class Ban {
     private String maLoaiBan;
     private int statusBan;
 
+    public Ban() {
+    }
+
     public Ban(String id, String maBan, String tenBan, String maTang, String maLoaiBan, int statusBan) {
         this.id = id;
         this.maBan = maBan;

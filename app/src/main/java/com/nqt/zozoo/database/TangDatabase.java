@@ -35,6 +35,23 @@ public class TangDatabase extends DatabaseManager {
         closeDatabase();
     }
 
+    public void updateTang(Tang tang, String idTang) {
+        openDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(TANG_MA, tang.getMaTang());
+        values.put(TANG_TEN, tang.getTenTang());
+
+        sqLiteDatabase.update(TANG, values, TANG_ID + "=?", new String[]{idTang});
+        closeDatabase();
+    }
+
+    public void deleteTang(String idTang) {
+        openDatabase();
+        sqLiteDatabase.delete(TANG, TANG_ID + "=?", new String[]{idTang});
+        closeDatabase();
+    }
+
     public Tang getTang(int idDanhSachBan) {
         openDatabase();
 
