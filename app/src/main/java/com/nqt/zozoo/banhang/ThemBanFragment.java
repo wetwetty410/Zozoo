@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.common.collect.Iterables;
 import com.nqt.zozoo.R;
 import com.nqt.zozoo.adapter.SoBanRecyclerViewAdapter;
 import com.nqt.zozoo.adapter.thembanadapter.OnClickThemBanFragment;
@@ -146,14 +147,27 @@ public class ThemBanFragment extends Fragment implements OnClickThemBanFragment,
 
     @Override
     public void OnClickThemTang(String tenTang) {
-        if (tenTangList.contains(tenTang)) {
+        if (tenTang.matches("")) {
+            Toast.makeText(getContext(), "Bạn chưa điền tên tầng", Toast.LENGTH_SHORT).show();
+        } else if (!tenTangList.contains(tenTang)) {
             Tang tang = new Tang();
-            String maTang = tangList.get(tangList.size() - 1).getId();
+            String maTang = Iterables.getLast(tangList).getId();
             tang.setMaTang("t" + (Integer.parseInt(maTang) + 1));
             tang.setTenTang(tenTang);
+            tangList.add(tang);
             tangDatabase.addTang(tang);
+            themTangAdapter = new ThemTangAdapter(tangList, this);
+            rcvThemTang.setAdapter(themTangAdapter);
         } else {
             Toast.makeText(getContext(), "Tầng đã tồn tại", Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void OnClickChonTang(Tang tang, int position) {
+        maTang = tang.getMaTang();
+        banList = banDatabase.getSoBan(maTang);
+        soBanRecyclerViewAdapter = new SoBanRecyclerViewAdapter(banList, this, mContext, true);
+        rcvThemBan.setAdapter(soBanRecyclerViewAdapter);
     }
 }

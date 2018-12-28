@@ -9,6 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import com.nqt.zozoo.adapter.thembanadapter.OnClickThemBanFragment;
 
 public class AddItemDialog extends Dialog {
     private EditText edtThemTang;
+    private Button btnThemTang;
     private OnClickThemBanFragment onClickThemBanFragment;
 
     public AddItemDialog(Context context) {
@@ -33,13 +35,13 @@ public class AddItemDialog extends Dialog {
 
     private void init() {
         edtThemTang = findViewById(R.id.edt_dialog_them_tang);
+        btnThemTang = findViewById(R.id.btn_dialog_them_tang);
 
-        edtThemTang.setOnClickListener(new View.OnClickListener() {
+        btnThemTang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkEdtEmty(edtThemTang)) {
-                    onClickThemBanFragment.OnClickThemTang(String.valueOf(edtThemTang.getText()));
-                }
+                onClickThemBanFragment.OnClickThemTang(String.valueOf(edtThemTang.getText()));
+                dismiss();
             }
         });
     }
@@ -48,11 +50,4 @@ public class AddItemDialog extends Dialog {
         this.onClickThemBanFragment = onClickThemBanFragment;
     }
 
-    private boolean checkEdtEmty(EditText editText) {
-        String str = String.valueOf(editText.getText());
-        if (str.matches("")) {
-            Toast.makeText(getContext(), "Bạn chưa điền tên tầng", Toast.LENGTH_SHORT).show();
-        }
-        return true;
-    }
 }

@@ -232,7 +232,9 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
     public void OnClickTangSoLuong(OrderList orderList, int position) {
         for (OrderList order : orderMonList) {
             if (order.equalsMaMonAn(orderList)) {
-                order.setSoLuong(orderList.getSoLuong());
+                int soLuong = orderList.getSoLuong();
+                order.setSoLuong(soLuong);
+                order.setGiaTien(order.getGiaTien());
             }
         }
     }
@@ -241,7 +243,9 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
     public void OnClickGiamSoLuong(OrderList orderList, int position) {
         for (OrderList order : orderMonList) {
             if (order.equalsMaMonAn(orderList)) {
-                order.setSoLuong(orderList.getSoLuong());
+                int soLuong = orderList.getSoLuong();
+                order.setSoLuong(soLuong);
+                order.setGiaTien(order.getGiaTien());
             }
         }
     }
@@ -272,7 +276,9 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
                 break;
             case R.id.btn_order_luu:
                 if (orderMonList.size() == 0 && orderMonListOld.size() != 0) {
-                    orderMonListDatabase.deleteOrderList(maOrder);
+                    for (OrderList list : orderMonListOld) {
+                        orderMonListDatabase.deleteOrderList(list.getMaOrder());
+                    }
                     if (orderMonList.isEmpty()) {
                         orderDatabase.deleteOrder(order.getId());
                         int statusTable = 0;
@@ -304,11 +310,11 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
             long time = System.currentTimeMillis();
             order.setTimeUpdate(String.valueOf(time));
             orderDatabase.updateOrder(order, Integer.parseInt(order.getId()));
+            for (OrderList list : orderMonListOld) {
+                orderMonListDatabase.deleteOrderList(list.getMaOrder());
+            }
             for (OrderList list : orderMonList) {
                 orderMonListDatabase.updateOrderList(list, list.getMaMonAn(), maOrder);
-            }
-            for (String maDele : maDelete) {
-                orderMonListDatabase.deleteOrderListWithMaMonAn(maOrder, maDele);
             }
         } else {
             Order order = new Order();

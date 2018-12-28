@@ -38,7 +38,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"
+        android:layout_weight="6"
         android:orientation="vertical"
         android:padding="5dp">
 
@@ -63,6 +63,79 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="3dp"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="Bàn:" />
+
+            <TextView
+                android:id="@+id/txt_order_vi_tri_ban"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="3dp"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="SL Món:" />
+
+            <TextView
+                android:id="@+id/txt_order_so_luong_mon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="3dp"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="Số Lượng:" />
+
+            <TextView
+                android:id="@+id/txt_order_so_luong_do"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="3dp"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="Tổng:" />
+
+            <TextView
+                android:id="@+id/txt_order_tong_tien"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="2"
             android:orientation="horizontal">
 
@@ -82,8 +155,15 @@
                 android:id="@+id/btn_order_xoa_het"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Xóa Hết"
+                android:layout_marginEnd="25dp"
+                android:text="X.Hết"
                 tools:ignore="ButtonStyle" />
+
+            <Button
+                android:id="@+id/btn_thanh_toan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="T.Toán" />
         </LinearLayout>
     </LinearLayout>
 

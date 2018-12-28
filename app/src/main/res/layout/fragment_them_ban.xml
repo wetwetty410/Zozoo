@@ -46,7 +46,7 @@
         <Button
             android:id="@+id/btn_them_tang"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="Thêm" />
 
         <ScrollView
@@ -56,8 +56,8 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rcv_them_tang"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
                 android:orientation="horizontal"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_them_tang" />

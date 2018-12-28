@@ -97,12 +97,8 @@ public class BanHangSoBanFragment extends Fragment {
 
         Context context = view.getContext();
         // Tạo adapter cho recyclerView
+        rcvBanHangSoBan.setLayoutManager(new LinearLayoutManager(context));
 
-        if (mColumnCount <= 1) {
-            rcvBanHangSoBan.setLayoutManager(new LinearLayoutManager(context));
-        } else {
-            rcvBanHangSoBan.setLayoutManager(new GridLayoutManager(context, mColumnCount, GridLayoutManager.HORIZONTAL, false));
-        }
         rcvBanHangSoBan.setAdapter(new BanHangSoBanRecyclerViewAdapter(mListener, context));
         return view;
     }

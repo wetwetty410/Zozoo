@@ -66,8 +66,8 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final boolean statusBan = banList.get(position).getStatusBan() == 1;
         holder.txtThuTuBan.setText(String.valueOf(position + 1));
+        final boolean statusBan = banList.get(position).getStatusBan() == 1;
         if (statusBan) {
             holder.txtThuTuBan.setBackgroundResource(R.drawable.ic_table_style_red);
         } else {
@@ -75,24 +75,16 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
 
         }
         int indexWidth = (int) (convertDpToPixel(widthScreen, context) - (convertDpToPixel(5, context) * 6));
-        holder.txtThuTuBan.setWidth(indexWidth / 5);
-        if (!mIsThemBan) {
-            holder.view.setOnClickListener(new View.OnClickListener() {
-                @SuppressLint("ResourceType")
-                @Override
-                public void onClick(View v) {
-
-                    String nameBan = banList.get(position).getMaBan();
-
-                    FragmentTransaction transaction = ((BanHangActivity) context).getSupportFragmentManager().beginTransaction();
-                    transaction.add(android.R.id.content, OrderFragment.newInstance(context, statusBan, nameBan));
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-                    Log.d(TAGE, "onClick:OrderFragMent ");
-                }
-            });
-        }
+        holder.txtThuTuBan.setWidth(indexWidth / 4);
     }
+
+    public static float convertDpToPixel(float dp, Context context) {
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return px;
+    }
+
 
     @Override
     public int getItemCount() {
@@ -107,15 +99,21 @@ public class SoBanRecyclerViewAdapter extends RecyclerView.Adapter<SoBanRecycler
             super(itemView);
             view = itemView;
             txtThuTuBan = itemView.findViewById(R.id.txt_thu_tu_ban);
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!mIsThemBan) {
+                        final boolean statusBan = banList.get(getAdapterPosition()).getStatusBan() == 1;
+                        String nameBan = banList.get(getAdapterPosition()).getMaBan();
+                        FragmentTransaction transaction = ((BanHangActivity) context).getSupportFragmentManager().beginTransaction();
+                        transaction.add(android.R.id.content, OrderFragment.newInstance(context, statusBan, nameBan));
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+                        Log.d(TAGE, "onClick:OrderFragMent ");
+                    }
+                }
+            });
         }
-
     }
-
-    public static float convertDpToPixel(float dp, Context context) {
-        Resources resources = context.getResources();
-        DisplayMetrics metrics = resources.getDisplayMetrics();
-        float px = dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
-        return px;
-    }
-
 }
