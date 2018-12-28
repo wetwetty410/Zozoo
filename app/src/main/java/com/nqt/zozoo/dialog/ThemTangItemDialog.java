@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.text.InputType;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -63,6 +64,9 @@ public class ThemTangItemDialog extends Dialog {
         btnThemTang = findViewById(R.id.btn_dialog_them_tang);
         if (type.equals("editTang") || type.equals("editBan")) {
             btnThemTang.setText("Lưu");
+        }
+        if (type.equals("editBan")) {
+            edtThemTang.setInputType(InputType.TYPE_CLASS_NUMBER);
         }
         btnThemTang.setOnClickListener(new View.OnClickListener() {
             @Override

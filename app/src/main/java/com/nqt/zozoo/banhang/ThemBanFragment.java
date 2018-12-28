@@ -11,6 +11,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,7 +110,7 @@ public class ThemBanFragment extends Fragment implements OnClickThemBanFragment,
         appCompatActivity.setSupportActionBar(toolbar);
         appCompatActivity.getSupportActionBar().setTitle("");
         txtTitle.setText("Quản Lý Bàn");
-
+        edtThemBan.setInputType(InputType.TYPE_NUMBER_VARIATION_NORMAL);
         LinearLayoutManager llnManagerThemTang = new LinearLayoutManager(context);
         themTangAdapter = new ThemTangAdapter(tangList, this);
         llnManagerThemTang.setOrientation(LinearLayoutManager.HORIZONTAL);
