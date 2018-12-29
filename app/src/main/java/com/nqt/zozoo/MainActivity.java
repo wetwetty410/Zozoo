@@ -24,8 +24,9 @@ import com.nqt.zozoo.database.DatabaseManager;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     private static final String TAG = "MainActivity";
-    private Button btnBanHang, btnNhaBep, btnDatHangNhanh, btnNhaKho, btnBaoCao, btnCaiDat, btnTroGiup, btnHuongDan;
+    private Button btnNhaBep, btnDatHangNhanh, btnNhaKho, btnBaoCao, btnCaiDat, btnTroGiup, btnHuongDan;
     private Toolbar toolbar;
+    private View llnBanHang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         // clearAppData();
         toolbar = findViewById(R.id.toolbar);
-        btnBanHang = findViewById(R.id.btn_ban_hang);
+        llnBanHang = findViewById(R.id.lln_ban_hang);
         btnNhaBep = findViewById(R.id.btn_nha_bep);
         btnDatHangNhanh = findViewById(R.id.btn_dat_hang_nhanh);
         btnNhaKho = findViewById(R.id.btn_nha_kho);
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        btnBanHang.setOnClickListener(new View.OnClickListener() {
+        llnBanHang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: btn ban hang");
