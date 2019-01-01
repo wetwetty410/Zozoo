@@ -113,7 +113,6 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
         monAnList = monAnDatabase.getAllMonAn();
 
         orderMonListDatabase = new OrderListDatabase(mContext);
-        orderMonListOld = orderMonListDatabase.getAllOrderList();
 
         orderMonList = new ArrayList<>();
         maDelete = new ArrayList<>();
@@ -121,7 +120,6 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
         orderDatabase = new OrderDatabase(mContext);
 
         monOrderDatabase = new MonOrderDatabase(mContext);
-        monDaOrderList = monOrderDatabase.getAllMonOrder();
 
         tangDatabase = new TangDatabase(mContext);
         banDatabase = new BanDatabase(mContext);
@@ -188,8 +186,10 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
         List<Order> list = orderDatabase.getAllOrder();
         if (list == null || list.size() == 0) {
             maOrder = "OD" + 1500;
+        } else if (order == null) {
+            maOrder = "OD" + ((Iterables.getLast(orderDatabase.getAllOrder()).getMaOrder().substring(2) + 10));
         } else {
-            maOrder = "OD" + ((Iterables.getLast(orderDatabase.getAllOrder()).getMaOrder().substring(2)) + 10);
+            maOrder = order.getMaOrder();
         }
         imgBack.setOnClickListener(this);
         btnTatCa.setOnClickListener(this);
@@ -288,22 +288,22 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
                 rcvOrder.setAdapter(orderListAdapter);
                 break;
             case R.id.btn_order_luu:
-                orderMonListOld=orderMonListDatabase.getAllOrderList();
+                monDaOrderList = monOrderDatabase.getMonOrderWithMaBan(nameTable);
+                orderMonListOld = orderMonListDatabase.getOrderListWithCodeOrder(maOrder);
                 if (checkEqualsList(orderMonList, orderMonListOld)) {
                     Toast.makeText(getContext(), "Không có gì để lưu", Toast.LENGTH_SHORT).show();
-                    break;
+                    return;
                 }
-
                 if (orderMonListOld.size() != 0) {
                     for (OrderDanhSachMon orderDanhSachMon : orderMonListOld) {
-                        orderMonListDatabase.deleteOrderList(maOrder);
+                        orderMonListDatabase.deleteOrderListWithMaMonAn(maOrder, orderDanhSachMon.getMaMonAn());
                     }
+                }
+                if (monDaOrderList.size() != 0) {
                     for (MonOrder monOrder : monDaOrderList) {
                         monOrderDatabase.deleteMonOrder(nameTable, maOrder, monOrder.getMaMon());
                     }
                 }
-
-
                 if (orderMonList.size() != 0) {
                     doOnclickLuuButton();
                     for (OrderDanhSachMon monOrder : orderMonList) {
@@ -320,16 +320,16 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
                         monOrderDatabase.addMonOrder(mon);
                         orderMonListDatabase.addOrderList(monOrder);
                     }
+                    Toast.makeText(getContext(), "Lưu thành công!", Toast.LENGTH_SHORT).show();
                     getActivity().recreate();
-                    Toast.makeText(getContext(), "Lưu thành công!", Toast.LENGTH_LONG).show();
                     getActivity().onBackPressed();
                 } else {
-                    getActivity().recreate();
+                    int statusTable = 0;
+                    banDatabase.updateStatusBan(statusTable, nameTable);
                     Toast.makeText(getContext(), "Hủy đơn thành công!", Toast.LENGTH_SHORT).show();
+                    getActivity().recreate();
                     getActivity().onBackPressed();
                 }
-
-
                 break;
             case R.id.img_order_backstack:
                 getActivity().onBackPressed();
@@ -360,13 +360,18 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
     }
 
     private boolean checkEqualsList(List<OrderDanhSachMon> orderDanhSachMons, List<OrderDanhSachMon> orderDanhSachMonOld) {
-        for (OrderDanhSachMon orderOld : orderDanhSachMonOld) {
-            for (OrderDanhSachMon order : orderDanhSachMons) {
+        if (orderDanhSachMonOld.size() == 0 && orderDanhSachMons.size() != 0 ||
+                orderDanhSachMonOld.size() != 0 && orderDanhSachMons.size() == 0) {
+            return false;
+        }
+        for (OrderDanhSachMon order : orderDanhSachMons) {
+            for (OrderDanhSachMon orderOld : orderDanhSachMonOld) {
                 if (!order.getMaMonAn().equals(orderOld.getMaMonAn())) {
-                    return true;
+                    // TODO: logic in this false
+                    return false;
                 }
             }
         }
-        return false;
+        return true;
     }
 }

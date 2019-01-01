@@ -25,6 +25,31 @@ public class MonOrderDatabase extends DatabaseManager {
         super(context);
     }
 
+    public List<MonOrder> getMonOrderWithMaBan(String maBan) {
+        openDatabase();
+        List<MonOrder> monOrders = new ArrayList<>();
+        Cursor cursor = sqLiteDatabase.query(MON_ORDER, null,
+                MON_ORDER_MA_BAN + "=?", new String[]{maBan}, null, null, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            MonOrder monOrder = new MonOrder(
+                    cursor.getString(cursor.getColumnIndex(MON_ORDER_ID)),
+                    cursor.getString(cursor.getColumnIndex(MON_ORDER_MA_ORDER)),
+                    cursor.getString(cursor.getColumnIndex(MON_ORDER_TEN_BAN)),
+                    cursor.getString(cursor.getColumnIndex(MON_ORDER_TEN_MON)),
+                    cursor.getString(cursor.getColumnIndex(MON_ORDER_SO_LUONG)),
+                    cursor.getString(cursor.getColumnIndex(MON_ORDER_TRANG_THAI)),
+                    cursor.getString(cursor.getColumnIndex(MON_ORDER_MA_BAN)),
+                    cursor.getString(cursor.getColumnIndex(MON_ORDER_MA_MON))
+            );
+            monOrders.add(monOrder);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        closeDatabase();
+        return monOrders;
+    }
+
     public List<MonOrder> getAllMonOrder() {
         openDatabase();
         List<MonOrder> monOrders = new ArrayList<>();
