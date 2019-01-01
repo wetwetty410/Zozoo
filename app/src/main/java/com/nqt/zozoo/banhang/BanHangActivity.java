@@ -16,7 +16,7 @@ import com.nqt.zozoo.utils.MonAn;
 
 public class BanHangActivity extends AppCompatActivity implements View.OnClickListener,
         BanHangSoBanFragment.OnListFragmentInteractionListener,
-        MonAnFragment.OnListFragmentInteractionListener {
+        MonOrderFragment.OnListFragmentInteractionListener {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Toolbar tlbBHSB;

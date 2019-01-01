@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_ban_hang:
+            case R.id.lln_ban_hang:
 
                 break;
 

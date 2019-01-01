@@ -62,10 +62,10 @@ public class BanDatabase extends DatabaseManager {
         closeDatabase();
     }
 
-    public Ban getBan(int idDanhSachBan) {
+    public Ban getBan(String maBan) {
         openDatabase();
 
-        @SuppressLint("Recycle") Cursor cursor = sqLiteDatabase.query(TABLE_BAN, null, TABLE_BAN_ID + "=?", new String[]{String.valueOf(idDanhSachBan)}, null, null, null);
+        @SuppressLint("Recycle") Cursor cursor = sqLiteDatabase.query(TABLE_BAN, null, TABLE_BAN_MA_BAN + "=?", new String[]{String.valueOf(maBan)}, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
         Ban soBan = new Ban(cursor.getString(0),

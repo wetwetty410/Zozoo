@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.nqt.zozoo.utils.OrderList;
+import com.nqt.zozoo.utils.OrderDanhSachMon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,27 +26,27 @@ public class OrderListDatabase extends DatabaseManager {
         super(context);
     }
 
-    public void addOrderList(OrderList orderList) {
+    public void addOrderList(OrderDanhSachMon orderDanhSachMon) {
         openDatabase();
         ContentValues values = new ContentValues();
-        values.put(TABLE_ORDER_MA, orderList.getMaOrder());
-        values.put(TABLE_ORDER_MA_MON_AN, orderList.getMaMonAn());
-        values.put(TABLE_ORDER_TEN_MON_AN, orderList.getTenMonAn());
-        values.put(TABLE_ORDER_GIA_TIEN, orderList.getGiaTien());
-        values.put(TABLE_ORDER_SO_LUONG, orderList.getSoLuong());
+        values.put(TABLE_ORDER_MA, orderDanhSachMon.getMaOrder());
+        values.put(TABLE_ORDER_MA_MON_AN, orderDanhSachMon.getMaMonAn());
+        values.put(TABLE_ORDER_TEN_MON_AN, orderDanhSachMon.getTenMonAn());
+        values.put(TABLE_ORDER_GIA_TIEN, orderDanhSachMon.getGiaTien());
+        values.put(TABLE_ORDER_SO_LUONG, orderDanhSachMon.getSoLuong());
         sqLiteDatabase.insert(TABLE_ORDER, null, values);
         closeDatabase();
     }
 
-    public List<OrderList> getAllOrderList() {
+    public List<OrderDanhSachMon> getAllOrderList() {
         openDatabase();
-        List<OrderList> orderListList = new ArrayList<>();
+        List<OrderDanhSachMon> orderListDanhSachMon = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_ORDER;
         Cursor cursor = sqLiteDatabase.rawQuery(query, null);
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {
-            OrderList orderList = new OrderList(
+            OrderDanhSachMon orderDanhSachMon = new OrderDanhSachMon(
                     cursor.getString(0),
                     cursor.getString(1),
                     cursor.getString(2),
@@ -54,15 +54,15 @@ public class OrderListDatabase extends DatabaseManager {
                     cursor.getString(4),
                     cursor.getInt(5)
             );
-            orderListList.add(orderList);
+            orderListDanhSachMon.add(orderDanhSachMon);
             cursor.moveToNext();
         }
         cursor.close();
         closeDatabase();
-        return orderListList;
+        return orderListDanhSachMon;
     }
 
-    public OrderList getOrderList(int idOrderList) {
+    public OrderDanhSachMon getOrderList(int idOrderList) {
         openDatabase();
         Cursor cursor = sqLiteDatabase.query(TABLE_ORDER, null,
                 TABLE_ORDER_ID + "=?",
@@ -70,7 +70,7 @@ public class OrderListDatabase extends DatabaseManager {
         if (cursor != null) {
             cursor.moveToFirst();
         }
-        OrderList orderList = new OrderList(
+        OrderDanhSachMon orderDanhSachMon = new OrderDanhSachMon(
                 cursor.getString(0),
                 cursor.getString(1),
                 cursor.getString(2),
@@ -80,18 +80,18 @@ public class OrderListDatabase extends DatabaseManager {
         );
         cursor.close();
         closeDatabase();
-        return orderList;
+        return orderDanhSachMon;
     }
 
-    public List<OrderList> getOrderListWithCodeOrder(String maOrder) {
+    public List<OrderDanhSachMon> getOrderListWithCodeOrder(String maOrder) {
         openDatabase();
-        List<OrderList> orderLists = new ArrayList<>();
+        List<OrderDanhSachMon> orderDanhSachMons = new ArrayList<>();
         Cursor cursor = sqLiteDatabase.query(TABLE_ORDER, null,
                 TABLE_ORDER_MA + "=?",
                 new String[]{String.valueOf(maOrder)}, null, null, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            OrderList orderList = new OrderList(
+            OrderDanhSachMon orderDanhSachMon = new OrderDanhSachMon(
                     cursor.getString(0),
                     cursor.getString(1),
                     cursor.getString(2),
@@ -99,24 +99,24 @@ public class OrderListDatabase extends DatabaseManager {
                     cursor.getString(4),
                     cursor.getInt(5)
             );
-            orderLists.add(orderList);
+            orderDanhSachMons.add(orderDanhSachMon);
             cursor.moveToNext();
         }
         cursor.close();
         closeDatabase();
-        return orderLists;
+        return orderDanhSachMons;
     }
 
 
-    public void updateOrderList(OrderList orderList, String maOrderList, String maOrder) {
+    public void updateOrderList(OrderDanhSachMon orderDanhSachMon, String maOrderList, String maOrder) {
         openDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(TABLE_ORDER_MA, orderList.getMaOrder());
-        values.put(TABLE_ORDER_TEN_MON_AN, orderList.getTenMonAn());
-        values.put(TABLE_ORDER_MA_MON_AN, orderList.getMaMonAn());
-        values.put(TABLE_ORDER_GIA_TIEN, orderList.getGiaTien());
-        values.put(TABLE_ORDER_SO_LUONG, orderList.getSoLuong());
+        values.put(TABLE_ORDER_MA, orderDanhSachMon.getMaOrder());
+        values.put(TABLE_ORDER_TEN_MON_AN, orderDanhSachMon.getTenMonAn());
+        values.put(TABLE_ORDER_MA_MON_AN, orderDanhSachMon.getMaMonAn());
+        values.put(TABLE_ORDER_GIA_TIEN, orderDanhSachMon.getGiaTien());
+        values.put(TABLE_ORDER_SO_LUONG, orderDanhSachMon.getSoLuong());
         int index = sqLiteDatabase.update(TABLE_ORDER, values, TABLE_ORDER_MA_MON_AN + "=? AND " + TABLE_ORDER_MA + "=?",
                 new String[]{maOrderList, maOrder});
         if (index == 0) {

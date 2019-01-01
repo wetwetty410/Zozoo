@@ -52,10 +52,10 @@ public class TangDatabase extends DatabaseManager {
         closeDatabase();
     }
 
-    public Tang getTang(int idDanhSachBan) {
+    public Tang getTang(String maTang) {
         openDatabase();
 
-        Cursor cursor = sqLiteDatabase.query(TANG, null, TANG_ID + "=?", new String[]{String.valueOf(idDanhSachBan)}, null, null, null);
+        Cursor cursor = sqLiteDatabase.query(TANG, null, TANG_MA + "=?", new String[]{String.valueOf(maTang)}, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
         Tang tang = new Tang(cursor.getString(0),

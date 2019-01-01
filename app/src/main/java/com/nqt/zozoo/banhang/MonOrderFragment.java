@@ -11,26 +11,26 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nqt.zozoo.R;
-import com.nqt.zozoo.adapter.MonAnRecyclerViewAdapter;
+import com.nqt.zozoo.adapter.monanadapter.BanMonAnOrderAdapter;
+import com.nqt.zozoo.adapter.monanadapter.OnClickMonOrderFragment;
 import com.nqt.zozoo.database.MonAnDatabase;
+import com.nqt.zozoo.database.MonOrderDatabase;
 import com.nqt.zozoo.utils.MonAn;
+import com.nqt.zozoo.utils.MonOrder;
 
 import java.util.List;
 
-public class MonAnFragment extends Fragment {
+public class MonOrderFragment extends Fragment {
     private static final String PAGE = "page";
     private static final String TITLE = "title";
-    private OnListFragmentInteractionListener mListener;
+    private OnClickMonOrderFragment mListener;
     private RecyclerView rcvMonAn;
-    private MonAnDatabase monAnDatabase;
-    private List<MonAn> monAnList;
+    private MonOrderDatabase monOrderDatabase;
+    private List<String> monOrderList;
 
-    public MonAnFragment() {
-    }
-
-    public static MonAnFragment newInstance(int page, String title) {
+    public static MonOrderFragment newInstance(int page, String title) {
         Bundle args = new Bundle();
-        MonAnFragment fragment = new MonAnFragment();
+        MonOrderFragment fragment = new MonOrderFragment();
         args.putInt(PAGE, page);
         args.putString(TITLE, title);
         fragment.setArguments(args);
@@ -40,8 +40,8 @@ public class MonAnFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        monAnDatabase = new MonAnDatabase(getContext());
-        monAnList = monAnDatabase.getAllMonAn();
+        monOrderDatabase = new MonOrderDatabase(getContext());
+        monOrderList = monOrderDatabase.getBanOrder();
         if (getArguments() != null) {
 
         }
@@ -51,12 +51,12 @@ public class MonAnFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mon_an, container, false);
-        rcvMonAn = view.findViewById(R.id.rcv_mon_an);
+        rcvMonAn = view.findViewById(R.id.rcv_ban_order_mon);
         Context context = view.getContext();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         rcvMonAn.setLayoutManager(layoutManager);
-        rcvMonAn.setAdapter(new MonAnRecyclerViewAdapter(monAnList, mListener, context));
+        rcvMonAn.setAdapter(new BanMonAnOrderAdapter(monOrderList, mListener,context));
         return view;
     }
 
@@ -64,13 +64,12 @@ public class MonAnFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof BanHangSoBanFragment.OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+        //    mListener = (OnClickMonOrderFragment) context;
         } else {
             throw new RuntimeException(context.toString());
         }
 
     }
-
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(MonAn monAn);
     }

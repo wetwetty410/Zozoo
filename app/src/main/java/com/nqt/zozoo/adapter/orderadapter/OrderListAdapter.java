@@ -8,10 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nqt.zozoo.R;
-import com.nqt.zozoo.utils.MonAn;
-import com.nqt.zozoo.utils.OrderList;
+import com.nqt.zozoo.utils.OrderDanhSachMon;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -19,13 +17,13 @@ import java.util.List;
  */
 
 public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.ViewHoler> {
-    private List<OrderList> monAnOrder;
+    private List<OrderDanhSachMon> monAnOrder;
     private OnClickOrderFragment onClickOrderFragment;
 
 
-    public OrderListAdapter(List<OrderList> orderList, OnClickOrderFragment onClickOrderFragment) {
+    public OrderListAdapter(List<OrderDanhSachMon> orderDanhSachMon, OnClickOrderFragment onClickOrderFragment) {
         this.onClickOrderFragment = onClickOrderFragment;
-        this.monAnOrder = orderList;
+        this.monAnOrder = orderDanhSachMon;
     }
 
     @Override

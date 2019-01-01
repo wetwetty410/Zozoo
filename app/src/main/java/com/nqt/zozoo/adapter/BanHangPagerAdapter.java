@@ -6,9 +6,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.nqt.zozoo.banhang.BanHangSoBanFragment;
-import com.nqt.zozoo.banhang.MonAnFragment;
+import com.nqt.zozoo.banhang.MonOrderFragment;
 import com.nqt.zozoo.database.BanDatabase;
-import com.nqt.zozoo.utils.MonAn;
 
 /**
  * Created by USER on 11/30/2018.
@@ -34,7 +33,7 @@ public class BanHangPagerAdapter extends FragmentPagerAdapter {
                 fragment = BanHangSoBanFragment.newInstance(numItemSoBan, 0, "SO_BAN");
                 return fragment;
             case 1:
-                fragment = MonAnFragment.newInstance(1, "MON_AN");
+                fragment = MonOrderFragment.newInstance(1, "MON_AN");
                 return fragment;
             default:
                 fragment = BanHangSoBanFragment.newInstance(numItemSoBan, 0, "SO_BAN");

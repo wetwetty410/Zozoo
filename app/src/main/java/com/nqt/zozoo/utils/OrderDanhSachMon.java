@@ -1,24 +1,43 @@
 package com.nqt.zozoo.utils;
 
 
-public class OrderList {
+public class OrderDanhSachMon {
     private String id;
     private String maOrder;
     private String maMonAn;
     private String tenMonAn;
     private String giaTien;
     private int soLuong;
+    private String trangThai;
 
-    public OrderList() {
+    public OrderDanhSachMon() {
     }
 
-    public OrderList(String id, String maOrder, String maMonAn, String tenMonAn, String giaTien, int soLuong) {
+    public OrderDanhSachMon(String id, String maOrder, String maMonAn, String tenMonAn, String giaTien, int soLuong) {
         this.id = id;
         this.maOrder = maOrder;
         this.maMonAn = maMonAn;
         this.tenMonAn = tenMonAn;
         this.giaTien = giaTien;
         this.soLuong = soLuong;
+    }
+
+    public OrderDanhSachMon(String id, String maOrder, String maMonAn, String tenMonAn, String giaTien, int soLuong, String trangThai) {
+        this.id = id;
+        this.maOrder = maOrder;
+        this.maMonAn = maMonAn;
+        this.tenMonAn = tenMonAn;
+        this.giaTien = giaTien;
+        this.soLuong = soLuong;
+        this.trangThai = trangThai;
+    }
+
+    public String getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(String trangThai) {
+        this.trangThai = trangThai;
     }
 
     public int getSoLuong() {
@@ -73,7 +92,7 @@ public class OrderList {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        OrderList list = (OrderList) o;
+        OrderDanhSachMon list = (OrderDanhSachMon) o;
 
         return maMonAn.equals(list.maMonAn);
     }
