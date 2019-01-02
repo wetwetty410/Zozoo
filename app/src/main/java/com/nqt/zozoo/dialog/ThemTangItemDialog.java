@@ -66,7 +66,10 @@ public class ThemTangItemDialog extends Dialog {
             btnThemTang.setText("Lưu");
         }
         if (type.equals("editBan")) {
-            edtThemTang.setInputType(InputType.TYPE_CLASS_NUMBER);
+            edtThemTang.setHint("Tên bàn");
+            edtThemTang.setInputType(InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+        }else {
+            edtThemTang.setHint("Tên Tầng");
         }
         btnThemTang.setOnClickListener(new View.OnClickListener() {
             @Override

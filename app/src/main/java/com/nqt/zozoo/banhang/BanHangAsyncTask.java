@@ -1,5 +1,6 @@
 package com.nqt.zozoo.banhang;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
  */
 
 public class BanHangAsyncTask extends AsyncTask<Void, Integer, Void> {
+    @SuppressLint("StaticFieldLeak")
     private AppCompatActivity appCompatActivity;
     private ProgressDialog progressDrawable;
 
@@ -33,7 +35,7 @@ public class BanHangAsyncTask extends AsyncTask<Void, Integer, Void> {
     protected Void doInBackground(Void... voids) {
         try {
             Thread.sleep(900);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ignored) {
         }
         progressDrawable.dismiss();
         return null;

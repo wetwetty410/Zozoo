@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/menu"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:background="@drawable/banner"
+        android:orientation="vertical"
+        android:padding="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:padding="10dp"
+                android:src="@drawable/Layer_4" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:text="Jeniffer Wilson"
+                android:textAllCaps="false"
+                android:textColor="#fff"
+                android:textSize="22sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:background="@drawable/Rectangle_1"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:drawableLeft="@drawable/Dashboard_icon"
+            android:drawablePadding="16dp"
+            android:gravity="start"
+            android:padding="5dp"
+            android:text="Dashboard"
+            android:textAllCaps="false"
+            android:textColor="#a6aff1"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:drawableLeft="@drawable/Activity_icon"
+            android:drawablePadding="16dp"
+            android:gravity="start"
+            android:padding="5dp"
+            android:text="Activity"
+            android:textAllCaps="false"
+            android:textColor="#a6aff1"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:drawableLeft="@drawable/Tasks_icon"
+            android:drawablePadding="16dp"
+            android:gravity="start"
+            android:padding="5dp"
+            android:text="Tasks"
+            android:textAllCaps="false"
+            android:textColor="#a6aff1"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:drawableLeft="@drawable/Settings_icon"
+            android:drawablePadding="16dp"
+            android:gravity="start"
+            android:padding="5dp"
+            android:text="Account settings"
+            android:textAllCaps="false"
+            android:textColor="#a6aff1"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:drawableLeft="@drawable/Logout_icon"
+            android:drawablePadding="16dp"
+            android:gravity="start"
+            android:padding="5dp"
+            android:text="Log out"
+            android:textAllCaps="false"
+            android:textColor="#a6aff1"
+            android:textSize="18sp" />
+    </LinearLayout>
+</LinearLayout>
