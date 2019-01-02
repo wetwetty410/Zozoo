@@ -36,7 +36,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.View
     @Override
     public void onBindViewHolder(ViewHoler holder, int position) {
         holder.txtTenMonAn.setText(monAnOrder.get(position).getTenMonAn());
-        String donGia = setGia(String.valueOf(monAnOrder.get(position).getGiaTien()));
+        String donGia = regexCommafy(String.valueOf(monAnOrder.get(position).getGiaTien()));
         holder.txtDonGia.setText(donGia);
         holder.txtSoLuong.setText(String.valueOf(monAnOrder.get(position).getSoLuong()));
     }
@@ -75,18 +75,18 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.View
             imgGiam.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int giaMon = 0;
+                    int giaMon = Integer.parseInt(monAnOrder.get(getAdapterPosition()).getGiaTien());
                     int soLuong = monAnOrder.get(getAdapterPosition()).getSoLuong();
-                    if (soLuong > 0) {
+                    if (soLuong > 1) {
                         giaMon = Integer.parseInt(monAnOrder.get(getAdapterPosition()).getGiaTien()) / soLuong;
                         soLuong--;
+                        monAnOrder.get(getAdapterPosition()).setSoLuong(soLuong);
+                        txtSoLuong.setText(String.valueOf(monAnOrder.get(getAdapterPosition()).getSoLuong()));
+                        String donGia = regexCommafy(String.valueOf(soLuong * giaMon));
+                        monAnOrder.get(getAdapterPosition()).setGiaTien(String.valueOf(soLuong * giaMon));
+                        txtDonGia.setText(donGia);
+                        onClickOrderFragment.OnClickGiamSoLuong(monAnOrder.get(getAdapterPosition()), getAdapterPosition());
                     }
-                    monAnOrder.get(getAdapterPosition()).setSoLuong(soLuong);
-                    txtSoLuong.setText(String.valueOf(monAnOrder.get(getAdapterPosition()).getSoLuong()));
-                    String donGia = setGia(String.valueOf(soLuong * giaMon));
-                    monAnOrder.get(getAdapterPosition()).setGiaTien(String.valueOf(soLuong * giaMon));
-                    txtDonGia.setText(donGia);
-                    onClickOrderFragment.OnClickGiamSoLuong(monAnOrder.get(getAdapterPosition()), getAdapterPosition());
                 }
             });
 
@@ -97,25 +97,25 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.View
                     int giaMon = Integer.parseInt(monAnOrder.get(getAdapterPosition()).getGiaTien()) / soLuong;
                     if (soLuong < 1000) {
                         soLuong++;
+                        monAnOrder.get(getAdapterPosition()).setSoLuong(soLuong);
+                        txtSoLuong.setText(String.valueOf(monAnOrder.get(getAdapterPosition()).getSoLuong()));
+                        String donGia = regexCommafy(String.valueOf(soLuong * giaMon));
+                        monAnOrder.get(getAdapterPosition()).setGiaTien(String.valueOf(soLuong * giaMon));
+                        txtDonGia.setText(donGia);
+                        onClickOrderFragment.OnClickTangSoLuong(monAnOrder.get(getAdapterPosition()), getAdapterPosition());
                     }
-                    monAnOrder.get(getAdapterPosition()).setSoLuong(soLuong);
-                    txtSoLuong.setText(String.valueOf(monAnOrder.get(getAdapterPosition()).getSoLuong()));
-                    String donGia = setGia(String.valueOf(soLuong * giaMon));
-                    monAnOrder.get(getAdapterPosition()).setGiaTien(String.valueOf(soLuong * giaMon));
-                    txtDonGia.setText(donGia);
-                    onClickOrderFragment.OnClickTangSoLuong(monAnOrder.get(getAdapterPosition()), getAdapterPosition());
+
                 }
             });
         }
     }
-
-    private String setGia(String giaTien) {
-        if (giaTien.length() > 3 && giaTien.endsWith("000")) {
-            giaTien = giaTien.substring(0, giaTien.lastIndexOf("000")) + "K";
+    private static String regexCommafy(String inputNum) {
+        String regex = "(\\d)(?=(\\d{3})+$)";
+        String[] splittedNum = inputNum.split("\\.");
+        if (splittedNum.length == 2) {
+            return splittedNum[0].replaceAll(regex, "$1,") + "." + splittedNum[1];
+        } else {
+            return inputNum.replaceAll(regex, "$1,");
         }
-        if (giaTien.length() > 6 && giaTien.endsWith("000000")) {
-            giaTien = giaTien.substring(0, giaTien.lastIndexOf("000000")) + "TR";
-        }
-        return giaTien;
     }
 }

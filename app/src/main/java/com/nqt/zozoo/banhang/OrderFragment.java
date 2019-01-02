@@ -38,8 +38,11 @@ import com.nqt.zozoo.utils.OrderDanhSachMon;
 import com.nqt.zozoo.utils.Tang;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by USER on 12/12/2018.
@@ -54,6 +57,12 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
     private HashMap<String, String> saveSoLuong;
     private String maOrder;
     private List<String> maDelete;
+    private int tongTien;
+    private int tongSoLuongMon;
+    private int tongSoLuongDo;
+
+    private Ban ban;
+    private Tang tang;
 
     private NhomMonAnDatabase nhomMonAnDatabase;
     private TangDatabase tangDatabase;
@@ -83,6 +92,9 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
     private RecyclerView rcvNhomMonAn;
     private RecyclerView rcvMonAn;
     private RecyclerView rcvOrder;
+    private TextView txtSoLuongMon;
+    private TextView txtSoLuongDo;
+    private TextView txtTongTien;
 
 
     private DanhSachMonAdapter danhSachMonAdapter;
@@ -148,6 +160,9 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
         btnLuu = view.findViewById(R.id.btn_order_luu);
         btnXoaHet = view.findViewById(R.id.btn_order_xoa_het);
         txtViTriBan = view.findViewById(R.id.txt_order_vi_tri_ban);
+        txtSoLuongMon = view.findViewById(R.id.txt_order_so_luong_mon);
+        txtSoLuongDo = view.findViewById(R.id.txt_order_so_luong_do);
+        txtTongTien = view.findViewById(R.id.txt_order_tong_tien);
 
         Context context = view.getContext();
         final AppCompatActivity appCompatActivity = ((AppCompatActivity) getActivity());
@@ -167,17 +182,24 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
         LinearLayoutManager layoutManagerOrder = new LinearLayoutManager(context);
         rcvOrder.setLayoutManager(layoutManagerOrder);
 
+        ban = banDatabase.getBan(nameTable);
+        tang = tangDatabase.getTang(ban.getMaTang());
+
+
         if (tableStatus) {
 
 
             // khi bàn có table là true, bàn đang được sử dụng
             order = orderDatabase.getOrder(nameTable);
             maOrder = order.getMaOrder();
-
+            tongSoLuongDo = Integer.parseInt(order.getSoLuongDo());
+            tongSoLuongMon = Integer.parseInt(order.getSoLuongMon());
+            tongTien = Integer.parseInt(order.getTongTien());
             orderMonList = orderMonListDatabase.getOrderListWithCodeOrder(maOrder);
 
-            for (OrderDanhSachMon list : orderMonList)
+            for (OrderDanhSachMon list : orderMonList) {
                 saveSoLuong.put(list.getMaMonAn(), String.valueOf(list.getSoLuong()));
+            }
 
             orderListAdapter = new OrderListAdapter(orderMonList, this);
             rcvOrder.setAdapter(orderListAdapter);
@@ -191,12 +213,33 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
         } else {
             maOrder = order.getMaOrder();
         }
+
+        txtViTriBan.setText((ban.getTenBan() + " - " + tang.getTenTang()));
+
+        willDataChange(tongSoLuongMon, tongSoLuongDo, tongTien);
+
         imgBack.setOnClickListener(this);
         btnTatCa.setOnClickListener(this);
         btnHuyBo.setOnClickListener(this);
         btnLuu.setOnClickListener(this);
         btnXoaHet.setOnClickListener(this);
         return view;
+    }
+
+    private void willDataChange(int tongSoLuongMon, int tongSoLuongDo, int tongTien) {
+        txtSoLuongDo.setText(String.valueOf(tongSoLuongDo));
+        txtSoLuongMon.setText(String.valueOf(tongSoLuongMon));
+        txtTongTien.setText(regexCommafy(String.valueOf(tongTien)));
+    }
+
+    private static String regexCommafy(String inputNum) {
+        String regex = "(\\d)(?=(\\d{3})+$)";
+        String[] splittedNum = inputNum.split("\\.");
+        if (splittedNum.length == 2) {
+            return splittedNum[0].replaceAll(regex, "$1,") + "." + splittedNum[1];
+        } else {
+            return inputNum.replaceAll(regex, "$1,");
+        }
     }
 
     @Override
@@ -223,6 +266,9 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
         orderMonList.add(orderDanhSachMon);
         orderListAdapter = new OrderListAdapter(orderMonList, this);
         rcvOrder.setAdapter(orderListAdapter);
+        willDataChange(tongSoLuongMon = orderMonList.size(),
+                tongSoLuongDo = tongSoLuongDo + orderDanhSachMon.getSoLuong(),
+                tongTien = tongTien + Integer.parseInt(orderDanhSachMon.getGiaTien()));
 
     }
 
@@ -239,6 +285,9 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
         orderMonList.remove(orderDanhSachMon);
         orderListAdapter = new OrderListAdapter(orderMonList, this);
         rcvOrder.setAdapter(orderListAdapter);
+        willDataChange(tongSoLuongMon = orderMonList.size(),
+                tongSoLuongDo = tongSoLuongDo - orderDanhSachMon.getSoLuong(),
+                tongTien = tongTien - Integer.parseInt(orderDanhSachMon.getGiaTien()));
     }
 
     @Override
@@ -246,8 +295,11 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
         for (OrderDanhSachMon order : orderMonList) {
             if (order.equalsMaMonAn(orderDanhSachMon)) {
                 int soLuong = orderDanhSachMon.getSoLuong();
+                tongSoLuongDo = tongSoLuongDo + 1;
+                tongTien = tongTien + (Integer.parseInt(orderDanhSachMon.getGiaTien()) / orderDanhSachMon.getSoLuong());
                 order.setSoLuong(soLuong);
                 order.setGiaTien(order.getGiaTien());
+                willDataChange(tongSoLuongMon, tongSoLuongDo, tongTien);
             }
         }
     }
@@ -257,8 +309,11 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
         for (OrderDanhSachMon order : orderMonList) {
             if (order.equalsMaMonAn(orderDanhSachMon)) {
                 int soLuong = orderDanhSachMon.getSoLuong();
+                tongSoLuongDo = tongSoLuongDo - 1;
+                tongTien = tongTien - (Integer.parseInt(orderDanhSachMon.getGiaTien()) / orderDanhSachMon.getSoLuong());
                 order.setSoLuong(soLuong);
                 order.setGiaTien(order.getGiaTien());
+                willDataChange(tongSoLuongMon, tongSoLuongDo, tongTien);
             }
         }
     }
@@ -312,8 +367,6 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
                         mon.setMaBan(nameTable);
                         mon.setMaMon(monOrder.getMaMonAn());
                         mon.setSoLuongOrder(String.valueOf(monOrder.getSoLuong()));
-                        Ban ban = banDatabase.getBan(nameTable);
-                        Tang tang = tangDatabase.getTang(ban.getMaTang());
                         String viTriBan = ban.getTenBan() + " - " + tang.getTenTang();
                         mon.setTenBanOrder(viTriBan);
                         mon.setTenMonOrder(monOrder.getTenMonAn());
@@ -343,6 +396,9 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
         if (tableStatus) {
             // TODO:Update Người Order
             long time = System.currentTimeMillis();
+            order.setSoLuongDo(String.valueOf(tongSoLuongDo));
+            order.setSoLuongMon(String.valueOf(tongSoLuongMon));
+            order.setTongTien(String.valueOf(tongTien));
             order.setTimeUpdate(String.valueOf(time));
             orderDatabase.updateOrder(order, Integer.parseInt(order.getId()));
         } else {
@@ -350,6 +406,9 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
             order.setMaBan(nameTable);
             //TODO: Thêm người order
             order.setMaOrder(maOrder);
+            order.setSoLuongDo(String.valueOf(tongSoLuongDo));
+            order.setSoLuongMon(String.valueOf(tongSoLuongMon));
+            order.setTongTien(String.valueOf(tongTien));
             long time = System.currentTimeMillis();
             order.setTimeCreate(String.valueOf(time));
             orderDatabase.addOrder(order);
@@ -361,13 +420,12 @@ public class OrderFragment extends Fragment implements OnClickOrderFragment, Vie
 
     private boolean checkEqualsList(List<OrderDanhSachMon> orderDanhSachMons, List<OrderDanhSachMon> orderDanhSachMonOld) {
         if (orderDanhSachMonOld.size() == 0 && orderDanhSachMons.size() != 0 ||
-                orderDanhSachMonOld.size() != 0 && orderDanhSachMons.size() == 0) {
+                orderDanhSachMonOld.size() != 0 && orderDanhSachMons.size() == 0 ||
+                orderDanhSachMonOld.size() != orderDanhSachMons.size()) {
             return false;
-        }
-        for (OrderDanhSachMon order : orderDanhSachMons) {
-            for (OrderDanhSachMon orderOld : orderDanhSachMonOld) {
-                if (!order.getMaMonAn().equals(orderOld.getMaMonAn())) {
-                    // TODO: logic in this false
+        } else {
+            for (int i = 0; i < orderDanhSachMonOld.size(); i++) {
+                if (!orderDanhSachMonOld.get(i).equalsMonAn(orderDanhSachMons.get(i))) {
                     return false;
                 }
             }

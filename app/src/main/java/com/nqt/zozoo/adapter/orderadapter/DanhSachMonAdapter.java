@@ -38,13 +38,14 @@ public class DanhSachMonAdapter extends RecyclerView.Adapter<DanhSachMonAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (position%2==0){
+        if (position % 2 == 0) {
             holder.view.setBackgroundColor(Color.YELLOW);
-        }else {
+        } else {
             holder.view.setBackgroundColor(Color.GREEN);
         }
         holder.txtTenMon.setText(monAnList.get(position).getTenMonAn());
-        holder.txtGiaTien.setText(String.valueOf(monAnList.get(position).getDonGia()));
+        holder.txtGiaTien.setText(
+                setGia(String.valueOf(monAnList.get(position).getDonGia())));
     }
 
     @Override
@@ -78,5 +79,16 @@ public class DanhSachMonAdapter extends RecyclerView.Adapter<DanhSachMonAdapter.
         monAns.remove(position);
         notifyItemRemoved(position);
         notifyItemChanged(position, monAns);
+    }
+
+
+    private String setGia(String giaTien) {
+
+        if (giaTien.length() > 6 && giaTien.endsWith("000000")) {
+            giaTien = giaTien.substring(0, giaTien.lastIndexOf("000000")) + "TR";
+        } else if (giaTien.length() > 3 && giaTien.endsWith("000")) {
+            giaTien = giaTien.substring(0, giaTien.lastIndexOf("000")) + "K";
+        }
+        return giaTien;
     }
 }

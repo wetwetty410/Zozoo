@@ -19,14 +19,17 @@ import android.view.View;
 import android.widget.Button;
 
 import com.nqt.zozoo.banhang.BanHangActivity;
+import com.nqt.zozoo.banhang.BanHangAsyncTask;
 import com.nqt.zozoo.database.DatabaseManager;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     private static final String TAG = "MainActivity";
-    private Button btnNhaBep, btnDatHangNhanh, btnNhaKho, btnBaoCao, btnCaiDat, btnTroGiup, btnHuongDan;
+    private Button btnNhaKho, btnBaoCao, btnCaiDat, btnTroGiup, btnHuongDan;
     private Toolbar toolbar;
     private View llnBanHang;
+    private View llnDatTaiQuay;
+    private View llnNhaBep;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +38,8 @@ public class MainActivity extends AppCompatActivity
         // clearAppData();
         toolbar = findViewById(R.id.toolbar);
         llnBanHang = findViewById(R.id.lln_ban_hang);
-        btnNhaBep = findViewById(R.id.btn_nha_bep);
-        btnDatHangNhanh = findViewById(R.id.btn_dat_hang_nhanh);
+        llnNhaBep = findViewById(R.id.lln_nha_bep);
+        llnDatTaiQuay = findViewById(R.id.lln_dat_tai_quay);
         btnNhaKho = findViewById(R.id.btn_nha_kho);
         btnBaoCao = findViewById(R.id.btn_bao_cao);
         btnCaiDat = findViewById(R.id.btn_cai_dat);
@@ -53,14 +56,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        llnBanHang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: btn ban hang");
-                Intent intent = new Intent(getApplicationContext(), BanHangActivity.class);
-                startActivity(intent);
-            }
-        });
+        llnBanHang.setOnClickListener(this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -137,7 +133,9 @@ public class MainActivity extends AppCompatActivity
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.lln_ban_hang:
-
+                Log.d(TAG, "onClick: btn ban hang");
+                BanHangAsyncTask banHangAsyncTask = new BanHangAsyncTask(this);
+                banHangAsyncTask.execute();
                 break;
 
             default:

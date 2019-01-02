@@ -97,6 +97,16 @@ public class OrderDanhSachMon {
         return maMonAn.equals(list.maMonAn);
     }
 
+    public boolean equalsMonAn(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        OrderDanhSachMon that = (OrderDanhSachMon) o;
+
+        return soLuong == that.soLuong && maMonAn.equals(that.maMonAn) && tenMonAn.equals(that.tenMonAn) && giaTien.equals(that.giaTien);
+
+    }
+
     @Override
     public int hashCode() {
         return maMonAn.hashCode();

@@ -20,6 +20,9 @@ public class OrderDatabase extends DatabaseManager {
     private static final String TABLE_ORDER_MA = "ma_order";
     private static final String TABLE_ORDER_MA_BAN = "ma_ban";
     private static final String TABLE_ORDER_NGUOI_ORDER = "nguoi_order";
+    private static final String TABLE_ORDER_SO_LUONG_MON = "so_luong_mon";
+    private static final String TABLE_ORDER_SO_LUONG_DO = "so_luong_do";
+    private static final String TABLE_ORDER_TONG_TIEN = "tong_tien";
     private static final String TABLE_ORDER_THOI_GIAN_CREATE = "time_create";
     private static final String TABLE_ORDER_THOI_GIAN_UPDATE = "time_update";
 
@@ -34,6 +37,9 @@ public class OrderDatabase extends DatabaseManager {
         values.put(TABLE_ORDER_MA, order.getMaOrder());
         values.put(TABLE_ORDER_MA_BAN, order.getMaBan());
         values.put(TABLE_ORDER_NGUOI_ORDER, order.getNguoiOrder());
+        values.put(TABLE_ORDER_SO_LUONG_MON, order.getSoLuongMon());
+        values.put(TABLE_ORDER_SO_LUONG_DO, order.getSoLuongDo());
+        values.put(TABLE_ORDER_TONG_TIEN, order.getTongTien());
         values.put(TABLE_ORDER_THOI_GIAN_CREATE, order.getTimeCreate());
         values.put(TABLE_ORDER_THOI_GIAN_UPDATE, order.getTimeUpdate());
         sqLiteDatabase.insert(TABLE_ORDER, null, values);
@@ -51,12 +57,16 @@ public class OrderDatabase extends DatabaseManager {
 
         while (!cursor.isAfterLast()) {
             Order order = new Order(
-                    cursor.getString(0),
-                    cursor.getString(1),
-                    cursor.getString(2),
-                    cursor.getString(3),
-                    cursor.getString(4),
-                    cursor.getString(5));
+                    cursor.getString(cursor.getColumnIndex(TABLE_ORDER_ID)),
+                    cursor.getString(cursor.getColumnIndex(TABLE_ORDER_MA)),
+                    cursor.getString(cursor.getColumnIndex(TABLE_ORDER_MA_BAN)),
+                    cursor.getString(cursor.getColumnIndex(TABLE_ORDER_NGUOI_ORDER)),
+                    cursor.getString(cursor.getColumnIndex(TABLE_ORDER_SO_LUONG_MON)),
+                    cursor.getString(cursor.getColumnIndex(TABLE_ORDER_SO_LUONG_DO)),
+                    cursor.getString(cursor.getColumnIndex(TABLE_ORDER_TONG_TIEN)),
+                    cursor.getString(cursor.getColumnIndex(TABLE_ORDER_THOI_GIAN_CREATE)),
+                    cursor.getString(cursor.getColumnIndex(TABLE_ORDER_THOI_GIAN_UPDATE))
+            );
             orderList.add(order);
             cursor.moveToNext();
         }
@@ -75,12 +85,15 @@ public class OrderDatabase extends DatabaseManager {
             cursor.moveToFirst();
         }
         Order orders = new Order(
-                cursor.getString(0),
-                cursor.getString(1),
-                cursor.getString(2),
-                cursor.getString(3),
-                cursor.getString(4),
-                cursor.getString(5)
+                cursor.getString(cursor.getColumnIndex(TABLE_ORDER_ID)),
+                cursor.getString(cursor.getColumnIndex(TABLE_ORDER_MA)),
+                cursor.getString(cursor.getColumnIndex(TABLE_ORDER_MA_BAN)),
+                cursor.getString(cursor.getColumnIndex(TABLE_ORDER_NGUOI_ORDER)),
+                cursor.getString(cursor.getColumnIndex(TABLE_ORDER_SO_LUONG_MON)),
+                cursor.getString(cursor.getColumnIndex(TABLE_ORDER_SO_LUONG_DO)),
+                cursor.getString(cursor.getColumnIndex(TABLE_ORDER_TONG_TIEN)),
+                cursor.getString(cursor.getColumnIndex(TABLE_ORDER_THOI_GIAN_CREATE)),
+                cursor.getString(cursor.getColumnIndex(TABLE_ORDER_THOI_GIAN_UPDATE))
         );
         cursor.close();
         closeDatabase();
@@ -94,6 +107,9 @@ public class OrderDatabase extends DatabaseManager {
         values.put(TABLE_ORDER_MA, order.getMaOrder());
         values.put(TABLE_ORDER_NGUOI_ORDER, order.getNguoiOrder());
         values.put(TABLE_ORDER_MA_BAN, order.getMaBan());
+        values.put(TABLE_ORDER_SO_LUONG_MON, order.getSoLuongMon());
+        values.put(TABLE_ORDER_SO_LUONG_DO, order.getSoLuongDo());
+        values.put(TABLE_ORDER_TONG_TIEN, order.getTongTien());
         values.put(TABLE_ORDER_THOI_GIAN_CREATE, order.getTimeCreate());
         values.put(TABLE_ORDER_THOI_GIAN_UPDATE, order.getTimeUpdate());
         sqLiteDatabase.update(TABLE_ORDER, values, TABLE_ORDER_ID + "=?",
@@ -105,7 +121,7 @@ public class OrderDatabase extends DatabaseManager {
         openDatabase();
         sqLiteDatabase.delete(TABLE_ORDER, TABLE_ORDER_ID + "=?",
                 new String[]{id
-        });
+                });
         closeDatabase();
     }
 

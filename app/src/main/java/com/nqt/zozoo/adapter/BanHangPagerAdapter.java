@@ -14,7 +14,7 @@ import com.nqt.zozoo.database.BanDatabase;
  */
 
 public class BanHangPagerAdapter extends FragmentPagerAdapter {
-    public static final int BAN_HANG_NUM_FRAGMENT = 3;
+    public static final int BAN_HANG_NUM_FRAGMENT = 2;
     private Context context;
     private int numItemSoBan;
 
@@ -49,7 +49,7 @@ public class BanHangPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return "Món Ăn";
             default:
-                return "Bàn";
+                return "Danh Sách Bàn";
         }
     }
 
