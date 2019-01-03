@@ -19,6 +19,9 @@ public class NhomMonAn  {
         this.tenNhonMonAn = tenNhonMonAn;
     }
 
+    public NhomMonAn() {
+    }
+
     public String getId() {
         return id;
     }

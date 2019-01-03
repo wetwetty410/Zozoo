@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:clickable="true"
+    android:focusable="true"
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
@@ -12,7 +15,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/tlb_fragment_them_nhom"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <ImageView
@@ -34,11 +37,12 @@
             <TextView
                 android:id="@+id/txt_them_nhom"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Thêm"
+                android:layout_height="match_parent"
+                android:layout_marginStart="25dp"
+                android:background="@drawable/ic_add_white_32dp"
+                android:gravity="end"
                 android:textColor="@android:color/white"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                android:textSize="22sp" />
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 

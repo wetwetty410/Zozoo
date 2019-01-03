@@ -1,4 +1,4 @@
-package com.nqt.zozoo.banhang;
+package com.nqt.zozoo.quanly;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +15,7 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -110,18 +111,19 @@ public class ThemBanFragment extends Fragment implements OnClickThemBanFragment,
         appCompatActivity.setSupportActionBar(toolbar);
         appCompatActivity.getSupportActionBar().setTitle("");
         txtTitle.setText("Quản Lý Bàn");
-        edtThemBan.setInputType(InputType.TYPE_NUMBER_VARIATION_NORMAL);
+        edtThemBan.setInputType(InputType.TYPE_CLASS_NUMBER);
         LinearLayoutManager llnManagerThemTang = new LinearLayoutManager(context);
         themTangAdapter = new ThemTangAdapter(tangList, this);
         llnManagerThemTang.setOrientation(LinearLayoutManager.HORIZONTAL);
         rcvThemTang.setLayoutManager(llnManagerThemTang);
         rcvThemTang.setAdapter(themTangAdapter);
 
-        GridLayoutManager gridLayoutManagerThemBan = new GridLayoutManager(context, 5);
+        GridLayoutManager gridLayoutManagerThemBan = new GridLayoutManager(context, 4);
         soBanRecyclerViewAdapter = new SoBanRecyclerViewAdapter(banList, this, mContext, true);
         rcvThemBan.setLayoutManager(gridLayoutManagerThemBan);
         rcvThemBan.setAdapter(soBanRecyclerViewAdapter);
 
+        edtThemBan.setOnClickListener(this);
         btnThemBan.setOnClickListener(this);
         btnThemTang.setOnClickListener(this);
         imgBack.setOnClickListener(this);
@@ -135,11 +137,13 @@ public class ThemBanFragment extends Fragment implements OnClickThemBanFragment,
                 onClickBtnThemTang();
                 break;
             case R.id.img_them_ban_backstack:
-                getActivity().recreate();
                 getActivity().onBackPressed();
                 break;
             case R.id.btn_them_ban:
                 onClickBtnThemBan();
+                break;
+            case R.id.edt_them_ban:
+                getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
             default:
                 break;
 

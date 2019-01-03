@@ -1,17 +1,15 @@
 package com.nqt.zozoo;
 
-import android.app.ActivityManager;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -21,11 +19,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewAnimationUtils;
 
-import com.nqt.zozoo.banhang.BanHangActivity;
 import com.nqt.zozoo.banhang.BanHangAsyncTask;
-import com.nqt.zozoo.database.DatabaseManager;
 import com.nqt.zozoo.quanly.QuanLyActivity;
 
 import java.util.List;
@@ -61,6 +57,8 @@ public class MainActivity extends AppCompatActivity
         llnQuanLy = findViewById(R.id.lln_quan_ly);
         llnTroGiup = findViewById(R.id.lln_tro_giup);
         llnHuongDan = findViewById(R.id.lln_huong_dan);
+        setSupportActionBar(toolbar);
+
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -74,7 +72,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        setSupportActionBar(toolbar);
+
         fab.setOnClickListener(this);
         llnBanHang.setOnClickListener(this);
         llnQuanLy.setOnClickListener(this);
@@ -119,8 +117,8 @@ public class MainActivity extends AppCompatActivity
         switch (item.getItemId()) {
 
             case R.id.nav_camera:
-                Intent intent = new Intent(this, BanHangActivity.class);
-                startActivity(intent);
+                BanHangAsyncTask banHangAsyncTask = new BanHangAsyncTask(this);
+                banHangAsyncTask.execute();
                 break;
             // Handle the camera action
             case R.id.nav_gallery:

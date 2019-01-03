@@ -1,16 +1,17 @@
 package com.nqt.zozoo.quanly;
 
+import android.graphics.PorterDuff;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nqt.zozoo.R;
-import com.nqt.zozoo.banhang.ThemBanFragment;
 
 public class QuanLyActivity extends AppCompatActivity implements View.OnClickListener {
     private Button btnTaiKhoan;
@@ -33,6 +34,10 @@ public class QuanLyActivity extends AppCompatActivity implements View.OnClickLis
         imgBack = findViewById(R.id.img_quan_ly_backstack);
         txtTitle = findViewById(R.id.txt_quan_ly_title);
 
+        buttonEffect(btnTaiKhoan);
+        buttonEffect(btnSoDoBan);
+        buttonEffect(btnMonAn);
+        buttonEffect(btnNhomMonAn);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         txtTitle.setText("Quản Lý");
@@ -55,9 +60,42 @@ public class QuanLyActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.img_quan_ly_backstack:
                 onBackPressed();
                 break;
+            case R.id.btn_quan_ly_nhom_mon_an:
+                onClickNhomMonAn();
+                break;
+            case R.id.btn_quan_ly_mon_an:
+                break;
             default:
                 break;
         }
+    }
+
+    public static void buttonEffect(View button) {
+        button.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        v.getBackground().setColorFilter(0xe0f47521, PorterDuff.Mode.SRC_ATOP);
+                        v.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        v.getBackground().clearColorFilter();
+                        v.invalidate();
+                        break;
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
+    private void onClickNhomMonAn() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(android.R.id.content, ThemNhomFragment.newInstance(this));
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     private void onClickSoDoBan() {

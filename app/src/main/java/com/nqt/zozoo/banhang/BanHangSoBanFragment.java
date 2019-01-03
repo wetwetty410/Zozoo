@@ -16,6 +16,7 @@ import android.widget.ScrollView;
 import com.nqt.zozoo.R;
 import com.nqt.zozoo.adapter.BanHangSoBanRecyclerViewAdapter;
 import com.nqt.zozoo.database.BanDatabase;
+import com.nqt.zozoo.quanly.ThemBanFragment;
 import com.nqt.zozoo.utils.Ban;
 
 import java.util.List;
@@ -42,7 +43,6 @@ public class BanHangSoBanFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     private ScrollView scrBanHangSoBan;
     private RecyclerView rcvBanHangSoBan;
-    private FloatingActionButton actionButton;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -81,17 +81,6 @@ public class BanHangSoBanFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ban_hang_so_ban, container, false);
         rcvBanHangSoBan = view.findViewById(R.id.so_ban_list);
-        actionButton = view.findViewById(R.id.fab_them_so_ban);
-
-        actionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.add(android.R.id.content, ThemBanFragment.newInstance(getContext()));
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
 
         Context context = view.getContext();
         // Tạo adapter cho recyclerView

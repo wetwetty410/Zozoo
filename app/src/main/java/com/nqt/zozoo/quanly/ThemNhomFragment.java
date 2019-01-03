@@ -1,7 +1,6 @@
-package com.nqt.zozoo;
+package com.nqt.zozoo.quanly;
 
 import android.content.Context;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,20 +13,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.nqt.zozoo.R;
 import com.nqt.zozoo.adapter.themnhomadapter.OnClickThemNhomFragment;
 import com.nqt.zozoo.adapter.themnhomadapter.ThemNhomAdapter;
 import com.nqt.zozoo.database.NhomMonAnDatabase;
 import com.nqt.zozoo.dialog.ThemTangItemDialog;
 import com.nqt.zozoo.utils.NhomMonAn;
 
+import org.apache.commons.text.CharacterPredicates;
+import org.apache.commons.text.RandomStringGenerator;
+
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by USER on 1/3/2019.
  */
 
 public class ThemNhomFragment extends Fragment implements View.OnClickListener, OnClickThemNhomFragment {
+    private static Context mcontext;
     private List<NhomMonAn> nhomMonAnList;
     private NhomMonAnDatabase nhomMonAnDatabase;
     private TextView txtTitle;
@@ -37,8 +43,8 @@ public class ThemNhomFragment extends Fragment implements View.OnClickListener, 
     private ThemNhomAdapter themNhomAdapter;
     private Toolbar toolbar;
 
-    public static ThemNhomFragment newInstance() {
-
+    public static ThemNhomFragment newInstance(Context context) {
+        mcontext = context;
         Bundle args = new Bundle();
         ThemNhomFragment fragment = new ThemNhomFragment();
         fragment.setArguments(args);
@@ -48,7 +54,7 @@ public class ThemNhomFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        nhomMonAnDatabase = new NhomMonAnDatabase(getContext());
+        nhomMonAnDatabase = new NhomMonAnDatabase(mcontext);
         nhomMonAnList = nhomMonAnDatabase.getAllNhomMonAn();
     }
 
@@ -66,7 +72,7 @@ public class ThemNhomFragment extends Fragment implements View.OnClickListener, 
         final AppCompatActivity appCompatActivity = ((AppCompatActivity) getActivity());
         appCompatActivity.setSupportActionBar(toolbar);
         appCompatActivity.getSupportActionBar().setTitle("");
-        txtTitle.setText("Nhóm");
+        txtTitle.setText("QL Nhóm");
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         themNhomAdapter = new ThemNhomAdapter(nhomMonAnList, this);
@@ -91,6 +97,7 @@ public class ThemNhomFragment extends Fragment implements View.OnClickListener, 
         }
 
     }
+
     private void onClickThemNhom() {
         ThemTangItemDialog themTangItemDialog = new ThemTangItemDialog(getContext(), "addNhom");
         themTangItemDialog.setOnClickThemNhomFragment(this);
@@ -118,11 +125,66 @@ public class ThemNhomFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void OnClickSuaNhom(NhomMonAn nhomMonAn, String tenNhom) {
+        if (tenNhom.equals("")) {
+            Toast.makeText(getContext(), "Tên nhóm không được để trống", Toast.LENGTH_SHORT).show();
+        } else if (!checkNhomContainTen(tenNhom)) {
+            Toast.makeText(getContext(), "Tên nhóm đã tồn tại", Toast.LENGTH_SHORT).show();
+        } else {
+            NhomMonAn monAn = new NhomMonAn();
+            monAn.setTenNhonMonAn(tenNhom);
+            nhomMonAnDatabase.updateNhomMonAn(monAn, monAn.getMaNhonMonAn());
+            nhomMonAnList = nhomMonAnDatabase.getAllNhomMonAn();
+            themNhomAdapter = new ThemNhomAdapter(nhomMonAnList, this);
+            rcvThemNhom.setAdapter(themNhomAdapter);
+            Toast.makeText(getContext(), "Sửa nhóm thành công", Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    private boolean checkNhomContainMa(String maMonAn) {
+        for (NhomMonAn monAn : nhomMonAnList) {
+            if (monAn.getMaNhonMonAn().equals(maMonAn)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private String creatId() {
+        RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder()
+                .withinRange('A', 'Z')
+                .filteredBy(CharacterPredicates.LETTERS, CharacterPredicates.DIGITS)
+                .build();
+        return randomStringGenerator.generate(3);
+    }
+
+    private boolean checkNhomContainTen(String nhomMonAn) {
+        for (NhomMonAn monAn : nhomMonAnList) {
+            if (monAn.getTenNhonMonAn().equals(nhomMonAn)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
     public void OnClickThemNhom(String tenNhom) {
-
+        if (tenNhom.equals("")) {
+            Toast.makeText(getContext(), "Tên nhóm không được để trống", Toast.LENGTH_SHORT).show();
+        } else if (!checkNhomContainTen(tenNhom)) {
+            Toast.makeText(getContext(), "Tên nhóm đã tồn tại", Toast.LENGTH_SHORT).show();
+        } else {
+            String maNhom = creatId();
+            while (!checkNhomContainMa(maNhom)) {
+                maNhom = creatId();
+            }
+            NhomMonAn monAn = new NhomMonAn();
+            monAn.setMaNhonMonAn(maNhom);
+            monAn.setTenNhonMonAn(tenNhom);
+            nhomMonAnDatabase.addNhomMonAn(monAn);
+            nhomMonAnList = nhomMonAnDatabase.getAllNhomMonAn();
+            themNhomAdapter = new ThemNhomAdapter(nhomMonAnList, this);
+            rcvThemNhom.setAdapter(themNhomAdapter);
+            Toast.makeText(getContext(), "Thêm nhóm thành công", Toast.LENGTH_SHORT).show();
+        }
     }
 }
