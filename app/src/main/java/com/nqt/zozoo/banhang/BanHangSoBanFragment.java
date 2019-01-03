@@ -1,6 +1,8 @@
 package com.nqt.zozoo.banhang;
 
+import android.animation.Animator;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -10,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 
@@ -79,7 +82,13 @@ public class BanHangSoBanFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_ban_hang_so_ban, container, false);
+        final View view = inflater.inflate(R.layout.fragment_ban_hang_so_ban, container, false);
+        view.post(new Runnable() {
+            @Override
+            public void run() {
+                anim(view);
+            }
+        });
         rcvBanHangSoBan = view.findViewById(R.id.so_ban_list);
 
         Context context = view.getContext();
@@ -123,6 +132,27 @@ public class BanHangSoBanFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     ;
+
+    private void anim(View myView) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // get the center for the clipping circle
+            int cx = myView.getWidth() / 2;
+            int cy = myView.getHeight() / 2;
+
+            // get the final radius for the clipping circle
+            float finalRadius = (float) Math.hypot(cx, cy);
+
+            // create the animator for this view (the start radius is zero)
+            Animator anim = ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0f, finalRadius);
+
+            // make the view visible and start the animation
+            myView.setVisibility(View.VISIBLE);
+            anim.start();
+        } else {
+            // set the view to visible without a circular reveal animation below Lollipop
+            myView.setVisibility(View.VISIBLE);
+        }
+    }
 
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name

@@ -91,7 +91,6 @@ public class BanHangActivity extends AppCompatActivity implements View.OnClickLi
         switch (v.getId()) {
             case R.id.img_backstack:
                 finish();
-                System.out.print("Close Activity");
                 break;
         }
     }
