@@ -16,15 +16,15 @@ public class NhaBepPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment;
         switch (position) {
             case 0:
-                fragment =
-                return fragment;
+             //   fragment ;
+             //   return fragment;
             case 1:
-                fragment =;
-                return fragment;
+             //   fragment ;
+           //     return fragment;
             default:
                 break;
         }
-        return fragment;
+        return null;
     }
 
     @Override
