@@ -1,7 +1,12 @@
 package com.nqt.zozoo;
 
 import android.app.ActivityManager;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -21,15 +26,25 @@ import android.widget.Button;
 import com.nqt.zozoo.banhang.BanHangActivity;
 import com.nqt.zozoo.banhang.BanHangAsyncTask;
 import com.nqt.zozoo.database.DatabaseManager;
+import com.nqt.zozoo.quanly.QuanLyActivity;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     private static final String TAG = "MainActivity";
-    private Button btnNhaKho, btnBaoCao, btnCaiDat, btnTroGiup, btnHuongDan;
+    private static final String EMAIL = "truongnguyen41096@gmail.com";
     private Toolbar toolbar;
     private View llnBanHang;
     private View llnDatTaiQuay;
     private View llnNhaBep;
+    private View llnNhaKho;
+    private View llnBaoCao;
+    private View llnCaiDat;
+    private View llnTroGiup;
+    private View llnQuanLy;
+    private View llnHuongDan;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,23 +55,13 @@ public class MainActivity extends AppCompatActivity
         llnBanHang = findViewById(R.id.lln_ban_hang);
         llnNhaBep = findViewById(R.id.lln_nha_bep);
         llnDatTaiQuay = findViewById(R.id.lln_dat_tai_quay);
-        btnNhaKho = findViewById(R.id.btn_nha_kho);
-        btnBaoCao = findViewById(R.id.btn_bao_cao);
-        btnCaiDat = findViewById(R.id.btn_cai_dat);
-        btnTroGiup = findViewById(R.id.btn_tro_giup);
-        btnHuongDan = findViewById(R.id.btn_huong_dan);
-        setSupportActionBar(toolbar);
+        llnNhaKho = findViewById(R.id.lln_kho);
+        llnBaoCao = findViewById(R.id.lln_bao_cao);
+        llnCaiDat = findViewById(R.id.lln_cai_dat);
+        llnQuanLy = findViewById(R.id.lln_quan_ly);
+        llnTroGiup = findViewById(R.id.lln_tro_giup);
+        llnHuongDan = findViewById(R.id.lln_huong_dan);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        llnBanHang.setOnClickListener(this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -67,6 +72,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        setSupportActionBar(toolbar);
+        fab.setOnClickListener(this);
+        llnBanHang.setOnClickListener(this);
+        llnQuanLy.setOnClickListener(this);
     }
 
     @Override
@@ -118,9 +129,6 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_manage:
                 break;
-            case R.id.nav_share:
-                break;
-            case R.id.nav_send:
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -138,6 +146,30 @@ public class MainActivity extends AppCompatActivity
                 banHangAsyncTask.execute();
                 break;
 
+            case R.id.lln_quan_ly:
+                startActivity(new Intent(this, QuanLyActivity.class));
+                break;
+            case R.id.fab:
+                Log.d(TAG, "onClick: fab");
+                try {
+                    final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    final PackageManager pm = getPackageManager();
+                    final List<ResolveInfo> matches = pm.queryIntentActivities(intent, 0);
+                    ResolveInfo best = null;
+                    for (final ResolveInfo info : matches)
+                        if (info.activityInfo.packageName.endsWith(".gm") ||
+                                info.activityInfo.name.toLowerCase().contains("gmail")) best = info;
+                    if (best != null)
+                        intent.setClassName(best.activityInfo.packageName, best.activityInfo.name);
+                    startActivity(intent);
+//                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + EMAIL));
+//                    intent.putExtra(Intent.EXTRA_SUBJECT, "your_subject");
+//                    intent.putExtra(Intent.EXTRA_TEXT, "your_text");
+//                    startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    //TODO smth
+                }
             default:
                 break;
         }

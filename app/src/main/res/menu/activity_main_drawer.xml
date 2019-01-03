@@ -7,32 +7,52 @@
         <item
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:title="Bán hàng" />
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:title="Đặt Tại Quầy" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:title="Nhà Bếp" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="Nhà Kho" />
+        <item
+            android:id="@+id/nav_bao_cao"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Báo Cáo" />
+        <item
+            android:id="@+id/nav_quan_ly"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Quản Lý" />
+        <item
+            android:id="@+id/nav_cai_dat"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Cài Đặt" />
+        <item
+            android:id="@+id/nav_tro_giup"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Trợ Giúp" />
+        <item
+            android:id="@+id/nav_huong_dan"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Hướng Dẫn" />
     </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>
+    <!--<item android:title="Communicate">-->
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:id="@+id/nav_share"-->
+                <!--android:icon="@drawable/ic_menu_share"-->
+                <!--android:title="Share" />-->
+            <!--<item-->
+                <!--android:id="@+id/nav_send"-->
+                <!--android:icon="@drawable/ic_menu_send"-->
+                <!--android:title="Send" />-->
+        <!--</menu>-->
+    <!--</item>-->
 
 </menu>

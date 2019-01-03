@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Display;
@@ -82,7 +81,6 @@ public class BanHangSoBanFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ban_hang_so_ban, container, false);
         rcvBanHangSoBan = view.findViewById(R.id.so_ban_list);
-        scrBanHangSoBan = view.findViewById(R.id.scr_ban_hang_so_ban);
         actionButton = view.findViewById(R.id.fab_them_so_ban);
 
         actionButton.setOnClickListener(new View.OnClickListener() {

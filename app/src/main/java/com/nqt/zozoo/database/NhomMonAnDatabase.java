@@ -38,6 +38,13 @@ public class NhomMonAnDatabase extends DatabaseManager {
         return nhomMonAn;
     }
 
+    public void deleteNhomMonAn(String maNhom) {
+        openDatabase();
+        sqLiteDatabase.delete(NHOM_MON_AN, NHOM_MON_AN_MA + "+?",
+                new String[]{maNhom});
+        closeDatabase();
+    }
+
     public void addNhomMonAn(NhomMonAn nhomMonAn) {
         openDatabase();
         ContentValues values = new ContentValues();

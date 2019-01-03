@@ -16,7 +16,9 @@ import android.widget.Toast;
 
 import com.nqt.zozoo.R;
 import com.nqt.zozoo.adapter.thembanadapter.OnClickThemBanFragment;
+import com.nqt.zozoo.adapter.themnhomadapter.OnClickThemNhomFragment;
 import com.nqt.zozoo.utils.Ban;
+import com.nqt.zozoo.utils.NhomMonAn;
 import com.nqt.zozoo.utils.Tang;
 
 /**
@@ -29,7 +31,9 @@ public class ThemTangItemDialog extends Dialog {
     private Button btnThemTang;
     private Tang tang;
     private Ban ban;
+    private NhomMonAn nhomMonAn;
     private OnClickThemBanFragment onClickThemBanFragment;
+    private OnClickThemNhomFragment onClickThemNhomFragment;
 
     public ThemTangItemDialog(Context context) {
         super(context);
@@ -59,17 +63,40 @@ public class ThemTangItemDialog extends Dialog {
         init();
     }
 
+    public ThemTangItemDialog(Context context, NhomMonAn nhomMonAn, String typeDialog) {
+        super(context);
+        this.type = typeDialog;
+        this.nhomMonAn = nhomMonAn;
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.dialog_them_tang);
+        getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        init();
+    }
+
+    public ThemTangItemDialog(Context context, String typeDialog) {
+        super(context);
+        this.type = typeDialog;
+        this.nhomMonAn = nhomMonAn;
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.dialog_them_tang);
+        getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        init();
+    }
+
     private void init() {
         edtThemTang = findViewById(R.id.edt_dialog_them_tang);
         btnThemTang = findViewById(R.id.btn_dialog_them_tang);
-        if (type.equals("editTang") || type.equals("editBan")) {
+        if (type.equals("editTang") || type.equals("editBan") || type.endsWith("editNhom")) {
             btnThemTang.setText("Lưu");
         }
         if (type.equals("editBan")) {
             edtThemTang.setHint("Tên bàn");
             edtThemTang.setInputType(InputType.TYPE_NUMBER_VARIATION_PASSWORD);
-        }else {
+        } else if (type.equals("editTang")) {
             edtThemTang.setHint("Tên Tầng");
+        } else {
+            edtThemTang.setHint("Tên Nhóm");
+
         }
         btnThemTang.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +107,12 @@ public class ThemTangItemDialog extends Dialog {
                     dismiss();
                 } else if (type.equals("editBan")) {
                     onClickThemBanFragment.OnClickSuaBan(ban, String.valueOf(edtThemTang.getText()));
+                    dismiss();
+                } else if (type.equals("editNhom")) {
+                    onClickThemNhomFragment.OnClickSuaNhom(nhomMonAn, String.valueOf(edtThemTang.getText()));
+                    dismiss();
+                } else if (type.equals("addNhom")) {
+                    onClickThemNhomFragment.OnClickThemNhom(String.valueOf(edtThemTang.getText()));
                     dismiss();
                 } else {
                     onClickThemBanFragment.OnClickThemTang(String.valueOf(edtThemTang.getText()));
@@ -93,4 +126,7 @@ public class ThemTangItemDialog extends Dialog {
         this.onClickThemBanFragment = onClickThemBanFragment;
     }
 
+    public void setOnClickThemNhomFragment(OnClickThemNhomFragment onClickThemNhomFragment) {
+        this.onClickThemNhomFragment = onClickThemNhomFragment;
+    }
 }

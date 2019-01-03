@@ -145,27 +145,31 @@
                 android:id="@+id/btn_order_huy_bo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hủy Bỏ" />
+                android:text="Hủy Bỏ"
+                android:textAllCaps="false" />
 
             <Button
                 android:id="@+id/btn_order_luu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lưu" />
+                android:text="Lưu"
+                android:textAllCaps="false" />
 
             <Button
                 android:id="@+id/btn_order_xoa_het"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="25dp"
+                android:layout_marginEnd="10dp"
                 android:text="X.Hết"
+                android:textAllCaps="false"
                 tools:ignore="ButtonStyle" />
 
             <Button
                 android:id="@+id/btn_thanh_toan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="T.Toán" />
+                android:text="T.Toán"
+                android:textAllCaps="false" />
         </LinearLayout>
     </LinearLayout>
 
@@ -212,7 +216,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="@string/all" />
+                        android:text="@string/all"
+                        android:textAllCaps="false" />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rcv_order_nhom_thuc_an"
