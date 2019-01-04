@@ -2,6 +2,27 @@
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:color="?android:colorControlHighlight">
-    <item android:drawable="@drawable/ic_keyboard_backspace" />
-    <item android:drawable="@drawable/bg_backstack" />
+    <item>
+        <selector>
+            <item
+                android:drawable="@drawable/ic_keyboard_backspace"
+                android:state_selected="true">
+                <shape>
+                    <solid android:color="#87253136" />
+                </shape>
+            </item>
+            <item
+                android:drawable="@drawable/ic_keyboard_backspace"
+                android:state_pressed="true">
+                <shape>
+                    <solid android:color="#87253136" />
+                </shape>
+            </item>
+            <item android:drawable="@drawable/ic_keyboard_backspace">
+                <shape>
+                    <solid android:color="#253136" />
+                </shape>
+            </item>
+        </selector>
+    </item>
 </ripple>

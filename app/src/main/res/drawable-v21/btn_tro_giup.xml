@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:color="?android:colorControlHighlight"
-    tools:targetApi="lollipop">
+    android:color="?android:colorControlHighlight">
     <item>
         <selector>
             <item android:state_pressed="true">
-                <shape>
-                    <solid android:color="#87253136" />
+                <shape android:shape="rectangle">
+                    <solid android:color="#c82472de" />
                 </shape>
             </item>
             <item>
                 <shape>
-                    <solid android:color="#253136" />
+                    <solid android:color="#2472de" />
                 </shape>
             </item>
         </selector>

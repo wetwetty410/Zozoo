@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#d2c03a" />
-</shape>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:color="?attr/selectableItemBackgroundBorderless"
+    tools:ignore="NewApi">
+    <item android:drawable="@drawable/btn_ban_hang" />
+
+</ripple>

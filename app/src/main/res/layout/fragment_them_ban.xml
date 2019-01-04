@@ -18,14 +18,14 @@
             android:id="@+id/tlb_fragment_them_ban"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="-15dp"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <ImageView
                 android:id="@+id/img_them_ban_backstack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:src="@drawable/ripple_keyboard_backspace"
+                style="@style/BackStack"
+                android:layout_width="35dp"
+                android:layout_height="?android:windowTitleSize"
                 tools:ignore="ContentDescription" />
 
             <TextView

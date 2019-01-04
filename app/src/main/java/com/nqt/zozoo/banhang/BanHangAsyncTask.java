@@ -19,6 +19,7 @@ public class BanHangAsyncTask extends AsyncTask<Void, Integer, Void> {
     private android.content.Intent intent;
 
     public BanHangAsyncTask(AppCompatActivity appCompatActivity) {
+        super();
         this.appCompatActivity = appCompatActivity;
     }
 
@@ -38,6 +39,10 @@ public class BanHangAsyncTask extends AsyncTask<Void, Integer, Void> {
         progressDrawable.setCancelable(true);
         progressDrawable.show();
 
+    }
+
+    public BanHangAsyncTask() {
+        super();
     }
 
     @Override
