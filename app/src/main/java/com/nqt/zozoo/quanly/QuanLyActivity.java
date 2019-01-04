@@ -34,10 +34,10 @@ public class QuanLyActivity extends AppCompatActivity implements View.OnClickLis
         imgBack = findViewById(R.id.img_quan_ly_backstack);
         txtTitle = findViewById(R.id.txt_quan_ly_title);
 
-        buttonEffect(btnTaiKhoan);
-        buttonEffect(btnSoDoBan);
-        buttonEffect(btnMonAn);
-        buttonEffect(btnNhomMonAn);
+//        buttonEffect(btnTaiKhoan);
+//        buttonEffect(btnSoDoBan);
+//        buttonEffect(btnMonAn);
+//        buttonEffect(btnNhomMonAn);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         txtTitle.setText("Quản Lý");

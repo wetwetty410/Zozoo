@@ -23,7 +23,8 @@
             android:name=".banhang.BanHangActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".quanly.QuanLyActivity" />
-        <activity android:name=".nhabep.NhaBepActivity"></activity>
+        <activity android:name=".nhabep.NhaBepActivity" />
+        <activity android:name=".dathangnhanh.DatHangNhanhActivity"></activity>
     </application>
 
 </manifest>

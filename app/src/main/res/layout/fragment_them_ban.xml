@@ -24,7 +24,8 @@
                 android:id="@+id/img_them_ban_backstack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_keyboard_backspace"
+                android:background="?android:attr/selectableItemBackground"
+                android:src="@drawable/ripple_keyboard_backspace"
                 tools:ignore="ContentDescription" />
 
             <TextView

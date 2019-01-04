@@ -2,10 +2,13 @@ package com.nqt.zozoo;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -22,6 +25,7 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 
 import com.nqt.zozoo.banhang.BanHangAsyncTask;
+import com.nqt.zozoo.dathangnhanh.DatHangNhanhActivity;
 import com.nqt.zozoo.quanly.QuanLyActivity;
 
 import java.util.List;
@@ -57,6 +61,7 @@ public class MainActivity extends AppCompatActivity
         llnQuanLy = findViewById(R.id.lln_quan_ly);
         llnTroGiup = findViewById(R.id.lln_tro_giup);
         llnHuongDan = findViewById(R.id.lln_huong_dan);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -69,11 +74,11 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
 
         fab.setOnClickListener(this);
         llnBanHang.setOnClickListener(this);
         llnQuanLy.setOnClickListener(this);
+        llnDatTaiQuay.setOnClickListener(this);
     }
 
     @Override
@@ -144,6 +149,10 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.lln_quan_ly:
                 startActivity(new Intent(this, QuanLyActivity.class));
+                break;
+
+            case R.id.lln_dat_tai_quay:
+                startActivity(new Intent(this, DatHangNhanhActivity.class));
                 break;
             case R.id.fab:
                 Log.d(TAG, "onClick: fab");

@@ -14,14 +14,15 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/tlb_act_quan_ly"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="-12dp"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <ImageView
                 android:id="@+id/img_quan_ly_backstack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_keyboard_backspace"
+                style="@style/BackStack"
+                android:layout_width="35dp"
+                android:layout_height="?android:windowTitleSize"
                 tools:ignore="ContentDescription" />
 
             <TextView
@@ -47,8 +48,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:background="@drawable/button"
+            android:background="@drawable/ripple_button_quan_ly"
             android:drawableStart="@drawable/ic_edit_black_24dp"
+            android:elevation="2dp"
             android:paddingEnd="40dp"
             android:paddingLeft="30dp"
             android:text="Tài Khoản"
@@ -61,8 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:background="@drawable/button"
-
+            android:background="@drawable/ripple_button_quan_ly"
             android:drawableStart="@drawable/ic_edit_black_24dp"
             android:paddingEnd="40dp"
             android:paddingLeft="30dp"
@@ -76,7 +77,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:background="@drawable/button"
+            android:background="@drawable/button_defaul"
 
             android:drawableStart="@drawable/ic_edit_black_24dp"
             android:paddingEnd="40dp"
@@ -91,7 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:background="@drawable/button"
+            android:background="@drawable/button_defaul"
             android:drawableStart="@drawable/ic_edit_black_24dp"
             android:paddingEnd="40dp"
             android:paddingLeft="30dp"
