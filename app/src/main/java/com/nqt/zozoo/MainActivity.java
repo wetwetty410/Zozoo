@@ -1,15 +1,9 @@
 package com.nqt.zozoo;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ArgbEvaluator;
-import android.animation.ValueAnimator;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -22,11 +16,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 
-import com.nqt.zozoo.banhang.BanHangAsyncTask;
+import com.nqt.zozoo.sale.SaleAsyncTask;
 import com.nqt.zozoo.dathangnhanh.DatHangNhanhActivity;
-import com.nqt.zozoo.quanly.QuanLyActivity;
+import com.nqt.zozoo.manager.ManagerActivity;
 
 import java.util.List;
 
@@ -120,7 +113,7 @@ public class MainActivity extends AppCompatActivity
         switch (item.getItemId()) {
 
             case R.id.nav_camera:
-                BanHangAsyncTask banHangAsyncTask = new BanHangAsyncTask(this);
+                SaleAsyncTask banHangAsyncTask = new SaleAsyncTask(this);
                 banHangAsyncTask.execute();
                 break;
             // Handle the camera action
@@ -143,12 +136,12 @@ public class MainActivity extends AppCompatActivity
         switch (v.getId()) {
             case R.id.lln_ban_hang:
                 Log.d(TAG, "onClick: btn ban hang");
-                BanHangAsyncTask banHangAsyncTask = new BanHangAsyncTask(this);
+                SaleAsyncTask banHangAsyncTask = new SaleAsyncTask(this);
                 banHangAsyncTask.execute();
                 break;
 
             case R.id.lln_quan_ly:
-                startActivity(new Intent(this, QuanLyActivity.class));
+                startActivity(new Intent(this, ManagerActivity.class));
                 break;
 
             case R.id.lln_dat_tai_quay:

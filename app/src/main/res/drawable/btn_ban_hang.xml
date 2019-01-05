@@ -3,6 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:color="?attr/selectableItemBackgroundBorderless"
     tools:ignore="NewApi">
-    <item android:drawable="@drawable/btn_ban_hang" />
+    <item>
+        <selector>
+            <item android:state_pressed="true">
+                <shape android:shape="rectangle">
+                    <solid android:color="#c8d2c03a" />
+                </shape>
+            </item>
+            <item>
+                <shape>
+                    <solid android:color="#d2c03a" />
+                </shape>
+            </item>
+        </selector>
+    </item>
 
 </ripple>

@@ -13,7 +13,7 @@ import java.io.InputStream;
  * Created by USER on 12/10/2018.
  */
 
-public class DatabaseManager {
+public abstract class DatabaseManager {
     private static final String DATABASE_NAME = "nhahang.db";
     private final String databasePath;
     SQLiteDatabase sqLiteDatabase;

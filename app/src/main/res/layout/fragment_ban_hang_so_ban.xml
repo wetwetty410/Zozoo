@@ -23,7 +23,7 @@
             android:gravity="center_vertical"
             android:orientation="vertical"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            tools:context="com.nqt.zozoo.banhang.BanHangSoBanFragment"
+            tools:context="com.nqt.zozoo.sale.LocationTableFragment"
             tools:listitem="@layout/item_ban_hang_so_ban" />
     </ScrollView>
 
