@@ -25,7 +25,7 @@ public class ManagerActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quan_ly);
+        setContentView(R.layout.activity_manager);
         btnTaiKhoan = findViewById(R.id.btn_tai_khoan);
         btnSoDoBan = findViewById(R.id.btn_so_do_phong_ban);
         btnNhomMonAn = findViewById(R.id.btn_quan_ly_nhom_mon_an);
@@ -64,43 +64,31 @@ public class ManagerActivity extends AppCompatActivity implements View.OnClickLi
                 onClickNhomMonAn();
                 break;
             case R.id.btn_quan_ly_mon_an:
+                onClickMonAn();
                 break;
+
             default:
                 break;
         }
     }
 
-    public static void buttonEffect(View button) {
-        button.setOnTouchListener(new View.OnTouchListener() {
-
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: {
-                        v.getBackground().setColorFilter(0xe0f47521, PorterDuff.Mode.SRC_ATOP);
-                        v.invalidate();
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP: {
-                        v.getBackground().clearColorFilter();
-                        v.invalidate();
-                        break;
-                    }
-                }
-                return false;
-            }
-        });
+    private void onClickMonAn() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(android.R.id.content, AddFoodFragment.newInstance());
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     private void onClickNhomMonAn() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(android.R.id.content, AddGroupFoodFragment.newInstance(this));
+        transaction.add(android.R.id.content, AddGroupFoodFragment.newInstance());
         transaction.addToBackStack(null);
         transaction.commit();
     }
 
     private void onClickSoDoBan() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(android.R.id.content, AddTableFragment.newInstance(this));
+        transaction.add(android.R.id.content, AddTableFragment.newInstance());
         transaction.addToBackStack(null);
         transaction.commit();
     }

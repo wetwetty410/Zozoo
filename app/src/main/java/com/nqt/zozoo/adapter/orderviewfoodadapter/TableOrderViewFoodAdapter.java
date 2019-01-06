@@ -13,7 +13,9 @@ import android.widget.TextView;
 
 import com.nqt.zozoo.R;
 import com.nqt.zozoo.database.FoodOrderDatabase;
+import com.nqt.zozoo.database.FoodStatusDatabase;
 import com.nqt.zozoo.utils.FoodOrder;
+import com.nqt.zozoo.utils.FoodStatus;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +27,6 @@ public class TableOrderViewFoodAdapter extends RecyclerView.Adapter<TableOrderVi
     private OrderViewFoodAdapter monAnOrderAdapter;
     private FoodOrderDatabase monOrderDatabase;
     private List<FoodOrder> monOrderList;
-    private int positionNow;
     private boolean isExpland;
     private HashMap<Integer, Boolean> map;
 
@@ -53,7 +54,7 @@ public class TableOrderViewFoodAdapter extends RecyclerView.Adapter<TableOrderVi
         holder.txtTenBanOrder.setText(String.valueOf(banOrderList.get(position)));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         monOrderList = monOrderDatabase.getMonOrderWithBan(banOrderList.get(position));
-        monAnOrderAdapter = new OrderViewFoodAdapter(monOrderList);
+        monAnOrderAdapter = new OrderViewFoodAdapter(monOrderList, context);
         holder.rcvMonOrder.setLayoutManager(linearLayoutManager);
         holder.rcvMonOrder.setAdapter(monAnOrderAdapter);
         isExpland = map.get(position);

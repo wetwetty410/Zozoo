@@ -24,7 +24,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".manager.ManagerActivity" />
         <activity android:name=".kitchen.KitchenActivity" />
-        <activity android:name=".dathangnhanh.DatHangNhanhActivity"></activity>
+        <activity android:name=".fastorder.FastOrderActivity" />
     </application>
 
 </manifest>

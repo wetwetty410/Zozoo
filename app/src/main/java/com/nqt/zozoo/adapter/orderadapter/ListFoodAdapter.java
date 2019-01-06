@@ -57,8 +57,7 @@ public class ListFoodAdapter extends RecyclerView.Adapter<ListFoodAdapter.ViewHo
         private View view;
         private TextView txtTenMon;
         private TextView txtGiaTien;
-        private TextView txtDonVi;
-        private TextView txtSoLuong;
+
 
         public ViewHolder(View itemView) {
             super(itemView);

@@ -48,7 +48,7 @@ public class ViewOrderFoodFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_mon_an, container, false);
+        View view = inflater.inflate(R.layout.fragment_food_order, container, false);
         rcvMonAn = view.findViewById(R.id.rcv_ban_order_mon);
         Context context = view.getContext();
 

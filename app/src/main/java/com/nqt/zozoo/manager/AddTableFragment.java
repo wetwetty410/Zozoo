@@ -45,6 +45,7 @@ public class AddTableFragment extends Fragment implements OnClickAddFloor, View.
     private List<Floor> tangList;
     private TableDatabase banDatabase;
     private List<Table> banList;
+    private List<Table> allBanList;
     //   private HashMap<String, String> tenTang;
     private List<String> tenTangList;
 
@@ -84,6 +85,7 @@ public class AddTableFragment extends Fragment implements OnClickAddFloor, View.
         maTang = tangList.get(0).getMaTang();
         banDatabase = new TableDatabase(getContext());
         banList = banDatabase.getSoBan(maTang);
+        allBanList = banDatabase.getAllBan();
 //        tenTang = new HashMap<>();
 //        for (Tang tang : tangList) tenTang.put(tang.getMaTang(), tang.getTenTang());
     }
@@ -91,7 +93,7 @@ public class AddTableFragment extends Fragment implements OnClickAddFloor, View.
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_them_ban, container, false);
+        View view = inflater.inflate(R.layout.fragment_add_table_floor, container, false);
 
         toolbar = view.findViewById(R.id.tlb_fragment_them_ban);
         imgBack = view.findViewById(R.id.img_them_ban_backstack);
@@ -110,6 +112,7 @@ public class AddTableFragment extends Fragment implements OnClickAddFloor, View.
         appCompatActivity.getSupportActionBar().setTitle("");
         txtTitle.setText("Quản Lý Bàn");
         edtThemBan.setInputType(InputType.TYPE_CLASS_NUMBER);
+
         LinearLayoutManager llnManagerThemTang = new LinearLayoutManager(context);
         themTangAdapter = new AddFloorAdapter(tangList, this);
         llnManagerThemTang.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -170,7 +173,8 @@ public class AddTableFragment extends Fragment implements OnClickAddFloor, View.
     }
 
     private boolean checkTenBanExist(String tenBan) {
-        for (Table ban : banList) {
+
+        for (Table ban : allBanList) {
             if (ban.getTenBan().equalsIgnoreCase(tenBan)) {
                 return false;
             }
@@ -269,7 +273,12 @@ public class AddTableFragment extends Fragment implements OnClickAddFloor, View.
         alertDialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                tenTangList.remove(tang.getTenTang());
                 tangDatabase.deleteTang(tang.getId());
+                for (Table table : banList) {
+                    banDatabase.deleteBanInTang(tang.getMaTang());
+                }
+                showFloor();
             }
         });
         alertDialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {
@@ -278,6 +287,12 @@ public class AddTableFragment extends Fragment implements OnClickAddFloor, View.
                 dialog.dismiss();
             }
         }).show();
+    }
+
+    private void showFloor() {
+        tangList = tangDatabase.getAllTang();
+        themTangAdapter = new AddFloorAdapter(tangList, this);
+        rcvThemTang.setAdapter(themTangAdapter);
     }
 
     @Override
@@ -286,13 +301,15 @@ public class AddTableFragment extends Fragment implements OnClickAddFloor, View.
     }
 
     @Override
-    public void OnClickXoaBan(final Table ban, int position) {
+    public void OnClickXoaBan(final Table ban, final int position) {
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
         alertDialog.setMessage("Bạn có chắc chắn muốn xóa?");
         alertDialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                tangDatabase.deleteTang(ban.getId());
+                banList.remove(ban);
+                banDatabase.deleteBan(banList.get(position).getMaBan());
+                showTable();
             }
         });
         alertDialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {
@@ -301,5 +318,12 @@ public class AddTableFragment extends Fragment implements OnClickAddFloor, View.
                 dialog.dismiss();
             }
         }).show();
+
+    }
+
+    private void showTable() {
+        banList = banDatabase.getSoBan(maTang);
+        soBanRecyclerViewAdapter = new ViewTableRecyclerViewAdapter(banList, this, getContext(), true);
+        rcvThemBan.setAdapter(soBanRecyclerViewAdapter);
     }
 }

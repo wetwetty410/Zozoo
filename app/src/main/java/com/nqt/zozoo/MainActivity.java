@@ -17,8 +17,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.nqt.zozoo.fastorder.FastOrderActivity;
+import com.nqt.zozoo.kitchen.KitchenActivity;
 import com.nqt.zozoo.sale.SaleAsyncTask;
-import com.nqt.zozoo.dathangnhanh.DatHangNhanhActivity;
 import com.nqt.zozoo.manager.ManagerActivity;
 
 import java.util.List;
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity
         llnBanHang.setOnClickListener(this);
         llnQuanLy.setOnClickListener(this);
         llnDatTaiQuay.setOnClickListener(this);
+        llnNhaBep.setOnClickListener(this);
     }
 
     @Override
@@ -145,7 +147,10 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.lln_dat_tai_quay:
-                startActivity(new Intent(this, DatHangNhanhActivity.class));
+                startActivity(new Intent(this, FastOrderActivity.class));
+                break;
+            case R.id.lln_nha_bep:
+                startActivity(new Intent(this, KitchenActivity.class));
                 break;
             case R.id.fab:
                 Log.d(TAG, "onClick: fab");

@@ -13,16 +13,14 @@ public class Food {
     private String nhomMonAn;
     private int donGia;
     private String donViTinh;
-    private int soLuong;
 
-    public Food(String id, String maMonAn, String tenMonAn, String nhomMonAn, int donGia, String donViTinh, int soLuong) {
+    public Food(String id, String maMonAn, String tenMonAn, String nhomMonAn, int donGia, String donViTinh) {
         this.id = id;
         this.maMonAn = maMonAn;
         this.tenMonAn = tenMonAn;
         this.nhomMonAn = nhomMonAn;
         this.donGia = donGia;
         this.donViTinh = donViTinh;
-        this.soLuong = soLuong;
     }
 
     @Override
@@ -30,13 +28,6 @@ public class Food {
         return nhomMonAn.hashCode();
     }
 
-    public int getSoLuong() {
-        return soLuong;
-    }
-
-    public void setSoLuong(int soLuong) {
-        this.soLuong = soLuong;
-    }
 
     public String getId() {
         return id;

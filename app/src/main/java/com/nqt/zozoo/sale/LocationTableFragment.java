@@ -79,7 +79,7 @@ public class LocationTableFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_ban_hang_so_ban, container, false);
+        final View view = inflater.inflate(R.layout.fragment_location_table, container, false);
         view.post(new Runnable() {
             @Override
             public void run() {

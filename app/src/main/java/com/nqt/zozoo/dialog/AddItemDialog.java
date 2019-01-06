@@ -33,7 +33,7 @@ public class AddItemDialog extends Dialog {
     public AddItemDialog(Context context) {
         super(context);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.dialog_them_tang);
+        setContentView(R.layout.dialog_add);
         getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         init();
     }
@@ -43,7 +43,7 @@ public class AddItemDialog extends Dialog {
         this.type = typeDialog;
         this.tang = tangs;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.dialog_them_tang);
+        setContentView(R.layout.dialog_add);
         getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         init();
     }
@@ -53,7 +53,7 @@ public class AddItemDialog extends Dialog {
         this.type = typeDialog;
         this.ban = bans;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.dialog_them_tang);
+        setContentView(R.layout.dialog_add);
         getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         init();
     }
@@ -63,7 +63,7 @@ public class AddItemDialog extends Dialog {
         this.type = typeDialog;
         this.nhomMonAn = nhomMonAn;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.dialog_them_tang);
+        setContentView(R.layout.dialog_add);
         getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         init();
     }
@@ -73,7 +73,7 @@ public class AddItemDialog extends Dialog {
         this.type = typeDialog;
         this.nhomMonAn = nhomMonAn;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.dialog_them_tang);
+        setContentView(R.layout.dialog_add);
         getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         init();
     }
@@ -84,34 +84,46 @@ public class AddItemDialog extends Dialog {
         if (type.equals("editTang") || type.equals("editBan") || type.endsWith("editNhom")) {
             btnThemTang.setText("Lưu");
         }
-        if (type.equals("editBan")) {
-            edtThemTang.setHint("Tên bàn");
-            edtThemTang.setInputType(InputType.TYPE_NUMBER_VARIATION_PASSWORD);
-        } else if (type.equals("editTang")) {
-            edtThemTang.setHint("Tên Tầng");
-        } else {
-            edtThemTang.setHint("Tên Nhóm");
-
+        switch (type) {
+            case "editBan":
+                edtThemTang.setHint("Tên bàn");
+                edtThemTang.setInputType(InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+                break;
+            case "editTang":
+                edtThemTang.setHint("Tên Tầng");
+                break;
+            case "editNhom":
+                edtThemTang.setHint("Tên Nhóm");
+                break;
+            default:
+                edtThemTang.setHint("Tên Tầng");
+                break;
         }
         btnThemTang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (type.equals("editTang")) {
-                    onClickThemBanFragment.OnClickSuaTang(tang, String.valueOf(edtThemTang.getText()));
-                    dismiss();
-                } else if (type.equals("editBan")) {
-                    onClickThemBanFragment.OnClickSuaBan(ban, String.valueOf(edtThemTang.getText()));
-                    dismiss();
-                } else if (type.equals("editNhom")) {
-                    onClickThemNhomFragment.OnClickSuaNhom(nhomMonAn, String.valueOf(edtThemTang.getText()));
-                    dismiss();
-                } else if (type.equals("addNhom")) {
-                    onClickThemNhomFragment.OnClickThemNhom(String.valueOf(edtThemTang.getText()));
-                    dismiss();
-                } else {
-                    onClickThemBanFragment.OnClickThemTang(String.valueOf(edtThemTang.getText()));
-                    dismiss();
+                switch (type) {
+                    case "editTang":
+                        onClickThemBanFragment.OnClickSuaTang(tang, String.valueOf(edtThemTang.getText()));
+                        dismiss();
+                        break;
+                    case "editBan":
+                        onClickThemBanFragment.OnClickSuaBan(ban, String.valueOf(edtThemTang.getText()));
+                        dismiss();
+                        break;
+                    case "editNhom":
+                        onClickThemNhomFragment.OnClickSuaNhom(nhomMonAn, String.valueOf(edtThemTang.getText()));
+                        dismiss();
+                        break;
+                    case "addNhom":
+                        onClickThemNhomFragment.OnClickThemNhom(String.valueOf(edtThemTang.getText()));
+                        dismiss();
+                        break;
+                    default:
+                        onClickThemBanFragment.OnClickThemTang(String.valueOf(edtThemTang.getText()));
+                        dismiss();
+                        break;
                 }
             }
         });

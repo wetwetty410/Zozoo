@@ -2,10 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="2dp"
+    android:layout_marginRight="2dp"
+    android:layout_marginTop="4dp"
+    android:background="@drawable/bg_bep_mon_an"
+    android:layerType="software"
     android:orientation="vertical"
-    android:padding="4dp">
+    android:padding="4dp"
+    android:paddingBottom="4dp">
 
     <LinearLayout
+        android:id="@+id/lln_bep_mon_an"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="2dp"

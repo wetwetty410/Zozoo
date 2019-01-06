@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="4dp"
+    android:layout_marginStart="4dp"
+    android:layout_marginTop="4dp"
+    android:background="@drawable/bg_view_food"
+    android:orientation="horizontal"
+    android:padding="4dp">
+
+    <TextView
+        android:id="@+id/txt_view_name_food"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:text="Gà"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/txt_view_cost_food"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:text="50000"
+        android:textColor="#df5f28"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/img_view_remove_food_group"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:src="@drawable/ic_remove_black_24dp" />
+
+    <ImageView
+        android:id="@+id/img_view_edit_food"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:src="@drawable/ic_edit_black_24dp" />
+
+    <ImageView
+        android:id="@+id/img_view_delele_food"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:src="@drawable/ic_clear_black_24dp" />
+</LinearLayout>

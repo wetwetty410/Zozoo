@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
  */
 
 public class SaleAsyncTask extends AsyncTask<Void, Integer, Void> {
-    @SuppressLint("StaticFieldLeak")
     private AppCompatActivity appCompatActivity;
     private ProgressDialog progressDrawable;
     private android.content.Intent intent;

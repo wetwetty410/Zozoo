@@ -29,6 +29,18 @@ public class TableDatabase extends DatabaseManager {
     }
 
 
+    public void deleteBan(String maBan) {
+        openDatabase();
+        sqLiteDatabase.delete(TABLE_BAN, TABLE_BAN_MA_BAN + "=?", new String[]{maBan});
+        closeDatabase();
+    }
+
+    public void deleteBanInTang(String maTang) {
+        openDatabase();
+        sqLiteDatabase.delete(TABLE_BAN, TABLE_BAN_MA_TANG + "=?", new String[]{maTang});
+        closeDatabase();
+    }
+
     public void addBan(Table ban) {
         openDatabase();
 

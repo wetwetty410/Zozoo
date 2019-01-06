@@ -1,5 +1,6 @@
 package com.nqt.zozoo.adapter.orderviewfoodadapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,15 +8,23 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.nqt.zozoo.R;
+import com.nqt.zozoo.database.FoodStatusDatabase;
 import com.nqt.zozoo.utils.FoodOrder;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class OrderViewFoodAdapter extends RecyclerView.Adapter<OrderViewFoodAdapter.ViewHolder> {
     private List<FoodOrder> monOrderList;
+    private FoodStatusDatabase foodStatusDatabase;
+    private HashMap<String, String> foodStatus;
+    private Context context;
 
-    public OrderViewFoodAdapter(List<FoodOrder> monOrders) {
+    public OrderViewFoodAdapter(List<FoodOrder> monOrders, Context context) {
         this.monOrderList = monOrders;
+        this.context = context;
+        foodStatusDatabase = new FoodStatusDatabase(context);
+        foodStatus = foodStatusDatabase.mapAllFoodStatus();
     }
 
     @Override
@@ -29,7 +38,11 @@ public class OrderViewFoodAdapter extends RecyclerView.Adapter<OrderViewFoodAdap
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.txtTenMonOrder.setText(monOrderList.get(position).getTenMonOrder());
         holder.txtSoMonOrder.setText(monOrderList.get(position).getSoLuongOrder());
-        holder.txtTrangThai.setText(monOrderList.get(position).getTrangThaiOrder());
+        String status = monOrderList.get(position).getTrangThaiOrder();
+
+        if (foodStatus.containsKey(status)) {
+            holder.txtTrangThai.setText(foodStatus.get(status));
+        }
     }
 
     @Override

@@ -68,7 +68,9 @@ public class ViewTableRecyclerViewAdapter extends RecyclerView.Adapter<ViewTable
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.txtThuTuBan.setText(banList.get(position).getTenBan());
         final boolean statusBan = banList.get(position).getStatusBan() == 1;
-        if (statusBan) {
+        if (mIsThemBan) {
+            holder.txtThuTuBan.setBackgroundResource(R.drawable.ic_table_style_green);
+        } else if (statusBan) {
             holder.txtThuTuBan.setBackgroundResource(R.drawable.ic_table_style_red);
         } else {
             holder.txtThuTuBan.setBackgroundResource(R.drawable.ic_table_style_green);
@@ -117,7 +119,9 @@ public class ViewTableRecyclerViewAdapter extends RecyclerView.Adapter<ViewTable
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    openMenu(v, banList.get(getAdapterPosition()), getAdapterPosition());
+                    if (mIsThemBan) {
+                        openMenu(v, banList.get(getAdapterPosition()), getAdapterPosition());
+                    }
                     return false;
                 }
             });

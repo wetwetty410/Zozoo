@@ -50,6 +50,15 @@ public class FoodOrderDatabase extends DatabaseManager {
         return monOrders;
     }
 
+    public void updateStatus(String status, String maMon, String tenTang) {
+        openDatabase();
+        ContentValues values = new ContentValues();
+        values.put(MON_ORDER_TRANG_THAI, status);
+        sqLiteDatabase.update(MON_ORDER, values, MON_ORDER_MA_MON + "=? AND " + MON_ORDER_TEN_BAN + "=? ",
+                new String[]{maMon, tenTang});
+        closeDatabase();
+    }
+
     public List<FoodOrder> getAllMonOrder() {
         openDatabase();
         List<FoodOrder> monOrders = new ArrayList<>();

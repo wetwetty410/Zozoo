@@ -367,6 +367,7 @@ public class OrderFragment extends Fragment implements OnClickOrder, View.OnClic
                         String viTriBan = ban.getTenBan() + " - " + tang.getTenTang();
                         mon.setTenBanOrder(viTriBan);
                         mon.setTenMonOrder(monOrder.getTenMonAn());
+                        mon.setTrangThaiOrder("wat");
                         monOrderDatabase.addMonOrder(mon);
                         orderMonListDatabase.addOrderList(monOrder);
                     }

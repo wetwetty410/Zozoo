@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true"
     android:orientation="vertical"
     tools:context="com.nqt.zozoo.manager.ManagerActivity">
 
@@ -77,8 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:background="@drawable/button_defaul"
-
+            android:background="@drawable/ripple_button_quan_ly"
             android:drawableStart="@drawable/ic_edit_black_24dp"
             android:paddingEnd="40dp"
             android:paddingLeft="30dp"
@@ -92,7 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:background="@drawable/button_defaul"
+            android:background="@drawable/ripple_button_quan_ly"
             android:drawableStart="@drawable/ic_edit_black_24dp"
             android:paddingEnd="40dp"
             android:paddingLeft="30dp"

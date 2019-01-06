@@ -16,15 +16,30 @@ public class KitchenPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment;
         switch (position) {
             case 0:
-             //   fragment ;
-             //   return fragment;
+                fragment = KitchenFragment.newInstance();
+                //   return fragment;
             case 1:
-             //   fragment ;
-           //     return fragment;
+                //   fragment ;
+                //     return fragment;
             default:
+                fragment = KitchenFragment.newInstance();
                 break;
         }
-        return null;
+        return fragment;
+    }
+
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        switch (position) {
+            case 0:
+                return "Bàn Order";
+
+            case 1:
+                return "Order Nhanh";
+            default:
+                return "Bàn Order";
+        }
     }
 
     @Override

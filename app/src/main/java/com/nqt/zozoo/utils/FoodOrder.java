@@ -1,5 +1,7 @@
 package com.nqt.zozoo.utils;
 
+import java.util.Objects;
+
 public class FoodOrder {
     private String id;
     private String maOrder;
@@ -23,6 +25,14 @@ public class FoodOrder {
         this.maBan = maBan;
         this.maMon = maMon;
     }
+
+    public boolean equalsStatus(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FoodOrder foodOrder = (FoodOrder) o;
+        return Objects.equals(trangThaiOrder, foodOrder.trangThaiOrder);
+    }
+
 
     public String getMaMon() {
         return maMon;

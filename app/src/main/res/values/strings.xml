@@ -13,4 +13,6 @@
     <string name="all">Tất Cả</string>
     <string name="sale">Bán Hàng</string>
     <string name="fast_order">Đặt Tại Quầy</string>
+    <string name="free">Tự do</string>
+    <string name="done_group">Không Nhóm</string>
 </resources>
