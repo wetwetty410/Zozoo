@@ -23,6 +23,10 @@ public class Food {
         this.donViTinh = donViTinh;
     }
 
+    public Food() {
+
+    }
+
     @Override
     public int hashCode() {
         return nhomMonAn.hashCode();

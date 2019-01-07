@@ -21,6 +21,7 @@ import com.nqt.zozoo.adapter.addfoodadapter.ViewFoodAdapter;
 import com.nqt.zozoo.adapter.addfoodadapter.ViewGroupFoodAdapter;
 import com.nqt.zozoo.database.FoodDatabase;
 import com.nqt.zozoo.database.GroupFoodDatabase;
+import com.nqt.zozoo.dialog.AddFoodDialog;
 import com.nqt.zozoo.utils.Food;
 import com.nqt.zozoo.utils.GroupFood;
 
@@ -34,6 +35,7 @@ public class AddFoodFragment extends Fragment implements View.OnClickListener, O
     private Toolbar toolbar;
     private ImageView imgBackStack;
     private TextView txtFoodTitle;
+    private TextView txtAddFood;
     private Button btnAllFood;
     private Button btnFreeFood;
     private RecyclerView rcvViewGroupFood;
@@ -69,6 +71,7 @@ public class AddFoodFragment extends Fragment implements View.OnClickListener, O
         toolbar = view.findViewById(R.id.tlb_fragment_add_food);
         imgBackStack = view.findViewById(R.id.img_add_food_backstack);
         txtFoodTitle = view.findViewById(R.id.txt_add_food_title);
+        txtAddFood = view.findViewById(R.id.txt_add_food);
         btnAllFood = view.findViewById(R.id.btn_all_food);
         btnFreeFood = view.findViewById(R.id.btn_food_free);
         rcvViewGroupFood = view.findViewById(R.id.rcv_view_group_food);
@@ -91,6 +94,8 @@ public class AddFoodFragment extends Fragment implements View.OnClickListener, O
         rcvViewFood.setLayoutManager(layoutManagerFood);
         rcvViewFood.setAdapter(viewFoodAdapter);
 
+        btnFreeFood.setOnClickListener(this);
+        txtAddFood.setOnClickListener(this);
         btnAllFood.setOnClickListener(this);
         imgBackStack.setOnClickListener(this);
         return view;
@@ -107,12 +112,31 @@ public class AddFoodFragment extends Fragment implements View.OnClickListener, O
             case R.id.img_add_food_backstack:
                 getActivity().onBackPressed();
                 break;
+            case R.id.txt_add_food:
+                foodList = foodDatabase.getAllMonAn();
+                AddFoodDialog addFoodDialog = new AddFoodDialog(foodList, getContext());
+                addFoodDialog.setOnClickAddFoodListener(this);
+                addFoodDialog.show();
+                break;
+            case R.id.btn_food_free:
+                foodList = foodDatabase.getMonAnWithGroup("");
+                viewFoodAdapter = new ViewFoodAdapter(foodList, this, getContext());
+                rcvViewFood.setAdapter(viewFoodAdapter);
+                break;
         }
     }
 
     @Override
     public void OnClickGroupListener(GroupFood groupFood, int position) {
         foodList = foodDatabase.getMonAnWithGroup(groupFoodList.get(position).getMaNhonMonAn());
+        viewFoodAdapter = new ViewFoodAdapter(foodList, this, getContext());
+        rcvViewFood.setAdapter(viewFoodAdapter);
+    }
+
+    @Override
+    public void OnClickAddFoodListener(Food food) {
+        foodDatabase.addMonAn(food);
+        foodList = foodDatabase.getMonAnWithGroup(food.getNhomMonAn());
         viewFoodAdapter = new ViewFoodAdapter(foodList, this, getContext());
         rcvViewFood.setAdapter(viewFoodAdapter);
     }

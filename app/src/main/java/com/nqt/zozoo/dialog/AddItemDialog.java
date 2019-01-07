@@ -95,6 +95,10 @@ public class AddItemDialog extends Dialog {
             case "editNhom":
                 edtThemTang.setHint("Tên Nhóm");
                 break;
+
+            case "addNhom":
+                edtThemTang.setHint("Tên Nhóm");
+                break;
             default:
                 edtThemTang.setHint("Tên Tầng");
                 break;
