@@ -3,17 +3,27 @@ package com.nqt.zozoo.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.support.annotation.NonNull;
+import android.util.Log;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.nqt.zozoo.utils.Floor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by USER on 12/10/2018.
  */
 
 public class FloorDatabase extends DatabaseManager {
+    private static final String TAG = FloorDatabase.class.getName();
     private static final String TANG = "tang";
     private static final String TANG_ID = "id";
     private static final String TANG_MA = "ma_tang";
@@ -24,8 +34,32 @@ public class FloorDatabase extends DatabaseManager {
     }
 
     public void addTang(Floor tang) {
-        openDatabase();
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setTimestampsInSnapshotsEnabled(true)
+                .build();
+        db.setFirestoreSettings(settings);
+        Map<String, Object> floorMap = new HashMap<>();
+        floorMap.put(TANG_ID, tang.getId());
+        floorMap.put(TANG_MA, tang.getMaTang());
+        floorMap.put(TANG_TEN, tang.getTenTang());
+
+        db.collection(TANG)
+                .add(floorMap)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });
+        openDatabase();
         ContentValues values = new ContentValues();
         values.put(TANG_MA, tang.getMaTang());
         values.put(TANG_TEN, tang.getTenTang());
@@ -34,6 +68,7 @@ public class FloorDatabase extends DatabaseManager {
         sqLiteDatabase.insert(TANG, null, values);
         closeDatabase();
     }
+
 
     public void updateTang(Floor tang, String idTang) {
         openDatabase();
