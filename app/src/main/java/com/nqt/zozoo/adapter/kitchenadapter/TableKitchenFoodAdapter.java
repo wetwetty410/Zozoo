@@ -1,11 +1,8 @@
 package com.nqt.zozoo.adapter.kitchenadapter;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.media.Image;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +45,7 @@ public class TableKitchenFoodAdapter extends RecyclerView.Adapter<TableKitchenFo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_bep, parent, false);
+                .inflate(R.layout.item_kitchen, parent, false);
 
         return new ViewHolder(view);
     }

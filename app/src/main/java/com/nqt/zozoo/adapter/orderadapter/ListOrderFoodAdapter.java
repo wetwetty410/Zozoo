@@ -29,7 +29,7 @@ public class ListOrderFoodAdapter extends RecyclerView.Adapter<ListOrderFoodAdap
     @Override
     public ViewHoler onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_order_list, parent, false);
+                .inflate(R.layout.item_order_food_ordered, parent, false);
         return new ViewHoler(view);
     }
 

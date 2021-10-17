@@ -27,7 +27,7 @@ public class ListGroupFoodAdapter extends RecyclerView.Adapter<ListGroupFoodAdap
     @Override
     public ViewHoler onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_nhom_thuc_an, parent, false);
+                .inflate(R.layout.item_order_group_food_list, parent, false);
         return new ViewHoler(view);
     }
 

@@ -4,7 +4,9 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,12 +24,15 @@ import com.nqt.zozoo.kitchen.KitchenActivity;
 import com.nqt.zozoo.sale.SaleAsyncTask;
 import com.nqt.zozoo.manager.ManagerActivity;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     private static final String TAG = "MainActivity";
-    private static final String EMAIL = "truongnguyen41096@gmail.com";
+    private static final String EMAIL = "truongnq410@gmail.com";
+    private static final String SUBJECT = "Zozoo-complaint";
     private Toolbar toolbar;
     private View llnBanHang;
     private View llnDatTaiQuay;
@@ -39,6 +44,7 @@ public class MainActivity extends AppCompatActivity
     private View llnQuanLy;
     private View llnHuongDan;
     private FloatingActionButton fab;
+    private long mLastClickTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +61,7 @@ public class MainActivity extends AppCompatActivity
         llnQuanLy = findViewById(R.id.lln_quan_ly);
         llnTroGiup = findViewById(R.id.lln_tro_giup);
         llnHuongDan = findViewById(R.id.lln_huong_dan);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab_email);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -108,13 +114,16 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         switch (item.getItemId()) {
 
             case R.id.nav_camera:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    break;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 SaleAsyncTask banHangAsyncTask = new SaleAsyncTask(this);
                 banHangAsyncTask.execute();
                 break;
@@ -137,7 +146,12 @@ public class MainActivity extends AppCompatActivity
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.lln_ban_hang:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    break;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Log.d(TAG, "onClick: btn ban hang");
+
                 SaleAsyncTask banHangAsyncTask = new SaleAsyncTask(this);
                 banHangAsyncTask.execute();
                 break;
@@ -152,27 +166,15 @@ public class MainActivity extends AppCompatActivity
             case R.id.lln_nha_bep:
                 startActivity(new Intent(this, KitchenActivity.class));
                 break;
-            case R.id.fab:
-                Log.d(TAG, "onClick: fab");
-                try {
-                    final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
-                    intent.setType("text/plain");
-                    final PackageManager pm = getPackageManager();
-                    final List<ResolveInfo> matches = pm.queryIntentActivities(intent, 0);
-                    ResolveInfo best = null;
-                    for (final ResolveInfo info : matches)
-                        if (info.activityInfo.packageName.endsWith(".gm") ||
-                                info.activityInfo.name.toLowerCase().contains("gmail")) best = info;
-                    if (best != null)
-                        intent.setClassName(best.activityInfo.packageName, best.activityInfo.name);
+            case R.id.fab_email:
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setData(Uri.parse("mailto:"));
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{EMAIL});
+                intent.putExtra(Intent.EXTRA_SUBJECT, SUBJECT);
+                if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
-//                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + EMAIL));
-//                    intent.putExtra(Intent.EXTRA_SUBJECT, "your_subject");
-//                    intent.putExtra(Intent.EXTRA_TEXT, "your_text");
-//                    startActivity(intent);
-                } catch (ActivityNotFoundException e) {
-                    //TODO smth
                 }
+
             default:
                 break;
         }

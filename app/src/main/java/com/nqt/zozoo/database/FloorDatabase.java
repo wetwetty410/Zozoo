@@ -91,11 +91,13 @@ public class FloorDatabase extends DatabaseManager {
         openDatabase();
 
         Cursor cursor = sqLiteDatabase.query(TANG, null, TANG_MA + "=?", new String[]{String.valueOf(maTang)}, null, null, null);
-        if (cursor != null)
+        if (cursor != null) {
             cursor.moveToFirst();
+        }
         Floor tang = new Floor(cursor.getString(0),
                 cursor.getString(1),
                 cursor.getString(2));
+        cursor.close();
         closeDatabase();
         return tang;
     }

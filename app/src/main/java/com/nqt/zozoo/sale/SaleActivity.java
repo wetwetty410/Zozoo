@@ -5,10 +5,12 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -19,14 +21,15 @@ import com.nqt.zozoo.R;
 import com.nqt.zozoo.utils.Table;
 import com.nqt.zozoo.utils.Food;
 
+import java.util.Objects;
+
 public class SaleActivity extends AppCompatActivity implements View.OnClickListener,
         LocationTableFragment.OnListFragmentInteractionListener,
         ViewOrderFoodFragment.OnListFragmentInteractionListener {
+    private static final String TAG = "SaleActivity";
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Toolbar tlbBHSB;
-    private TextView txtTitle;
-    private ImageView imgBackStack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,36 +39,14 @@ public class SaleActivity extends AppCompatActivity implements View.OnClickListe
         tabLayout = findViewById(R.id.ban_hang_tab);
         viewPager = findViewById(R.id.ban_hang_viewpager);
         tlbBHSB = findViewById(R.id.tlb_fragment_bhsb);
-        txtTitle = findViewById(R.id.txt_title);
-        imgBackStack = findViewById(R.id.img_backstack);
-
-        txtTitle.setText(R.string.ban_hang);
-        imgBackStack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
         setSupportActionBar(tlbBHSB);
-        getSupportActionBar().setTitle("");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Bán Hàng");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setupViewPager();
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabTextColors(ColorStateList.valueOf(Color.WHITE));
-
-        Window window = getWindow();
-
-// clear FLAG_TRANSLUCENT_STATUS flag:
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
-// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-
-// finally change the color
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.setStatusBarColor(Color.parseColor("#232F34"));
-        }
     }
 
 
@@ -93,6 +74,21 @@ public class SaleActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onDestroy() {
+        Log.d(TAG, "onDestroy: ");
+        super.onDestroy();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onListFragmentInteraction(Table ban) {
 
     }
@@ -104,15 +100,12 @@ public class SaleActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.img_backstack:
-                finish();
-                break;
-        }
+
     }
 
     @Override
     public void onListFragmentInteraction(Food monAn) {
 
     }
+
 }

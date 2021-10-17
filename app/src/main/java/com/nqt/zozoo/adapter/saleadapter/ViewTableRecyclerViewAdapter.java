@@ -15,7 +15,8 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.nqt.zozoo.R;
-import com.nqt.zozoo.adapter.addflooradapter.OnClickAddFloor;
+import com.nqt.zozoo.adapter.addflooradapter.CallBackManagerFloor;
+import com.nqt.zozoo.sale.OrderCallBack;
 import com.nqt.zozoo.sale.SaleActivity;
 import com.nqt.zozoo.sale.OrderFragment;
 import com.nqt.zozoo.utils.Table;
@@ -28,7 +29,7 @@ import static com.nqt.zozoo.sale.LocationTableFragment.OnListFragmentInteraction
  * Created by USER on 12/3/2018.
  */
 
-public class ViewTableRecyclerViewAdapter extends RecyclerView.Adapter<ViewTableRecyclerViewAdapter.ViewHolder> {
+public class ViewTableRecyclerViewAdapter extends RecyclerView.Adapter<ViewTableRecyclerViewAdapter.ViewHolder> implements OrderCallBack {
 
     private static final String TAGE = "SoBanAdapter";
     private List<Table> banList;
@@ -38,7 +39,8 @@ public class ViewTableRecyclerViewAdapter extends RecyclerView.Adapter<ViewTable
     private boolean mIsThemBan;
     private Display display;
     private OnListFragmentInteractionListener mListener;
-    private OnClickAddFloor mThemListener;
+    private CallBackManagerFloor mThemListener;
+    private String nameTable;
 
     public ViewTableRecyclerViewAdapter(List<Table> bans, OnListFragmentInteractionListener listener, Context mContext) {
         banList = bans;
@@ -48,7 +50,7 @@ public class ViewTableRecyclerViewAdapter extends RecyclerView.Adapter<ViewTable
         heightScreen = Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 
-    public ViewTableRecyclerViewAdapter(List<Table> bans, OnClickAddFloor listener, Context mContext, boolean isThemBan) {
+    public ViewTableRecyclerViewAdapter(List<Table> bans, CallBackManagerFloor listener, Context mContext, boolean isThemBan) {
         banList = bans;
         mThemListener = listener;
         context = mContext;
@@ -60,20 +62,21 @@ public class ViewTableRecyclerViewAdapter extends RecyclerView.Adapter<ViewTable
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_so_ban, parent, false);
+                .inflate(R.layout.item_sales_table, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.txtThuTuBan.setText(banList.get(position).getTenBan());
+        nameTable = banList.get(position).getTenBan();
+        holder.txtThuTuBan.setText(nameTable);
         final boolean statusBan = banList.get(position).getStatusBan() == 1;
         if (mIsThemBan) {
-            holder.txtThuTuBan.setBackgroundResource(R.drawable.ic_table_style_green);
+            holder.txtThuTuBan.setBackgroundResource(R.drawable.ic_table_free);
         } else if (statusBan) {
-            holder.txtThuTuBan.setBackgroundResource(R.drawable.ic_table_style_red);
+            holder.txtThuTuBan.setBackgroundResource(R.drawable.ic_table_busy);
         } else {
-            holder.txtThuTuBan.setBackgroundResource(R.drawable.ic_table_style_green);
+            holder.txtThuTuBan.setBackgroundResource(R.drawable.ic_table_free);
 
         }
         int indexWidth = (int) (convertDpToPixel(widthScreen, context) - (convertDpToPixel(5, context) * 6));
@@ -83,14 +86,23 @@ public class ViewTableRecyclerViewAdapter extends RecyclerView.Adapter<ViewTable
     public static float convertDpToPixel(float dp, Context context) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
-        float px = dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
-        return px;
+        return dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
 
     @Override
     public int getItemCount() {
         return banList.size();
+    }
+
+    @Override
+    public void onTableStatusChange(String nametable) {
+        for (int i = 0; i < banList.size(); i++) {
+            Table table = banList.get(i);
+            if (table.getTenBan().equals(nametable)) {
+                notifyItemChanged(i);
+            }
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -109,7 +121,7 @@ public class ViewTableRecyclerViewAdapter extends RecyclerView.Adapter<ViewTable
                         final boolean statusBan = banList.get(getAdapterPosition()).getStatusBan() == 1;
                         String nameBan = banList.get(getAdapterPosition()).getMaBan();
                         FragmentTransaction transaction = ((SaleActivity) context).getSupportFragmentManager().beginTransaction();
-                        transaction.add(android.R.id.content, OrderFragment.newInstance(context, statusBan, nameBan));
+                        transaction.replace(android.R.id.content, OrderFragment.newInstance(statusBan, nameBan));
                         transaction.addToBackStack(null);
                         transaction.commit();
                         Log.d(TAGE, "onClick:OrderFragMent ");
@@ -129,15 +141,15 @@ public class ViewTableRecyclerViewAdapter extends RecyclerView.Adapter<ViewTable
 
         private void openMenu(View view, final Table ban, final int position) {
             PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-            popupMenu.getMenuInflater().inflate(R.menu.menu_edit_tang, popupMenu.getMenu());
+            popupMenu.getMenuInflater().inflate(R.menu.menu_manager_edit_table, popupMenu.getMenu());
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     switch (item.getItemId()) {
-                        case R.id.menu_doi_ten_tang:
+                        case R.id.menu_doi_ten_ban:
                             mThemListener.OnClickDoiTenBan(ban, position);
                             break;
-                        case R.id.menu_xoa_tang:
+                        case R.id.menu_xoa_ban:
                             mThemListener.OnClickXoaBan(ban, position);
                             break;
                         default:

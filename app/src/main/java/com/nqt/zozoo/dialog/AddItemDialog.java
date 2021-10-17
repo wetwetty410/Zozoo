@@ -1,139 +1,186 @@
 package com.nqt.zozoo.dialog;
 
-import android.app.Dialog;
-import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.graphics.Rect;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.text.InputType;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.OrientationEventListener;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.nqt.zozoo.R;
-import com.nqt.zozoo.adapter.addflooradapter.OnClickAddFloor;
+import com.nqt.zozoo.adapter.addflooradapter.CallBackManagerFloor;
 import com.nqt.zozoo.adapter.addgroupfoodadapter.OnClickAddGroupFood;
 import com.nqt.zozoo.utils.Table;
 import com.nqt.zozoo.utils.GroupFood;
 import com.nqt.zozoo.utils.Floor;
 
+import java.util.Objects;
+
 /**
  * Created by USER on 12/24/2018.
  */
 
-public class AddItemDialog extends Dialog {
-    private EditText edtThemTang;
+public class AddItemDialog extends DialogFragment {
+    private static final String DATA = "data";
+    private static final String TYPE = "type";
+    private EditText edtThem;
     private String type = "";
-    private Button btnThemTang;
+    private Button btnThem;
     private Floor tang;
     private Table ban;
     private GroupFood nhomMonAn;
-    private OnClickAddFloor onClickThemBanFragment;
+    private CallBackManagerFloor onClickThemBanFragment;
     private OnClickAddGroupFood onClickThemNhomFragment;
+    private OrientationEventListener myOrientationEventListener;
+    private static final String TAG = "AddItemDialog";
 
-    public AddItemDialog(Context context) {
-        super(context);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.dialog_add);
-        getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        init();
+
+    public AddItemDialog() {
     }
 
-    public AddItemDialog(Context context, Floor tangs, String typeDialog) {
-        super(context);
-        this.type = typeDialog;
-        this.tang = tangs;
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.dialog_add);
-        getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        init();
+    public static AddItemDialog newInstance(String data, String type) {
+
+        Bundle args = new Bundle();
+
+        AddItemDialog fragment = new AddItemDialog();
+        args.putString(DATA, data);
+        args.putString(TYPE, type);
+        fragment.setArguments(args);
+        return fragment;
     }
 
-    public AddItemDialog(Context context, Table bans, String typeDialog) {
-        super(context);
-        this.type = typeDialog;
-        this.ban = bans;
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.dialog_add);
-        getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        init();
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.dialog_add_floor, container, false);
     }
 
-    public AddItemDialog(Context context, GroupFood nhomMonAn, String typeDialog) {
-        super(context);
-        this.type = typeDialog;
-        this.nhomMonAn = nhomMonAn;
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.dialog_add);
-        getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        init();
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        init(view);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        view.setLayoutParams(layoutParams);
+
+
     }
 
-    public AddItemDialog(Context context, String typeDialog) {
-        super(context);
-        this.type = typeDialog;
-        this.nhomMonAn = nhomMonAn;
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.dialog_add);
-        getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        init();
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
-    private void init() {
-        edtThemTang = findViewById(R.id.edt_dialog_them_tang);
-        btnThemTang = findViewById(R.id.btn_dialog_them_tang);
+    @Override
+    public void onStart() {
+        super.onStart();
+        int orrientation = getResources().getConfiguration().orientation;
+        if (orrientation == Configuration.ORIENTATION_LANDSCAPE) {
+            int widthPercent = 50;
+            setWidthPercent(widthPercent);
+        } else {
+            setWidthFullScreen();
+        }
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+
+    private void setWidthPercent(int widthPercent) {
+        float percent = (float) widthPercent / 100;
+        DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
+        Rect rect = new Rect(0, 0, dm.widthPixels, dm.heightPixels);
+        float percentWith = rect.width() * percent;
+        Objects.requireNonNull(getDialog().getWindow()).setLayout((int) percentWith, ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
+
+    private void setWidthFullScreen() {
+        Objects.requireNonNull(getDialog().getWindow()).setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+    }
+
+    private void init(View view) {
+        edtThem = view.findViewById(R.id.edt_dialog_them_tang);
+        btnThem = view.findViewById(R.id.btn_dialog_them_tang);
+        if (getArguments() != null) {
+            type = getArguments().getString(TYPE);
+        }
         if (type.equals("editTang") || type.equals("editBan") || type.endsWith("editNhom")) {
-            btnThemTang.setText("Lưu");
+            btnThem.setText("Lưu");
         }
         switch (type) {
             case "editBan":
-                edtThemTang.setHint("Tên bàn");
-                edtThemTang.setInputType(InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+                edtThem.setInputType(InputType.TYPE_CLASS_NUMBER);
+                edtThem.setHint("Tên bàn");
+                edtThem.setText(getArguments().getString(DATA));
                 break;
             case "editTang":
-                edtThemTang.setHint("Tên Tầng");
+                edtThem.setText(getArguments().getString(DATA));
+                edtThem.setHint("Tên Tầng");
                 break;
             case "editNhom":
-                edtThemTang.setHint("Tên Nhóm");
+                edtThem.setText(getArguments().getString(DATA));
+                edtThem.setHint("Tên Nhóm");
                 break;
-
             case "addNhom":
-                edtThemTang.setHint("Tên Nhóm");
+                edtThem.setHint("Tên Nhóm");
                 break;
             default:
-                edtThemTang.setHint("Tên Tầng");
+                edtThem.setHint("Tên Tầng");
                 break;
         }
-        btnThemTang.setOnClickListener(new View.OnClickListener() {
+        btnThem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 switch (type) {
                     case "editTang":
-                        onClickThemBanFragment.OnClickSuaTang(tang, String.valueOf(edtThemTang.getText()));
+                        onClickThemBanFragment.OnClickSuaTang(tang, String.valueOf(edtThem.getText()));
                         dismiss();
                         break;
                     case "editBan":
-                        onClickThemBanFragment.OnClickSuaBan(ban, String.valueOf(edtThemTang.getText()));
+                        onClickThemBanFragment.OnClickSuaBan(String.valueOf(edtThem.getText()));
                         dismiss();
                         break;
                     case "editNhom":
-                        onClickThemNhomFragment.OnClickSuaNhom(nhomMonAn, String.valueOf(edtThemTang.getText()));
+                        onClickThemNhomFragment.OnClickSuaNhom(nhomMonAn, String.valueOf(edtThem.getText()));
                         dismiss();
                         break;
                     case "addNhom":
-                        onClickThemNhomFragment.OnClickThemNhom(String.valueOf(edtThemTang.getText()));
+                        onClickThemNhomFragment.OnClickThemNhom(String.valueOf(edtThem.getText()));
                         dismiss();
                         break;
                     default:
-                        onClickThemBanFragment.OnClickThemTang(String.valueOf(edtThemTang.getText()));
+                        onClickThemBanFragment.OnClickThemTang(String.valueOf(edtThem.getText()));
                         dismiss();
                         break;
                 }
             }
         });
+
     }
 
-    public void setOnClickThemBanFragment(OnClickAddFloor onClickThemBanFragment) {
+    public void setOnClickThemBanFragment(CallBackManagerFloor onClickThemBanFragment) {
         this.onClickThemBanFragment = onClickThemBanFragment;
     }
 

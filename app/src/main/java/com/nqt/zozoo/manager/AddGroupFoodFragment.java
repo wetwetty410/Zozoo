@@ -2,13 +2,18 @@ package com.nqt.zozoo.manager;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -26,6 +31,7 @@ import org.apache.commons.text.CharacterPredicates;
 import org.apache.commons.text.RandomStringGenerator;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by USER on 1/3/2019.
@@ -34,9 +40,6 @@ import java.util.List;
 public class AddGroupFoodFragment extends Fragment implements View.OnClickListener, OnClickAddGroupFood {
     private List<GroupFood> nhomMonAnList;
     private GroupFoodDatabase nhomMonAnDatabase;
-    private TextView txtTitle;
-    private TextView txtThemNhom;
-    private ImageView imgBackStack;
     private RecyclerView rcvThemNhom;
     private AddGroupFoodAdapter themNhomAdapter;
     private Toolbar toolbar;
@@ -55,56 +58,51 @@ public class AddGroupFoodFragment extends Fragment implements View.OnClickListen
         nhomMonAnList = nhomMonAnDatabase.getAllNhomMonAn();
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_them_nhom_mon_an, container, false);
+        View view = inflater.inflate(R.layout.fragment_manager_group_food, container, false);
         toolbar = view.findViewById(R.id.tlb_fragment_them_nhom);
-        txtTitle = view.findViewById(R.id.txt_them_nhom_title);
-        txtThemNhom = view.findViewById(R.id.txt_them_nhom);
-        imgBackStack = view.findViewById(R.id.img_them_nhom_backstack);
         rcvThemNhom = view.findViewById(R.id.rcv_them_nhom_mon_an);
 
         Context context = view.getContext();
         final AppCompatActivity appCompatActivity = ((AppCompatActivity) getActivity());
+        assert appCompatActivity != null;
         appCompatActivity.setSupportActionBar(toolbar);
-        appCompatActivity.getSupportActionBar().setTitle("");
-        txtTitle.setText("QL Nhóm");
+        Objects.requireNonNull(appCompatActivity.getSupportActionBar()).setTitle("QL.Nhóm món ăn");
+        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setHasOptionsMenu(true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         themNhomAdapter = new AddGroupFoodAdapter(nhomMonAnList, this);
         rcvThemNhom.setLayoutManager(layoutManager);
         rcvThemNhom.setAdapter(themNhomAdapter);
 
-        txtThemNhom.setOnClickListener(this);
-        imgBackStack.setOnClickListener(this);
         return view;
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.img_them_nhom_backstack:
-                getActivity().onBackPressed();
-                break;
-            case R.id.txt_them_nhom:
-                onClickThemNhom();
-            default:
-                break;
-        }
-
     }
 
     private void onClickThemNhom() {
-        AddItemDialog themTangItemDialog = new AddItemDialog(getContext(), "addNhom");
+        FragmentManager fragmentManager = getFragmentManager();
+        AddItemDialog themTangItemDialog = AddItemDialog.newInstance("", "addNhom");
         themTangItemDialog.setOnClickThemNhomFragment(this);
-        themTangItemDialog.show();
+        themTangItemDialog.show(fragmentManager, null);
     }
 
     private void onClickSuaNhom(GroupFood nhomMonAn) {
-        AddItemDialog themTangItemDialog = new AddItemDialog(getContext(), nhomMonAn, "editNhom");
+        FragmentManager fragmentManager = getFragmentManager();
+        AddItemDialog themTangItemDialog = AddItemDialog.newInstance(nhomMonAn.getTenNhonMonAn(), "editNhom");
         themTangItemDialog.setOnClickThemNhomFragment(this);
-        themTangItemDialog.show();
+        themTangItemDialog.show(fragmentManager, null);
     }
 
     @Override
@@ -183,5 +181,19 @@ public class AddGroupFoodFragment extends Fragment implements View.OnClickListen
             rcvThemNhom.setAdapter(themNhomAdapter);
             Toast.makeText(getContext(), "Thêm nhóm thành công", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_manager_group_food, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.add_group_food) {
+            onClickThemNhom();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

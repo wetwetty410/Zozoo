@@ -2,6 +2,7 @@ package com.nqt.zozoo.adapter.orderadapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +20,8 @@ import java.util.List;
 
 public class ListFoodAdapter extends RecyclerView.Adapter<ListFoodAdapter.ViewHolder> {
     private Context context;
-    private OnClickOrder orderListener;
-    private List<Food> monAnList;
+    private final OnClickOrder orderListener;
+    private final List<Food> monAnList;
 
 
     public ListFoodAdapter(List<Food> monAns, OnClickOrder orderListener) {
@@ -29,23 +30,23 @@ public class ListFoodAdapter extends RecyclerView.Adapter<ListFoodAdapter.ViewHo
     }
 
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_danh_sach_do, parent, false);
+                .inflate(R.layout.item_order_food_list, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        if (position % 2 == 0) {
-            holder.view.setBackgroundColor(Color.YELLOW);
-        } else {
-            holder.view.setBackgroundColor(Color.GREEN);
-        }
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+//        if (position % 2 == 0) {
+//            holder.view.setBackgroundColor(Color.YELLOW);
+//        } else {
+//            holder.view.setBackgroundColor(Color.GREEN);
+//        }
         holder.txtTenMon.setText(monAnList.get(position).getTenMonAn());
-        holder.txtGiaTien.setText(
-                setGia(String.valueOf(monAnList.get(position).getDonGia())));
+        holder.txtGiaTien.setText(setGia(String.valueOf(monAnList.get(position).getDonGia())));
     }
 
     @Override
@@ -54,9 +55,9 @@ public class ListFoodAdapter extends RecyclerView.Adapter<ListFoodAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private View view;
-        private TextView txtTenMon;
-        private TextView txtGiaTien;
+        private final View view;
+        private final TextView txtTenMon;
+        private final TextView txtGiaTien;
 
 
         public ViewHolder(View itemView) {

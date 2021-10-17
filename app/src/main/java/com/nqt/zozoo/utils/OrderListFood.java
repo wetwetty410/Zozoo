@@ -1,6 +1,8 @@
 package com.nqt.zozoo.utils;
 
 
+import java.util.Objects;
+
 public class OrderListFood {
     private String id;
     private String maOrder;
@@ -109,6 +111,20 @@ public class OrderListFood {
 
     @Override
     public int hashCode() {
-        return maMonAn.hashCode();
+        return Objects.hash(id, maOrder, maMonAn, tenMonAn, giaTien, soLuong, trangThai);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderListFood that = (OrderListFood) o;
+        return soLuong == that.soLuong &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(maOrder, that.maOrder) &&
+                Objects.equals(maMonAn, that.maMonAn) &&
+                Objects.equals(tenMonAn, that.tenMonAn) &&
+                Objects.equals(giaTien, that.giaTien) &&
+                Objects.equals(trangThai, that.trangThai);
     }
 }

@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,12 +15,13 @@ import android.widget.TextView;
 import com.nqt.zozoo.R;
 import com.nqt.zozoo.sale.DepthPageTransformer;
 
+import java.util.Objects;
+
 public class KitchenActivity extends AppCompatActivity implements View.OnClickListener {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Toolbar toolbar;
-    private TextView txtTitle;
-    private ImageView imgBackStack;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,14 +30,11 @@ public class KitchenActivity extends AppCompatActivity implements View.OnClickLi
         tabLayout = findViewById(R.id.nha_bep_tab);
         viewPager = findViewById(R.id.nha_bep_viewpager);
         toolbar = findViewById(R.id.tlb_nha_bep);
-        txtTitle = findViewById(R.id.txt_nha_bep_title);
-        imgBackStack = findViewById(R.id.img_nha_bep_backstack);
-
-        txtTitle.setText("Nhà Bếp");
-        imgBackStack.setOnClickListener(this);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Kitchen");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         setupViewPager();
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabTextColors(ColorStateList.valueOf(Color.WHITE));
@@ -66,10 +65,14 @@ public class KitchenActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.img_nha_bep_backstack:
-                finish();
-                break;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 }

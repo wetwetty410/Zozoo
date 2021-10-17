@@ -35,7 +35,7 @@ public class TableDatabase extends DatabaseManager {
         closeDatabase();
     }
 
-    public void deleteBanInTang(String maTang) {
+    public void deleteTableInFloor(String maTang) {
         openDatabase();
         sqLiteDatabase.delete(TABLE_BAN, TABLE_BAN_MA_TANG + "=?", new String[]{maTang});
         closeDatabase();

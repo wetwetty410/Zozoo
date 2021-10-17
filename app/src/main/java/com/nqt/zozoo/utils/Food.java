@@ -1,6 +1,7 @@
 package com.nqt.zozoo.utils;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by USER on 12/10/2018.
@@ -25,11 +26,6 @@ public class Food {
 
     public Food() {
 
-    }
-
-    @Override
-    public int hashCode() {
-        return nhomMonAn.hashCode();
     }
 
 

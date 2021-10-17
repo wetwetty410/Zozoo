@@ -2,6 +2,7 @@ package com.nqt.zozoo.sale;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -29,11 +30,13 @@ public class SaleAsyncTask extends AsyncTask<Void, Integer, Void> {
     protected void onPreExecute() {
         super.onPreExecute();
         intent = new Intent(appCompatActivity, SaleActivity.class);
+
         progressDrawable = new ProgressDialog(appCompatActivity);
-        progressDrawable.setMessage("Loading....");
+        progressDrawable.setMessage("Loading. Please wait...");
         progressDrawable.setIndeterminate(false);
         progressDrawable.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDrawable.setCancelable(true);
+        progressDrawable.setCancelable(false);
+        progressDrawable.setCanceledOnTouchOutside(false);
         progressDrawable.show();
 
     }
@@ -56,5 +59,7 @@ public class SaleAsyncTask extends AsyncTask<Void, Integer, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         appCompatActivity.startActivity(intent);
+
     }
+
 }

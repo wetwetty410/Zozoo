@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -18,9 +19,7 @@ public class ManagerActivity extends AppCompatActivity implements View.OnClickLi
     private Button btnSoDoBan;
     private Button btnNhomMonAn;
     private Button btnMonAn;
-    private ImageView imgBack;
     private Toolbar toolbar;
-    private TextView txtTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,18 +30,11 @@ public class ManagerActivity extends AppCompatActivity implements View.OnClickLi
         btnNhomMonAn = findViewById(R.id.btn_quan_ly_nhom_mon_an);
         btnMonAn = findViewById(R.id.btn_quan_ly_mon_an);
         toolbar = findViewById(R.id.tlb_act_quan_ly);
-        imgBack = findViewById(R.id.img_quan_ly_backstack);
-        txtTitle = findViewById(R.id.txt_quan_ly_title);
 
-//        buttonEffect(btnTaiKhoan);
-//        buttonEffect(btnSoDoBan);
-//        buttonEffect(btnMonAn);
-//        buttonEffect(btnNhomMonAn);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
-        txtTitle.setText("Quản Lý");
+        getSupportActionBar().setTitle("Quản Lý");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        imgBack.setOnClickListener(this);
         btnTaiKhoan.setOnClickListener(this);
         btnSoDoBan.setOnClickListener(this);
         btnNhomMonAn.setOnClickListener(this);
@@ -56,9 +48,6 @@ public class ManagerActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.btn_so_do_phong_ban:
                 onClickSoDoBan();
-                break;
-            case R.id.img_quan_ly_backstack:
-                onBackPressed();
                 break;
             case R.id.btn_quan_ly_nhom_mon_an:
                 onClickNhomMonAn();
@@ -91,5 +80,14 @@ public class ManagerActivity extends AppCompatActivity implements View.OnClickLi
         transaction.add(android.R.id.content, AddTableFragment.newInstance());
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

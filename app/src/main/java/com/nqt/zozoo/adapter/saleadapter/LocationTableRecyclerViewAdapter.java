@@ -1,6 +1,7 @@
 package com.nqt.zozoo.adapter.saleadapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -39,10 +40,11 @@ public class LocationTableRecyclerViewAdapter extends RecyclerView.Adapter<Locat
         tangList = tangDatabase.getAllTang();
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_ban_hang_so_ban, parent, false);
+                .inflate(R.layout.item_sales_table_placement, parent, false);
 
         return new ViewHolder(view);
     }
@@ -56,18 +58,20 @@ public class LocationTableRecyclerViewAdapter extends RecyclerView.Adapter<Locat
         // Lấy thông tin số bàn trong một tầng từ CSDL
         banList = banDatabase.getSoBan(maTang);
 
+        RecyclerView recyclerView = holder.recyclerView;
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 4);
-        holder.recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setLayoutManager(gridLayoutManager);
 
         //       Gắn item cho RecycleView bằng các adapter
         soBanRecyclerViewAdapter = new ViewTableRecyclerViewAdapter(banList, mListener, context);
-        holder.recyclerView.setAdapter(soBanRecyclerViewAdapter);
+        recyclerView.setAdapter(soBanRecyclerViewAdapter);
     }
 
     @Override
     public int getItemCount() {
         return tangList.size();
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public View itemView;

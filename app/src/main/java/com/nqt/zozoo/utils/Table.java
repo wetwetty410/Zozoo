@@ -71,4 +71,16 @@ public class Table {
     public void setMaLoaiBan(String maLoaiBan) {
         this.maLoaiBan = maLoaiBan;
     }
+
+    @Override
+    public String toString() {
+        return "Table{" +
+                "id='" + id + '\'' +
+                ", maBan='" + maBan + '\'' +
+                ", tenBan='" + tenBan + '\'' +
+                ", maTang='" + maTang + '\'' +
+                ", maLoaiBan='" + maLoaiBan + '\'' +
+                ", statusBan=" + statusBan +
+                '}';
+    }
 }

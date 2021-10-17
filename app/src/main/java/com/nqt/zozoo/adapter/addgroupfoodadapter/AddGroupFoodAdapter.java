@@ -28,7 +28,7 @@ public class AddGroupFoodAdapter extends RecyclerView.Adapter<AddGroupFoodAdapte
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_them_nhom_mon_an, parent, false);
+                .inflate(R.layout.item_manager_group_food, parent, false);
         return new ViewHolder(view);
     }
 

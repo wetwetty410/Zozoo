@@ -30,6 +30,7 @@ public class SalePagerAdapter extends FragmentPagerAdapter {
         Fragment fragment;
         switch (position) {
             case 0:
+
                 fragment = LocationTableFragment.newInstance(numItemTable, 0, "SO_BAN");
                 return fragment;
             case 1:

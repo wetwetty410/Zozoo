@@ -5,8 +5,10 @@
     tools:ignore="NewApi">
     <item>
         <selector>
-            <item android:drawable="@drawable/button_click" android:state_activated="true"/>
-            <item android:drawable="@drawable/button_defaul"/>
+            <item
+                android:drawable="@drawable/btn_manager_click"
+                android:state_activated="true" />
+            <item android:drawable="@drawable/btn_manager_default" />
         </selector>
     </item>
 

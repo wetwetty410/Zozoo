@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nqt.zozoo.R;
-import com.nqt.zozoo.adapter.orderviewfoodadapter.TableOrderViewFoodAdapter;
-import com.nqt.zozoo.adapter.orderviewfoodadapter.OnClickOrderViewFood;
+import com.nqt.zozoo.adapter.salesfoodscookingadapter.SalesTableCookingAdapter;
+import com.nqt.zozoo.adapter.salesfoodscookingadapter.OnClickOrderViewFood;
 import com.nqt.zozoo.database.FoodOrderDatabase;
 import com.nqt.zozoo.utils.Food;
 
@@ -48,13 +48,13 @@ public class ViewOrderFoodFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_food_order, container, false);
+        View view = inflater.inflate(R.layout.fragment_sales_table_cooking, container, false);
         rcvMonAn = view.findViewById(R.id.rcv_ban_order_mon);
         Context context = view.getContext();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         rcvMonAn.setLayoutManager(layoutManager);
-        rcvMonAn.setAdapter(new TableOrderViewFoodAdapter(monOrderList, mListener,context));
+        rcvMonAn.setAdapter(new SalesTableCookingAdapter(monOrderList, mListener,context));
         return view;
     }
 

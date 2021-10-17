@@ -5,6 +5,7 @@
     android:id="@+id/layout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#e0f2f1"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.nqt.zozoo.MainActivity"
     tools:showIn="@layout/app_bar_main">
@@ -19,8 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:baselineAligned="false">
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -28,7 +29,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                android:baselineAligned="false">
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:id="@+id/lln_ban_hang"
@@ -50,7 +52,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/sale"
-                        android:textColor="#181716" />
+                        android:theme="@style/ButtonMain"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -59,7 +61,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:background="@drawable/btn_dat_hang_nhanh"
+                    android:background="@drawable/btn_ban_hang"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -73,7 +75,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/fast_order"
-                        android:textColor="#f9f7f5" />
+                        android:theme="@style/ButtonMain"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -82,7 +84,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:background="@drawable/btn_nha_bep"
+                    android:background="@drawable/btn_ban_hang"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -90,13 +92,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:background="@drawable/iconfinder_pan" />
+                        android:background="@drawable/ic_finder_pan" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Bếp"
-                        android:textColor="#000000" />
+                    android:theme="@style/ButtonMain" />
                 </LinearLayout>
 
 
@@ -122,7 +124,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:background="@drawable/btn_nha_kho"
+                    android:background="@drawable/btn_ban_hang"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -136,7 +138,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Nhà Kho"
-                        android:textColor="#ffffff" />
+                        android:theme="@style/ButtonMain"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -145,7 +147,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:background="@drawable/btn_bao_cao"
+                    android:background="@drawable/btn_ban_hang"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -159,7 +161,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Báo Cáo"
-                        android:textColor="#000000" />
+                        android:theme="@style/ButtonMain"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -169,7 +171,7 @@
 
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:background="@drawable/btn_quan_ly"
+                    android:background="@drawable/btn_ban_hang"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -183,7 +185,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Quản Lý"
-                        android:textColor="#ffffff" />
+                        android:theme="@style/ButtonMain" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -205,10 +207,9 @@
                     android:id="@+id/lln_cai_dat"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:background="@drawable/btn_cai_dat"
+                    android:background="@drawable/btn_ban_hang"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -222,7 +223,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Cài Đặt"
-                        android:textColor="#000000" />
+                        android:theme="@style/ButtonMain" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -232,7 +233,7 @@
 
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:background="@drawable/btn_tro_giup"
+                    android:background="@drawable/btn_ban_hang"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -246,7 +247,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Trợ Giúp"
-                        android:textColor="#ffffff" />
+                        android:theme="@style/ButtonMain"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -255,7 +256,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:background="@drawable/btn_huong_dan"
+                    android:background="@drawable/btn_ban_hang"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -269,7 +270,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Hướng Dẫn"
-                        android:textColor="#000000" />
+                        android:theme="@style/ButtonMain"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

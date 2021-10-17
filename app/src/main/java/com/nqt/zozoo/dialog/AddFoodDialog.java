@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.widget.AppCompatSpinner;
 import android.text.InputType;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -20,10 +22,12 @@ import com.nqt.zozoo.database.GroupFoodDatabase;
 import com.nqt.zozoo.utils.Food;
 import com.nqt.zozoo.utils.GroupFood;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AddFoodDialog extends Dialog {
+    private static final String TAG = "AddFoodDialog";
     private OnClickAddFoodListener onClickAddFoodListener;
     private EditText edtNameFood;
     private AppCompatSpinner spnGroup;
@@ -101,6 +105,45 @@ public class AddFoodDialog extends Dialog {
                     Toast.makeText(getContext(), "Món ăn đã tồn tại!", Toast.LENGTH_SHORT).show();
 
                 }
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+        if (edtNameFood.length() > 0) {
+            edtNameFood.getText().clear();
+        }
+
+        if (edtCostFood.length() > 0) {
+            edtCostFood.getText().clear();
+        }
+
+        edtCostFood.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                String patternVND = "###,###,###,###,### VNĐ";
+                DecimalFormat decimalVND = new DecimalFormat();
+                decimalVND.applyPattern(patternVND);
+                String price = edtCostFood.getText().toString();
+
+                if (hasFocus && price.isEmpty()) {
+                    edtCostFood.setText(R.string.price_default);
+                    return;
+                }
+                String regexKeepNumber = "[^\\d.]";
+
+                if (hasFocus) {
+                    price = price.replaceAll(regexKeepNumber, "");
+                    edtCostFood.setText(price);
+                    return;
+                }
+
+                price = price.replaceAll(regexKeepNumber, "");
+                edtCostFood.setText(decimalVND.format(Integer.parseInt(price)));
             }
         });
 

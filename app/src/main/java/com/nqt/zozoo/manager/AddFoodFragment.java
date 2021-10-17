@@ -3,6 +3,7 @@ package com.nqt.zozoo.manager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,6 +27,7 @@ import com.nqt.zozoo.utils.Food;
 import com.nqt.zozoo.utils.GroupFood;
 
 import java.util.List;
+import java.util.Objects;
 
 public class AddFoodFragment extends Fragment implements View.OnClickListener, OnClickAddFoodListener {
     private List<Food> foodList;
@@ -33,13 +35,10 @@ public class AddFoodFragment extends Fragment implements View.OnClickListener, O
     private GroupFoodDatabase groupFoodDatabase;
     private FoodDatabase foodDatabase;
     private Toolbar toolbar;
-    private ImageView imgBackStack;
-    private TextView txtFoodTitle;
-    private TextView txtAddFood;
     private Button btnAllFood;
-    private Button btnFreeFood;
     private RecyclerView rcvViewGroupFood;
     private RecyclerView rcvViewFood;
+    private FloatingActionButton fabAddFoods;
     private ViewGroupFoodAdapter viewGroupFoodAdapter;
     private ViewFoodAdapter viewFoodAdapter;
 
@@ -67,21 +66,20 @@ public class AddFoodFragment extends Fragment implements View.OnClickListener, O
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_food, container, false);
+        View view = inflater.inflate(R.layout.fragment_manager_foods, container, false);
         toolbar = view.findViewById(R.id.tlb_fragment_add_food);
-        imgBackStack = view.findViewById(R.id.img_add_food_backstack);
-        txtFoodTitle = view.findViewById(R.id.txt_add_food_title);
-        txtAddFood = view.findViewById(R.id.txt_add_food);
+
         btnAllFood = view.findViewById(R.id.btn_all_food);
-        btnFreeFood = view.findViewById(R.id.btn_food_free);
         rcvViewGroupFood = view.findViewById(R.id.rcv_view_group_food);
         rcvViewFood = view.findViewById(R.id.rcv_view_food);
+        fabAddFoods = view.findViewById(R.id.fab_fag_manager_foods_add);
 
         Context context = view.getContext();
         AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
+        assert appCompatActivity != null;
         appCompatActivity.setSupportActionBar(toolbar);
-        appCompatActivity.getSupportActionBar().setTitle("");
-        txtFoodTitle.setText("Thêm Món");
+        Objects.requireNonNull(appCompatActivity.getSupportActionBar()).setTitle("Thêm Món");
+        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         viewGroupFoodAdapter = new ViewGroupFoodAdapter(this, context);
@@ -94,10 +92,8 @@ public class AddFoodFragment extends Fragment implements View.OnClickListener, O
         rcvViewFood.setLayoutManager(layoutManagerFood);
         rcvViewFood.setAdapter(viewFoodAdapter);
 
-        btnFreeFood.setOnClickListener(this);
-        txtAddFood.setOnClickListener(this);
+        fabAddFoods.setOnClickListener(this);
         btnAllFood.setOnClickListener(this);
-        imgBackStack.setOnClickListener(this);
         return view;
     }
 
@@ -109,20 +105,18 @@ public class AddFoodFragment extends Fragment implements View.OnClickListener, O
                 viewFoodAdapter = new ViewFoodAdapter(foodList, this, getContext());
                 rcvViewFood.setAdapter(viewFoodAdapter);
                 break;
-            case R.id.img_add_food_backstack:
-                getActivity().onBackPressed();
-                break;
-            case R.id.txt_add_food:
+            case R.id.fab_fag_manager_foods_add:
                 foodList = foodDatabase.getAllMonAn();
                 AddFoodDialog addFoodDialog = new AddFoodDialog(foodList, getContext());
                 addFoodDialog.setOnClickAddFoodListener(this);
                 addFoodDialog.show();
                 break;
-            case R.id.btn_food_free:
-                foodList = foodDatabase.getMonAnWithGroup("");
-                viewFoodAdapter = new ViewFoodAdapter(foodList, this, getContext());
-                rcvViewFood.setAdapter(viewFoodAdapter);
-                break;
+
+//            case R.id.btn_food_free:
+//                foodList = foodDatabase.getMonAnWithGroup("");
+//                viewFoodAdapter = new ViewFoodAdapter(foodList, this, getContext());
+//                rcvViewFood.setAdapter(viewFoodAdapter);
+//                break;
         }
     }
 

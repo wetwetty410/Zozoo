@@ -2,17 +2,20 @@ package com.nqt.zozoo.sale;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +43,7 @@ import com.nqt.zozoo.utils.Floor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by USER on 12/12/2018.
@@ -48,6 +52,8 @@ import java.util.List;
 public class OrderFragment extends Fragment implements OnClickOrder, View.OnClickListener {
     private static final String TABLE_STATUS = "table_status";
     private static final String TABLE_NAME = "table_name";
+    private static final String TAG = "OrderFragment";
+    private static final String LIST_ORDER_KEY = "list_order_key";
 
     private boolean tableStatus;
     private String nameTable;
@@ -79,7 +85,6 @@ public class OrderFragment extends Fragment implements OnClickOrder, View.OnClic
     private static Context mContext;
 
     private Toolbar toolbar;
-    private ImageView imgBack;
     private TextView txtTitle;
     private Button btnTatCa;
     private Button btnHuyBo;
@@ -88,11 +93,12 @@ public class OrderFragment extends Fragment implements OnClickOrder, View.OnClic
     private TextView txtViTriBan;
     private RecyclerView rcvNhomMonAn;
     private RecyclerView rcvMonAn;
-    private RecyclerView rcvOrder;
+    private RecyclerView rcvOrdered;
     private TextView txtSoLuongMon;
     private TextView txtSoLuongDo;
     private TextView txtTongTien;
 
+    private Parcelable pcListOrder;
 
     private ListFoodAdapter danhSachMonAdapter;
     private ListOrderFoodAdapter orderListAdapter;
@@ -100,14 +106,25 @@ public class OrderFragment extends Fragment implements OnClickOrder, View.OnClic
     public OrderFragment() {
     }
 
-    public static OrderFragment newInstance(Context context, boolean tableStatus, String nameTable) {
-        mContext = context;
+    public static OrderFragment newInstance(boolean tableStatus, String nameTable) {
         Bundle args = new Bundle();
         OrderFragment fragment = new OrderFragment();
         args.putBoolean(TABLE_STATUS, tableStatus);
         args.putString(TABLE_NAME, nameTable);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mContext = null;
     }
 
     @Override
@@ -139,19 +156,39 @@ public class OrderFragment extends Fragment implements OnClickOrder, View.OnClic
             nameTable = getArguments().getString(TABLE_NAME);
         }
 
+
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(LIST_ORDER_KEY, rcvMonAn.getLayoutManager().onSaveInstanceState());
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            pcListOrder = savedInstanceState.getParcelable(LIST_ORDER_KEY);
+            rcvMonAn.getLayoutManager().onRestoreInstanceState(pcListOrder);
+        }
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onActivityCreated: ");
+        super.onActivityCreated(savedInstanceState);
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_order, container, false);
         toolbar = view.findViewById(R.id.tlb_fragment_order);
-        imgBack = view.findViewById(R.id.img_order_backstack);
-        txtTitle = view.findViewById(R.id.txt_order_title);
         rcvNhomMonAn = view.findViewById(R.id.rcv_order_nhom_thuc_an);
         rcvMonAn = view.findViewById(R.id.rcv_order_mon_an);
-        rcvOrder = view.findViewById(R.id.rcv_order_list);
+        rcvOrdered = view.findViewById(R.id.rcv_order_list);
         btnTatCa = view.findViewById(R.id.btn_order_tat_ca_mon);
         btnHuyBo = view.findViewById(R.id.btn_order_huy_bo);
         btnLuu = view.findViewById(R.id.btn_order_luu);
@@ -163,9 +200,10 @@ public class OrderFragment extends Fragment implements OnClickOrder, View.OnClic
 
         Context context = view.getContext();
         final AppCompatActivity appCompatActivity = ((AppCompatActivity) getActivity());
+        assert appCompatActivity != null;
         appCompatActivity.setSupportActionBar(toolbar);
-        appCompatActivity.getSupportActionBar().setTitle("");
-        txtTitle.setText("Order");
+        Objects.requireNonNull(appCompatActivity.getSupportActionBar()).setTitle("Order");
+        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         LinearLayoutManager layoutManagerMonAn = new LinearLayoutManager(context);
         rcvMonAn.setLayoutManager(layoutManagerMonAn);
@@ -177,7 +215,7 @@ public class OrderFragment extends Fragment implements OnClickOrder, View.OnClic
         rcvNhomMonAn.setAdapter(new ListGroupFoodAdapter(nhomMonAnList, this));
 
         LinearLayoutManager layoutManagerOrder = new LinearLayoutManager(context);
-        rcvOrder.setLayoutManager(layoutManagerOrder);
+        rcvOrdered.setLayoutManager(layoutManagerOrder);
 
         ban = banDatabase.getBan(nameTable);
         tang = tangDatabase.getTang(ban.getMaTang());
@@ -199,7 +237,7 @@ public class OrderFragment extends Fragment implements OnClickOrder, View.OnClic
             }
 
             orderListAdapter = new ListOrderFoodAdapter(orderMonList, this);
-            rcvOrder.setAdapter(orderListAdapter);
+            rcvOrdered.setAdapter(orderListAdapter);
 
         }
         List<Order> list = orderDatabase.getAllOrder();
@@ -215,7 +253,6 @@ public class OrderFragment extends Fragment implements OnClickOrder, View.OnClic
 
         willDataChange(tongSoLuongMon, tongSoLuongDo, tongTien);
 
-        imgBack.setOnClickListener(this);
         btnTatCa.setOnClickListener(this);
         btnHuyBo.setOnClickListener(this);
         btnLuu.setOnClickListener(this);
@@ -262,7 +299,7 @@ public class OrderFragment extends Fragment implements OnClickOrder, View.OnClic
         orderDanhSachMon.setSoLuong(Integer.parseInt(saveSoLuong.get(maMonAn)));
         orderMonList.add(orderDanhSachMon);
         orderListAdapter = new ListOrderFoodAdapter(orderMonList, this);
-        rcvOrder.setAdapter(orderListAdapter);
+        rcvOrdered.setAdapter(orderListAdapter);
         willDataChange(tongSoLuongMon = orderMonList.size(),
                 tongSoLuongDo = tongSoLuongDo + orderDanhSachMon.getSoLuong(),
                 tongTien = tongTien + Integer.parseInt(orderDanhSachMon.getGiaTien()));
@@ -281,7 +318,7 @@ public class OrderFragment extends Fragment implements OnClickOrder, View.OnClic
         maDelete.add(orderDanhSachMon.getMaMonAn());
         orderMonList.remove(orderDanhSachMon);
         orderListAdapter = new ListOrderFoodAdapter(orderMonList, this);
-        rcvOrder.setAdapter(orderListAdapter);
+        rcvOrdered.setAdapter(orderListAdapter);
         willDataChange(tongSoLuongMon = orderMonList.size(),
                 tongSoLuongDo = tongSoLuongDo - orderDanhSachMon.getSoLuong(),
                 tongTien = tongTien - Integer.parseInt(orderDanhSachMon.getGiaTien()));
@@ -335,9 +372,11 @@ public class OrderFragment extends Fragment implements OnClickOrder, View.OnClic
                 getActivity().onBackPressed();
                 break;
             case R.id.btn_order_xoa_het:
+                willDataChange(tongSoLuongMon = 0, tongSoLuongDo = 0, tongTien = 0);
+
                 orderMonList.clear();
                 orderListAdapter = new ListOrderFoodAdapter(orderMonList, this);
-                rcvOrder.setAdapter(orderListAdapter);
+                rcvOrdered.setAdapter(orderListAdapter);
                 break;
             case R.id.btn_order_luu:
                 monDaOrderList = monOrderDatabase.getMonOrderWithMaBan(nameTable);
@@ -381,9 +420,6 @@ public class OrderFragment extends Fragment implements OnClickOrder, View.OnClic
                     getActivity().recreate();
                     getActivity().onBackPressed();
                 }
-                break;
-            case R.id.img_order_backstack:
-                getActivity().onBackPressed();
                 break;
             default:
                 break;
@@ -430,4 +466,15 @@ public class OrderFragment extends Fragment implements OnClickOrder, View.OnClic
         }
         return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 }
